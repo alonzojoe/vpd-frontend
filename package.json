@@ -1,0 +1,45 @@
+{
+  "name": "vpd",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@syncfusion/ej2-vue-notifications": "^23.1.36",
+    "axios": "^1.5.0",
+    "bootstrap": "^5.3.1",
+    "chart.js": "^4.4.0",
+    "crypto-js": "^4.1.1",
+    "dom-to-image": "^2.6.0",
+    "file-saver": "^2.0.5",
+    "html2canvas": "^1.4.1",
+    "html2pdf.js": "^0.10.1",
+    "js-cookie": "^3.0.5",
+    "js-cookies": "^1.0.4",
+    "jspdf": "^2.5.1",
+    "moment": "^2.29.4",
+    "pdf-vue3": "^1.0.9",
+    "primeflex": "^3.3.1",
+    "primevue": "^3.35.0",
+    "textfit": "^2.4.0",
+    "viewerjs": "^1.11.6",
+    "vue": "^3.3.4",
+    "vue-cookies": "^1.8.3",
+    "vue-html2pdf": "^1.8.0",
+    "vue-loading-skeleton": "^2.0.0-beta.1",
+    "vue-router": "^4.2.4",
+    "vue-squish-fit-text": "^1.0.1",
+    "vue-sweetalert2": "^5.0.5",
+    "vuex": "^4.1.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.3",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5",
+    "vue-tsc": "^1.8.5"
+  }
+}

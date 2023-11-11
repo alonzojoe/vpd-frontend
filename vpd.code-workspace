@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../../../xampp/htdocs/vpd-backend"
+		}
+	],
+	"settings": {
+		"editor.formatOnSave": true
+	}
+}
