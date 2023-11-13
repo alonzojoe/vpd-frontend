@@ -111,6 +111,22 @@ export const validateFields = async (toast, formData, watch) => {
         delete validationStatus.value.received_campaigns
     }
 
+    const travelData = [
+        { payload: 'travel_place', message: 'Travel Place', tab: 2 },
+        { payload: 'travel_date', message: 'Travel Date', tab: 2 },
+    ];
+
+    if (formData.travel_history == 'Y') {
+        requiredFields.unshift(...travelData)
+        validationStatus.value.travel_place = true
+        validationStatus.value.travel_date = true
+
+    } else {
+        delete validationStatus.value.travel_place
+        delete validationStatus.value.travel_date
+
+    }
+
     //tab3
     const otherReason = { payload: 'other_reason_specify', message: 'Other Reason, Specify', tab: 3 }
     if (formData.other_reason == '1') {

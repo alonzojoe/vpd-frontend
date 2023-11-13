@@ -1055,6 +1055,64 @@
                       </div>
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
+                      <div
+                        class="search"
+                        :class="{
+                          'group-invalid':
+                            saveSubmitted &&
+                            !validationStatus.travel_place &&
+                            formMease.travel_history == 'Y',
+                        }"
+                      >
+                        <Label class="mb-2"
+                          >Travel Place<span
+                            v-if="formMease.travel_history == 'Y'"
+                            class="text-danger"
+                          >
+                            *</span
+                          ></Label
+                        >
+
+                        <input
+                          type="text"
+                          v-model="formMease.travel_place"
+                          class="form-control form-control-sm w-100 custom-font"
+                          :disabled="formMease.travel_history != 'Y'"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
+                      <div
+                        class="search"
+                        :class="{
+                          'group-invalid':
+                            saveSubmitted &&
+                            !validationStatus.travel_date &&
+                            formMease.travel_history == 'Y',
+                        }"
+                      >
+                        <Label class="mb-2"
+                          >Travel Date<span
+                            v-if="formMease.travel_history == 'Y'"
+                            class="text-danger"
+                          >
+                            *</span
+                          ></Label
+                        >
+
+                        <input
+                          type="date"
+                          v-model="formMease.travel_date"
+                          :max="currentDate"
+                          class="form-control form-control-sm w-100 custom-font"
+                          :disabled="formMease.travel_history != 'Y'"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
                       <div class="search">
                         <Label class="mb-2">{{
                           "< 7 Days From Rash Onset"
