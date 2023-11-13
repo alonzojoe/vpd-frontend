@@ -164,6 +164,14 @@
         <p class="mr-dose">{{ patient.mr_dose }}</p>
         <p class="mmr-dose">{{ patient.mmr_dose }}</p>
       </div>
+
+      <div class="vaccination-data-ii all-labels">
+        <p class="mcv-date">{{ patient.date_last_mcv }}</p>
+        <!-- <span class="vaxcard">✔</span>
+        <span class="logsheet">✔</span>
+        <span class="recall">✔</span>
+        <span class="validate-others">✔</span> -->
+      </div>
     </div>
 
     <div ref="pdfContent2" class="pdf-content2">
@@ -996,6 +1004,15 @@ export default defineComponent({
   width: 20px;
   background: transparent;
   text-align: center;
+}
+
+.vaccination-data-ii {
+  position: relative;
+  top: -23rem;
+  left: 31rem;
+  height: 35px;
+  width: 250px;
+  background: red;
 }
 
 p {

@@ -433,6 +433,9 @@ export default defineComponent({
           : "",
         rash_date: p.rash_date ? moment(p.rash_date).format("MM DD YYYY") : "",
         died_date: p.died_date ? moment(p.died_date).format("MM DD YYYY") : "",
+        date_last_mcv: p.date_last_mcv
+          ? moment(p.date_last_mcv).format("MM DD YYYY")
+          : "",
       };
 
       printComponent.value.generatePDF();
@@ -487,6 +490,9 @@ export default defineComponent({
           : "",
         rash_date: p.rash_date ? moment(p.rash_date).format("MM DD YYYY") : "",
         died_date: p.died_date ? moment(p.died_date).format("MM DD YYYY") : "",
+        date_last_mcv: p.date_last_mcv
+          ? moment(p.date_last_mcv).format("MM DD YYYY")
+          : "",
       };
       modalDetails.value.title = `${p.ep_id} - Disease Profile`;
       modalDetails.value.show = true;
