@@ -167,10 +167,39 @@
 
       <div class="vaccination-data-ii all-labels">
         <p class="mcv-date">{{ patient.date_last_mcv }}</p>
-        <!-- <span class="vaxcard">✔</span>
+        <span class="vaxcard">✔</span>
         <span class="logsheet">✔</span>
         <span class="recall">✔</span>
-        <span class="validate-others">✔</span> -->
+        <span class="validate-others">✔</span>
+        <p class="validate-others-fields">by vaccinator</p>
+      </div>
+
+      <div class="vaccination-data-iii all-labels">
+        <span class="campaign-yes">✔</span>
+        <span class="campaign-no">✔</span>
+      </div>
+
+      <div class="vaccination-data-iv all-labels">
+        <span class="busy">✔</span>
+        <span class="sick">✔</span>
+        <span class="forgot">✔</span>
+
+        <span class="belief">✔</span>
+        <span class="vaccine">✔</span>
+        <span class="other">✔</span>
+
+        <span class="medical">✔</span>
+        <span class="vaccinator">✔</span>
+
+        <span class="fear">✔</span>
+        <span class="eligible">✔</span>
+
+        <p class="other-reason">{{ patient.other_reason_specify }}</p>
+      </div>
+
+      <div class="vaccination-data-v all-labels">
+        <span class="vitamin-yes">✔</span>
+        <span class="vitamin-no">✔</span>
       </div>
     </div>
 
@@ -1009,10 +1038,169 @@ export default defineComponent({
 .vaccination-data-ii {
   position: relative;
   top: -23rem;
+  left: 13.8rem;
+  height: 55px;
+  width: 480px;
+  background: transparent;
+}
+
+.vaccination-data-ii .mcv-date {
+  position: absolute;
+  top: 0.3rem;
+  left: 0.82rem;
+  height: 13px;
+  width: 95px;
+  letter-spacing: 0.23rem;
+  background: transparent;
+}
+
+.vaccination-data-ii .vaxcard {
+  position: absolute;
+  top: 1.95rem;
+  left: 5.64rem;
+}
+
+.vaccination-data-ii .logsheet {
+  position: absolute;
+  top: 1.95rem;
+  left: 12.04rem;
+}
+
+.vaccination-data-ii .recall {
+  position: absolute;
+  top: 1.95rem;
+  left: 16.1rem;
+}
+
+.vaccination-data-ii .validate-others {
+  position: absolute;
+  top: 1.95rem;
+  left: 19.82rem;
+}
+
+.vaccination-data-ii .validate-others-fields {
+  position: relative;
+  top: 2.15rem;
+  left: 20.5rem;
+  height: 13px;
+  width: 71px;
+  background: transparent;
+  text-align: center;
+}
+
+.vaccination-data-iii {
+  position: relative;
+  top: -23rem;
   left: 31rem;
   height: 35px;
   width: 250px;
-  background: red;
+  background: transparent;
+}
+
+.vaccination-data-iii .campaign-yes {
+  position: absolute;
+  top: -0.13rem;
+  left: 0.85rem;
+}
+.vaccination-data-iii .campaign-no {
+  position: absolute;
+  top: -0.13rem;
+  left: 4.3rem;
+}
+
+.vaccination-data-iv {
+  position: relative;
+  top: -23rem;
+  left: 4.5rem;
+  height: 90px;
+  width: 640px;
+  background: transparent;
+}
+
+.vaccination-data-iv .busy {
+  position: absolute;
+  top: 0.27rem;
+  left: 0.83rem;
+}
+.vaccination-data-iv .sick {
+  position: absolute;
+  top: 0.27rem;
+  left: 14.57rem;
+}
+
+.vaccination-data-iv .forgot {
+  position: absolute;
+  top: 0.27rem;
+  left: 27.33rem;
+}
+
+.vaccination-data-iv .belief {
+  position: absolute;
+  top: 1.54rem;
+  left: 0.83rem;
+}
+.vaccination-data-iv .vaccine {
+  position: absolute;
+  top: 1.54rem;
+  left: 14.57rem;
+}
+
+.vaccination-data-iv .other {
+  position: absolute;
+  top: 1.54rem;
+  left: 27.33rem;
+}
+
+.vaccination-data-iv .medical {
+  position: absolute;
+  top: 2.75rem;
+  left: 0.83rem;
+}
+.vaccination-data-iv .vaccinator {
+  position: absolute;
+  top: 2.75rem;
+  left: 14.57rem;
+}
+
+.vaccination-data-iv .fear {
+  position: absolute;
+  top: 4rem;
+  left: 0.83rem;
+}
+.vaccination-data-iv .eligible {
+  position: absolute;
+  top: 4rem;
+  left: 14.57rem;
+}
+
+.vaccination-data-iv .other-reason {
+  position: relative;
+  top: 2.92rem;
+  left: 27.2rem;
+  height: 13px;
+  width: 155px;
+  background: transparent;
+  text-align: center;
+}
+
+.vaccination-data-v {
+  position: relative;
+  top: -23.18rem;
+  left: 25.54rem;
+  height: 20px;
+  width: 250px;
+  background: transparent;
+}
+
+.vaccination-data-v .vitamin-yes {
+  position: absolute;
+  top: -0.13rem;
+  left: 0.85rem;
+}
+.vaccination-data-v .vitamin-no {
+  position: absolute;
+  top: -0.13rem;
+  left: 4.285rem;
 }
 
 p {
