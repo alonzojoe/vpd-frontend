@@ -122,7 +122,7 @@
                           <option value="">PLEASE SELECT</option>
                           <option value="Y">YES</option>
                           <option value="N">NO</option>
-                          <option value="N">UNKNOWN</option>
+                          <option value="U">UNKNOWN</option>
                         </select>
                       </div>
                     </div>
@@ -1402,6 +1402,7 @@
                         >
                           <option value="Y">YES</option>
                           <option value="N">NO</option>
+                          <option value="U">UNKNOWN</option>
                         </select>
                       </div>
                     </div>

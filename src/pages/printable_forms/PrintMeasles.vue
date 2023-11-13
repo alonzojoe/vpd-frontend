@@ -201,6 +201,57 @@
         <span class="vitamin-yes">✔</span>
         <span class="vitamin-no">✔</span>
       </div>
+
+      <div class="exposure all-labels">
+        <span class="travel-no">✔</span>
+        <span class="travel-yes">✔</span>
+      </div>
+
+      <div class="exposure-ii all-labels">
+        <p class="travel-place">{{ patient.travel_place }}</p>
+        <p class="travel-date">{{ patient.travel_date }}</p>
+      </div>
+
+      <div class="exposure-iii all-labels">
+        <span class="less-seven">✔</span>
+        <span class="more-seven">✔</span>
+      </div>
+
+      <div class="exposure-iv all-labels">
+        <span class="measles-yes">✔</span>
+        <span class="measles-no">✔</span>
+        <span class="measles-unknown">✔</span>
+
+        <span class="rubella-yes">✔</span>
+        <span class="rubella-no">✔</span>
+        <span class="rubella-unknown">✔</span>
+      </div>
+
+      <div class="exposure-v all-labels">
+        <p class="contact-name">{{ patient.confirmed_name }}</p>
+        <p class="contact-place">{{ patient.confirmed_place }}</p>
+
+        <p class="contact-date">{{ patient.date_contact }}</p>
+      </div>
+
+      <div class="exposure-vi all-labels">
+        <span class="daycare">✔</span>
+        <span class="barangay">✔</span>
+        <span class="home">✔</span>
+        <span class="school">✔</span>
+        <span class="hci">✔</span>
+
+        <span class="dorm">✔</span>
+        <span class="others">✔</span>
+
+        <p class="occur-specify">{{ patient.occur_specify }}</p>
+      </div>
+
+      <div class="exposure-vii all-labels">
+        <span class="comm-yes">✔</span>
+        <span class="comm-no">✔</span>
+        <span class="comm-unknown">✔</span>
+      </div>
     </div>
 
     <div ref="pdfContent2" class="pdf-content2">
@@ -209,7 +260,6 @@
         alt="Background Image"
         class="background-img"
       />
-      {{ patient }}
     </div>
   </div>
 </template>
@@ -1201,6 +1251,242 @@ export default defineComponent({
   position: absolute;
   top: -0.13rem;
   left: 4.285rem;
+}
+
+.exposure {
+  position: relative;
+  top: -21.55rem;
+  left: 24.12rem;
+  height: 20px;
+  width: 250px;
+  background: transparent;
+}
+
+.exposure .travel-no {
+  position: absolute;
+  top: -0.13rem;
+  left: 0.85rem;
+}
+.exposure .travel-yes {
+  position: absolute;
+  top: -0.13rem;
+  left: 2.945rem;
+}
+
+.exposure-ii {
+  position: relative;
+  top: -21.9rem;
+  left: 10.5rem;
+  height: 20px;
+  width: 575px;
+  background: transparent;
+}
+
+.exposure-ii .travel-place {
+  position: relative;
+  top: 0.25rem;
+  left: -0.1rem;
+  height: 13px;
+  width: 181px;
+  background: transparent;
+  text-align: center;
+}
+
+.exposure-ii .travel-date {
+  position: absolute;
+  top: 0.25rem;
+  left: 22.2rem;
+  height: 13px;
+  width: 95px;
+  letter-spacing: 0.23rem;
+  background: transparent;
+}
+
+.exposure-iii {
+  position: relative;
+  top: -21.15rem;
+  left: 4.76rem;
+  height: 20px;
+  width: 250px;
+  background: transparent;
+}
+
+.exposure-iii .less-seven {
+  position: absolute;
+  top: -0.13rem;
+  left: 0.85rem;
+}
+.exposure-iii .more-seven {
+  position: absolute;
+  top: -0.13rem;
+  left: 11.2rem;
+}
+
+.exposure-iv {
+  position: relative;
+  top: -20.9rem;
+  left: 31.5rem;
+  height: 35px;
+  width: 225px;
+  background: transparent;
+}
+
+.exposure-iv .measles-yes {
+  position: absolute;
+  top: -0.25rem;
+  left: 1.35rem;
+}
+.exposure-iv .measles-no {
+  position: absolute;
+  top: -0.25rem;
+  left: 3.15rem;
+}
+
+.exposure-iv .measles-unknown {
+  position: absolute;
+  top: -0.25rem;
+  left: 5rem;
+}
+
+.exposure-iv .rubella-yes {
+  position: absolute;
+  top: 0.8rem;
+  left: 1.35rem;
+}
+.exposure-iv .rubella-no {
+  position: absolute;
+  top: 0.8rem;
+  left: 3.15rem;
+}
+
+.exposure-iv .rubella-unknown {
+  position: absolute;
+  top: 0.8rem;
+  left: 5rem;
+}
+
+.exposure-v {
+  position: relative;
+  top: -21.4rem;
+  left: 10.5rem;
+  height: 20px;
+  width: 575px;
+  background: transparent;
+}
+
+.exposure-v .contact-name {
+  position: relative;
+  top: 0.34rem;
+  left: 2.1rem;
+  height: 13px;
+  width: 115px;
+  background: transparent;
+  text-align: center;
+}
+
+.exposure-v .contact-place {
+  position: relative;
+  top: -0.5rem;
+  left: 16rem;
+  height: 13px;
+  width: 88px;
+  background: transparent;
+  text-align: center;
+}
+
+.exposure-v .contact-date {
+  position: absolute;
+  top: 0.34rem;
+  left: 27rem;
+  height: 13px;
+  width: 95px;
+  letter-spacing: 0.23rem;
+  background: transparent;
+}
+
+.exposure-vi {
+  position: relative;
+  top: -20.19rem;
+  left: 22rem;
+  height: 40px;
+  width: 394px;
+  background: transparent;
+}
+
+.exposure-vi .daycare {
+  position: absolute;
+  top: -0.25rem;
+  left: 1.58rem;
+}
+.exposure-vi .barangay {
+  position: absolute;
+  top: -0.25rem;
+  left: 5.58rem;
+}
+
+.exposure-vi .home {
+  position: absolute;
+  top: -0.25rem;
+  left: 9.44rem;
+}
+
+.exposure-vi .school {
+  position: absolute;
+  top: -0.25rem;
+  left: 12.35rem;
+}
+
+.exposure-vi .hci {
+  position: absolute;
+  top: -0.25rem;
+  left: 15.54rem;
+}
+
+.exposure-vi .dorm {
+  position: absolute;
+  top: 1.01rem;
+  left: 0.1rem;
+}
+.exposure-vi .others {
+  position: absolute;
+  top: 1.01rem;
+  left: 4.15rem;
+}
+
+.exposure-vi .occur-specify {
+  position: relative;
+  top: 1.18rem;
+  left: 9.6rem;
+  height: 13px;
+  width: 238px;
+  background: transparent;
+  text-align: left;
+}
+
+.exposure-vii {
+  position: relative;
+  top: -20.1rem;
+  left: 39.38rem;
+  height: 20px;
+  width: 120px;
+  background: transparent;
+}
+
+.exposure-vii .comm-yes {
+  position: absolute;
+  top: -0.25rem;
+  left: 1.35rem;
+}
+.exposure-vii .comm-no {
+  position: absolute;
+  top: -0.25rem;
+  left: 3.15rem;
+}
+
+.exposure-vii .comm-unknown {
+  position: absolute;
+  top: -0.25rem;
+  left: 5.2rem;
 }
 
 p {

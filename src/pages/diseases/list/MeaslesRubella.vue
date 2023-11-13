@@ -436,6 +436,12 @@ export default defineComponent({
         date_last_mcv: p.date_last_mcv
           ? moment(p.date_last_mcv).format("MM DD YYYY")
           : "",
+        travel_date: p.travel_date
+          ? moment(p.travel_date).format("MM DD YYYY")
+          : "",
+        date_contact: p.date_contact
+          ? moment(p.date_contact).format("MM DD YYYY")
+          : "",
       };
 
       printComponent.value.generatePDF();
@@ -492,6 +498,12 @@ export default defineComponent({
         died_date: p.died_date ? moment(p.died_date).format("MM DD YYYY") : "",
         date_last_mcv: p.date_last_mcv
           ? moment(p.date_last_mcv).format("MM DD YYYY")
+          : "",
+        travel_date: p.travel_date
+          ? moment(p.travel_date).format("MM DD YYYY")
+          : "",
+        date_contact: p.date_contact
+          ? moment(p.date_contact).format("MM DD YYYY")
           : "",
       };
       modalDetails.value.title = `${p.ep_id} - Disease Profile`;
