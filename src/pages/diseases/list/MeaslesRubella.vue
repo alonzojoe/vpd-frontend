@@ -442,6 +442,7 @@ export default defineComponent({
         date_contact: p.date_contact
           ? moment(p.date_contact).format("MM DD YYYY")
           : "",
+        date_died: p.date_died ? moment(p.date_died).format("MM DD YYYY") : "",
       };
 
       printComponent.value.generatePDF();
@@ -505,6 +506,7 @@ export default defineComponent({
         date_contact: p.date_contact
           ? moment(p.date_contact).format("MM DD YYYY")
           : "",
+        date_died: p.date_died ? moment(p.date_died).format("MM DD YYYY") : "",
       };
       modalDetails.value.title = `${p.ep_id} - Disease Profile`;
       modalDetails.value.show = true;

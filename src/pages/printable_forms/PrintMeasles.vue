@@ -260,6 +260,32 @@
         alt="Background Image"
         class="background-img"
       />
+
+      <div class="final-class all-labels">
+        <span class="lab-measles">✔</span>
+        <span class="lab-rubella">✔</span>
+
+        <span class="epi-measles">✔</span>
+        <span class="epi-rubella">✔</span>
+
+        <span class="compatible-measles">✔</span>
+        <span class="discarded-case">✔</span>
+      </div>
+
+      <div class="final-class-ii all-labels">
+        <span class="endemic">✔</span>
+        <span class="imported">✔</span>
+
+        <span class="related">✔</span>
+        <span class="unknown">✔</span>
+      </div>
+
+      <div class="outcome all-labels">
+        <span class="alive">✔</span>
+        <span class="died">✔</span>
+
+        <p class="died-date">{{ patient.date_died }}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -1487,6 +1513,109 @@ export default defineComponent({
   position: absolute;
   top: -0.25rem;
   left: 5.2rem;
+}
+/*Page2*/
+.final-class {
+  position: relative;
+  top: 16rem;
+  left: 3rem;
+  height: 70px;
+  width: 508px;
+  background: transparent;
+}
+
+.final-class .lab-measles {
+  position: absolute;
+  top: -0.05rem;
+  left: 0.4rem;
+}
+.final-class .lab-rubella {
+  position: absolute;
+  top: -0.05rem;
+  left: 16.25rem;
+}
+
+.final-class .epi-measles {
+  position: absolute;
+  top: 0.96rem;
+  left: 0.4rem;
+}
+.final-class .epi-rubella {
+  position: absolute;
+  top: 0.96rem;
+  left: 16.25rem;
+}
+
+.final-class .compatible-measles {
+  position: absolute;
+  top: 2rem;
+  left: 0.4rem;
+}
+.final-class .discarded-case {
+  position: absolute;
+  top: 2rem;
+  left: 16.25rem;
+}
+
+.final-class-ii {
+  position: relative;
+  top: 11.59rem;
+  left: 34.75rem;
+  height: 70px;
+  width: 120px;
+  background: transparent;
+}
+
+.final-class-ii .endemic {
+  position: absolute;
+  top: -0.03rem;
+  left: 0.4rem;
+}
+.final-class-ii .imported {
+  position: absolute;
+  top: 1.01rem;
+  left: 0.4rem;
+}
+
+.final-class-ii .related {
+  position: absolute;
+  top: 2.05rem;
+  left: 0.4rem;
+}
+.final-class-ii .unknown {
+  position: absolute;
+  top: 3.08rem;
+  left: 0.4rem;
+}
+
+.outcome {
+  position: relative;
+  top: 11.59rem;
+  left: 10rem;
+  height: 40px;
+  width: 588px;
+  background: transparent;
+}
+
+.outcome .alive {
+  position: absolute;
+  top: 0.05rem;
+  left: 0.46rem;
+}
+.outcome .died {
+  position: absolute;
+  top: 0.05rem;
+  left: 4.6rem;
+}
+
+.outcome .died-date {
+  position: absolute;
+  top: 0.25rem;
+  left: 25.1rem;
+  height: 13px;
+  width: 95px;
+  letter-spacing: 0.23rem;
+  background: transparent;
 }
 
 p {
