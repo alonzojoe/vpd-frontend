@@ -274,16 +274,16 @@
       </div>
 
       <div class="exposure-vi all-labels">
-        <span class="daycare" v-if="patient.daycare == '1'">✔</span>
+        <span class="daycare" v-if="patient.day_care == '1'">✔</span>
         <span class="barangay" v-if="patient.barangay == '1'">✔</span>
         <span class="home" v-if="patient.home == '1'">✔</span>
         <span class="school" v-if="patient.school == '1'">✔</span>
         <span class="hci" v-if="patient.hci == '1'">✔</span>
 
         <span class="dorm" v-if="patient.dorm == '1'">✔</span>
-        <span class="others" v-if="patient.occur_specify == '1'">✔</span>
+        <span class="others" v-if="patient.other_reason == '1'">✔</span>
 
-        <p class="occur-specify">{{ patient.occur_specify }}</p>
+        <p class="occur-specify">{{ patient.other_reason_specify }}</p>
       </div>
 
       <div class="exposure-vii all-labels">

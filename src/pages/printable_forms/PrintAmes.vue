@@ -69,26 +69,28 @@
         <p class="date-onset">{{ patient.date_onset }}</p>
       </div>
       <div class="sign-symp all-labels">
-        <span class="fev-yes">✔</span>
-        <span class="fev-no">✔</span>
+        <span class="fev-yes" v-if="patient.fever == 'Y'">✔</span>
+        <span class="fev-no" v-else>✔</span>
 
-        <span class="mental-yes">✔</span>
-        <span class="mental-no">✔</span>
+        <span class="mental-yes" v-if="patient.mental_status == 'Y'">✔</span>
+        <span class="mental-no" v-else>✔</span>
 
-        <span class="seiz-yes">✔</span>
-        <span class="seiz-no">✔</span>
+        <span class="seiz-yes" v-if="patient.onset_seizure == 'Y'">✔</span>
+        <span class="seiz-no" v-else>✔</span>
 
-        <span class="stiff-yes">✔</span>
-        <span class="stiff-no">✔</span>
+        <span class="stiff-yes" v-if="patient.neck_stiffness == 'Y'">✔</span>
+        <span class="stiff-no" v-else>✔</span>
 
-        <span class="menin-yes">✔</span>
-        <span class="menin-no">✔</span>
+        <span class="menin-yes" v-if="patient.meningeal_signs == 'Y'">✔</span>
+        <span class="menin-no" v-else>✔</span>
       </div>
       <div class="adm-diag all-labels">
-        <span class="cns-infect">✔</span>
-        <span class="sus-bact">✔</span>
-        <span class="sus-encep">✔</span>
-        <span class="others-chk">✔</span>
+        <span class="cns-infect" v-if="patient.cns && patient.cns != null"
+          >✔</span
+        >
+        <span class="sus-bact" v-if="patient.cns == 'SBM'">✔</span>
+        <span class="sus-encep" v-if="patient.cns == 'SE'">✔</span>
+        <span class="others-chk" v-if="patient.cns == 'O'">✔</span>
         <p class="others-field">{{ patient.cns_others }}</p>
       </div>
       <div class="inv-details all-labels">
@@ -99,30 +101,30 @@
         <p class="inv-report">{{ patient.report_date }}</p>
       </div>
       <div class="cbo-ill all-labels">
-        <span class="cbo-je">✔</span>
-        <span class="cbo-penta">✔</span>
-        <span class="cbo-measles">✔</span>
-        <span class="cbo-mmr">✔</span>
+        <span class="cbo-je" v-if="patient.je == 'Y'">✔</span>
+        <span class="cbo-penta" v-if="patient.penta == 'Y'">✔</span>
+        <span class="cbo-measles" v-if="patient.measles == 'Y'">✔</span>
+        <!-- <span class="cbo-mmr" v-if="patient.cns == 'Y'">✔</span> -->
       </div>
       <div class="ill-date all-labels">
         <p class="je-date">{{ patient.je_datedose }}</p>
         <p class="penta-date">{{ patient.penta_datedose }}</p>
         <p class="measles-date">{{ patient.measles_datedose }}</p>
-        <p class="mmr-date">{{ patient.measles_datedose }}</p>
+        <!-- <p class="mmr-date">{{ patient.measles_datedose }}</p> -->
       </div>
 
       <div class="ill-doses all-labels">
         <p class="je-dose">{{ patient.je_doses }}</p>
         <p class="penta-dose">{{ patient.penta_doses }}</p>
         <p class="measles-dose">{{ patient.measles_doses }}</p>
-        <p class="mmr-dose">{{ patient.measles_doses }}</p>
+        <!-- <p class="mmr-dose">{{ patient.measles_doses }}</p> -->
       </div>
 
       <div class="cbo-ill-pt all-labels">
-        <span class="cbo-meningo">✔</span>
-        <span class="cbo-pneumo">✔</span>
-        <span class="cbo-pcv10">✔</span>
-        <span class="cbo-pcv13">✔</span>
+        <span class="cbo-meningo" v-if="patient.meningo == 'Y'">✔</span>
+        <span class="cbo-pneumo" v-if="patient.pneumo == 'Y'">✔</span>
+        <span class="cbo-pcv10" v-if="patient.pcv10 == 'Y'">✔</span>
+        <span class="cbo-pcv13" v-if="patient.pcv13 == 'Y'">✔</span>
       </div>
 
       <div class="ill-date-pt all-labels">
@@ -140,29 +142,29 @@
       </div>
 
       <div class="expose-occur all-labels">
-        <span class="daycare">✔</span>
-        <span class="barangay">✔</span>
-        <span class="home">✔</span>
-        <span class="school">✔</span>
-        <span class="dorm">✔</span>
-        <span class="hci">✔</span>
-        <span class="workplace">✔</span>
-        <span class="others">✔</span>
+        <span class="daycare" v-if="patient.daycare == 'Y'">✔</span>
+        <span class="barangay" v-if="patient.barangay == 'Y'">✔</span>
+        <span class="home" v-if="patient.home == 'Y'">✔</span>
+        <span class="school" v-if="patient.school == 'Y'">✔</span>
+        <span class="dorm" v-if="patient.dormitory == 'Y'">✔</span>
+        <span class="hci" v-if="patient.healthcare == 'Y'">✔</span>
+        <span class="workplace" v-if="patient.workplace == 'Y'">✔</span>
+        <span class="others" v-if="patient.other == 'Y'">✔</span>
         <p class="occur-field">{{ patient.other_specify }}</p>
       </div>
 
       <div class="expose-travel all-labels">
-        <span class="yes">✔</span>
-        <span class="no">✔</span>
+        <span class="yes" v-if="patient.travel == 'Y'">✔</span>
+        <span class="no" v-else>✔</span>
         <p class="travel-field">{{ patient.travel_place }}</p>
         <p class="date-from">{{ patient.travel_from }}</p>
         <p class="date-to">{{ patient.travel_to }}</p>
       </div>
 
       <div class="blood-csf all-labels">
-        <span class="yes">✔</span>
-        <span class="no">✔</span>
-        <span class="unknown">✔</span>
+        <span class="yes" v-if="patient.where_blood == 'Y'">✔</span>
+        <span class="no" v-else-if="patient.where_blood == 'Y'">✔</span>
+        <span class="unknown" v-else-if="patient.where_blood == 'Y'">✔</span>
       </div>
     </div>
 
