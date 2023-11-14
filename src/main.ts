@@ -39,15 +39,19 @@ import PrimeVue from "primevue/config";
 import ToolTip from 'primevue/tooltip'
 import Toast from 'primevue/toast';
 import ToastService from 'primevue/toastservice';
+import VueApexCharts from "vue3-apexcharts";
+
 
 const loading = ref(false)
 
 const app = createApp(App)
+app.component('apexchart ', VueApexCharts)
 app.component('Loading', Loading)
 app.component('Toast', Toast);
 app.directive('tooltip', ToolTip)
 // app.component('Skeleton', Skeleton)
 app.config.globalProperties.$loading = loading;
+app.use(VueApexCharts);
 app.use(PrimeVue, { ripple: true });
 app.use(ToastService);
 app.use(VueSweetalert2);

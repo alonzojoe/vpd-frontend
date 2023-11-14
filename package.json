@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@syncfusion/ej2-vue-notifications": "^23.1.36",
+    "apexcharts": "^3.44.0",
     "axios": "^1.5.0",
     "bootstrap": "^5.3.1",
     "chart.js": "^3.9.1",
@@ -28,6 +29,7 @@
     "textfit": "^2.4.0",
     "viewerjs": "^1.11.6",
     "vue": "^3.3.4",
+    "vue-apexcharts": "^1.6.2",
     "vue-chart-3": "^3.1.8",
     "vue-cookies": "^1.8.3",
     "vue-html2pdf": "^1.8.0",
@@ -35,6 +37,7 @@
     "vue-router": "^4.2.4",
     "vue-squish-fit-text": "^1.0.1",
     "vue-sweetalert2": "^5.0.5",
+    "vue3-apexcharts": "^1.4.4",
     "vuex": "^4.1.0"
   },
   "devDependencies": {

@@ -213,12 +213,12 @@
                 <div
                   class="d-flex d-block align-items-center justify-content-center mb-9"
                 >
-                  <Chart
-                    type="pie"
-                    :data="chartData"
+                  <apexchart
+                    width="550"
+                    type="bar"
                     :options="chartOptions"
-                    class="w-full md:w-30rem"
-                  />
+                    :series="series"
+                  ></apexchart>
                 </div>
               </div>
               <div class="col-lg-4 col-md-4">
@@ -386,57 +386,39 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const currentYear = moment(Date.now()).format("YYYY");
-    const chartData = ref();
-    const chartOptions = ref();
-
-    const setChartData = () => {
-      const documentStyle = getComputedStyle(document.body);
-
-      return {
-        labels: ["Measles-Rubella", "Rota Virus", "Meningitis-Encephalitis"],
-        datasets: [
-          {
-            data: [
-              dashboard.value.measles_patients,
-              dashboard.value.rota_patients,
-              dashboard.value.meningitis_patients,
-            ],
-            backgroundColor: [
-              documentStyle.getPropertyValue("--red-400"),
-              documentStyle.getPropertyValue("--green-400"),
-              documentStyle.getPropertyValue("--yellow-400"),
-            ],
-            hoverBackgroundColor: [
-              documentStyle.getPropertyValue("--red-400"),
-              documentStyle.getPropertyValue("--green-400"),
-              documentStyle.getPropertyValue("--yellow-400"),
-            ],
-          },
-        ],
-      };
-    };
-
-    const setChartOptions = () => {
-      const documentStyle = getComputedStyle(document.documentElement);
-      const textColor = documentStyle.getPropertyValue("--text-color");
-
-      return {
-        plugins: {
-          legend: {
-            labels: {
-              usePointStyle: true,
-              color: textColor,
-            },
-          },
-        },
-      };
-    };
-
     const dashboard = computed(() => store.getters.getDashboardCounts);
 
     const fetchDashboardItems = async () => {
       await store.dispatch("fetchDashboard");
     };
+
+    const chartOptions = ref({
+      chart: {
+        id: "disease-chart",
+        toolbar: {
+          show: false,
+        },
+        colors: ["#F84F62", "#13DEB9", "#FFAE1F"],
+      },
+      xaxis: {
+        categories: [
+          "Measles-Rubella",
+          "Rota Virus",
+          "Meningitis-Encephalitis",
+        ],
+      },
+    });
+
+    const series = ref([
+      {
+        name: "",
+        data: [
+          dashboard.value.measles_patients,
+          dashboard.value.rota_patients,
+          dashboard.value.meningitis_patients,
+        ],
+      },
+    ]);
 
     onMounted(async () => {
       fetchDashboardItems();
@@ -444,10 +426,10 @@ export default defineComponent({
     });
 
     return {
-      chartData,
-      chartOptions,
       dashboard,
       currentYear,
+      chartOptions,
+      series,
     };
   },
 });
