@@ -1,5 +1,5 @@
 <template>
-  {{ details }}
+  <!-- {{ details }} -->
   <div class="row cst-paginator-parent">
     <button
       class="btn-sm-cst-hidden nav-link nav-icon-hover"

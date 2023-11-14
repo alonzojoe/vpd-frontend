@@ -1,51 +1,58 @@
 <template>
   <div class="loading">
     <div class="lds-roller">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
     </div>
     <div class="loader-text text-center">
       <h3>{{ title }}</h3>
       <h4>{{ subTitle }}</h4>
-      <h4 class="m-0 p-0 cst-loader-text-4" v-if="warning" style="color:#5290D5;">Do not <span style="color:red;font-weight:bold;">CLOSE</span> or <span style="color:#F0B40D;font-weight:bold;">RELOAD</span> the Browser</h4>
+      <h4
+        class="m-0 p-0 cst-loader-text-4"
+        v-if="warning"
+        style="color: #5290d5"
+      >
+        Do not <span style="color: red; font-weight: bold">CLOSE</span> or
+        <span style="color: #f0b40d; font-weight: bold">RELOAD</span> the
+        Browser
+      </h4>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref } from "vue";
 export default defineComponent({
-    name: 'Loading',
-    props: {
-      title: {
-        type: String,
-        default: '',
-      },
-      subTitle: {
-        type: String,
-        default: '',
-      },
-      warning: {
-        type: Boolean,
-        default: false
-      }
+  name: "Loading",
+  props: {
+    title: {
+      type: String,
+      default: "",
     },
-    setup () {
-        const isLoading = ref(false)
+    subTitle: {
+      type: String,
+      default: "",
+    },
+    warning: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  setup() {
+    const isLoading = ref(false);
 
-        return { isLoading }
-    }
-})
+    return { isLoading };
+  },
+});
 </script>
 
 <style scoped>
-
 .loading {
   position: fixed;
   top: 0;
@@ -57,7 +64,7 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  z-index: 9999;
+  z-index: 999999;
 }
 
 .lds-roller {
@@ -77,7 +84,7 @@ export default defineComponent({
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #615DFF;
+  background: #615dff;
   margin: -4px 0 0 -4px;
 }
 .lds-roller div:nth-child(1) {
@@ -137,7 +144,7 @@ export default defineComponent({
   left: 12px;
 }
 
-.loader-text{
+.loader-text {
   margin-top: 50px;
 }
 
@@ -149,5 +156,4 @@ export default defineComponent({
     transform: rotate(360deg);
   }
 }
-
 </style>

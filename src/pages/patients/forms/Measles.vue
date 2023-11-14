@@ -1713,8 +1713,8 @@
     warning="true"
     v-if="savingFlag"
   />
-  <pre>{{ validationStatus }}</pre>
-  <pre>{{ formMease }}</pre>
+  <!-- <pre>{{ validationStatus }}</pre>
+  <pre>{{ formMease }}</pre> -->
 </template>
 
 <script lang="ts">
@@ -1762,7 +1762,7 @@ export default defineComponent({
     const formData = ref({});
     const authUser = computed(() => store.getters.getAuthenticatedUser);
     const fetchPatientInfo = async () => {
-      //   skeletonLoading();
+      skeletonLoading();
       const response = await api.get(`/patients/${patient.value.patientId}`);
       formData.value = response.data.data;
       diseaseDetails.value.ep_id = `0038995-${caseName}-${epDate}-${trimZeroes(
@@ -1942,6 +1942,21 @@ export default defineComponent({
       }
     });
 
+    const skelPatientInfo = { count: 2, perRow: 4, withButtons: false };
+    const skelClinical = {
+      count: 7,
+      perRow: 4,
+      withButtons: false,
+    };
+
+    const isLoading = ref(true);
+    const skeletonLoading = async () => {
+      setTimeout(() => {
+        isLoading.value = false;
+        console.log("isLoading:", isLoading.value);
+      }, 1500);
+    };
+
     onMounted(async () => {
       await fetchPatientInfo();
       resetter;
@@ -1970,6 +1985,11 @@ export default defineComponent({
       saveData,
       saveSubmitted,
       savingFlag,
+
+      // skeleton Loader
+      isLoading,
+      skelPatientInfo,
+      skelClinical,
     };
   },
 });
