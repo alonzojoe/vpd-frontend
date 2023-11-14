@@ -176,13 +176,25 @@
       />
 
       <div class="case-class all-labels">
-        <span class="suspected">✔</span>
-        <span class="lab">✔</span>
-        <span class="je">✔</span>
-        <span class="bacterial">✔</span>
-        <span class="confirmed">✔</span>
-        <span class="aes-other">✔</span>
-        <span class="aes-unknown">✔</span>
+        <span class="suspected" v-if="patient.acase_classification == 'SUS'"
+          >✔</span
+        >
+        <span class="lab" v-if="patient.acase_classification == 'LAB'">✔</span>
+        <span class="je" v-if="patient.acase_classification == 'PROB'">✔</span>
+        <span class="bacterial" v-if="patient.bcase_classification == 'PROB'"
+          >✔</span
+        >
+        <span class="confirmed" v-if="patient.bcase_classification == 'CON'"
+          >✔</span
+        >
+        <span
+          class="aes-other"
+          v-if="patient.acase_classification == 'AESOTHER'"
+          >✔</span
+        >
+        <span class="aes-unknown" v-if="patient.acase_classification == 'U'"
+          >✔</span
+        >
         <p class="aes-field">{{ patient.aes_other }}</p>
         <p class="confirmed-field">{{ patient.confirmed_case }}</p>
       </div>
@@ -192,14 +204,14 @@
       </div>
 
       <div class="outcome all-labels">
-        <span class="alive">✔</span>
+        <span class="alive" v-if="patient.outcome == 'A'">✔</span>
         <p class="alive-date">{{ patient.date_discharge }}</p>
 
-        <span class="died">✔</span>
-        <p class="died-date">{{ patient.date_discharge }}</p>
+        <span class="died" v-if="patient.outcome == 'D'">✔</span>
+        <p class="died-date">{{ patient.date_died }}</p>
 
-        <span class="hama">✔</span>
-        <p class="hama-date">{{ patient.date_discharge }}</p>
+        <span class="hama" v-if="patient.outcome == 'HAMA'">✔</span>
+        <p class="hama-date">{{ patient.date_hama }}</p>
       </div>
 
       <div class="follow-up all-labels">
