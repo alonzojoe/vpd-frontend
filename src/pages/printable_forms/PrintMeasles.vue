@@ -303,27 +303,63 @@
       />
 
       <div class="final-class all-labels">
-        <span class="lab-measles">✔</span>
-        <span class="lab-rubella">✔</span>
+        <span
+          class="lab-measles"
+          v-if="patient.final_classification == 'Laboratory Confirmed Measles'"
+          >✔</span
+        >
+        <span
+          class="lab-rubella"
+          v-if="patient.final_classification == 'Laboratory Confirmed Rubella'"
+          >✔</span
+        >
 
-        <span class="epi-measles">✔</span>
-        <span class="epi-rubella">✔</span>
+        <span
+          class="epi-measles"
+          v-if="patient.final_classification == 'linked Confirmed Measles'"
+          >✔</span
+        >
+        <span
+          class="epi-rubella"
+          v-if="patient.final_classification == 'Epi-linked Confirmed Rubella'"
+          >✔</span
+        >
 
-        <span class="compatible-measles">✔</span>
-        <span class="discarded-case">✔</span>
+        <span
+          class="compatible-measles"
+          v-if="patient.final_classification == 'Clinically Compatible Measles'"
+          >✔</span
+        >
+        <span
+          class="discarded-case"
+          v-if="
+            patient.final_classification == 'Non-Measles/Rubella Discarded Case'
+          "
+          >✔</span
+        >
       </div>
 
       <div class="final-class-ii all-labels">
-        <span class="endemic">✔</span>
-        <span class="imported">✔</span>
+        <span class="endemic" v-if="patient.source_infection == 'Endemic'"
+          >✔</span
+        >
+        <span class="imported" v-if="patient.source_infection == 'Imported'"
+          >✔</span
+        >
 
-        <span class="related">✔</span>
-        <span class="unknown">✔</span>
+        <span
+          class="related"
+          v-if="patient.source_infection == 'Import-related'"
+          >✔</span
+        >
+        <span class="unknown" v-if="patient.source_infection == 'Unknown'"
+          >✔</span
+        >
       </div>
 
       <div class="outcome all-labels">
-        <span class="alive">✔</span>
-        <span class="died">✔</span>
+        <span class="alive" v-if="patient.outcome == 'A'">✔</span>
+        <span class="died" v-else-if="patient.outcome == 'D'">✔</span>
 
         <p class="died-date">{{ patient.date_died }}</p>
       </div>
