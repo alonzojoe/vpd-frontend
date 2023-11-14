@@ -513,6 +513,7 @@ export default defineComponent({
       patientData,
       viewDiseaseProfile,
       modalDetails,
+      isLoading,
     };
   },
 });
