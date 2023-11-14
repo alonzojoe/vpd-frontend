@@ -48,12 +48,14 @@
       </div>
 
       <div class="other-info all-labels">
-        <span class="male">✔</span>
-        <span class="female">✔</span>
-        <span class="preg-yes">✔</span>
-        <span class="preg-no">✔</span>
-        <span class="preg-unknown">✔</span>
-        <p class="preg-days">2</p>
+        <span class="male" v-if="patient.gender == 1">✔</span>
+        <span class="female" v-else>✔</span>
+
+        <span class="preg-yes" v-if="patient.pregnant == 'Y'">✔</span>
+        <span class="preg-no" v-else-if="patient.pregnant == 'N'">✔</span>
+        <span class="preg-unknown" v-else-if="patient.pregnant == 'U'">✔</span>
+
+        <p class="preg-days"></p>
       </div>
 
       <div class="bday all-labels">
@@ -62,9 +64,9 @@
 
       <div class="age all-labels">
         <span class="count">{{ patientAge.age }}</span>
-        <span class="days">✔</span>
-        <span class="months">✔</span>
-        <span class="years">✔</span>
+        <span class="days" v-if="patientAge.type == 'days'">✔</span>
+        <span class="months" v-if="patientAge.type == 'months'">✔</span>
+        <span class="years" v-if="patientAge.type == 'years'">✔</span>
       </div>
 
       <div class="curr_add all-labels">
@@ -76,14 +78,14 @@
       </div>
 
       <div class="was-admit all-labels">
-        <span class="dia-yes">✔</span>
-        <span class="dia-no">✔</span>
+        <span class="dia-yes" v-if="patient.admitted == 'Y'">✔</span>
+        <span class="dia-no" v-else>✔</span>
         <p class="date-admit">{{ patient.date_admitted }}</p>
       </div>
 
       <div class="is-indigenous all-labels">
-        <span class="ind-yes">✔</span>
-        <span class="ind-no">✔</span>
+        <span class="ind-yes" v-if="patient.is_indigenous == 1">✔</span>
+        <span class="ind-no" v-else>✔</span>
       </div>
 
       <div class="tribe all-labels">
@@ -112,53 +114,60 @@
       </div>
 
       <div class="clinical-data all-labels">
-        <span class="fever-yes">✔</span>
-        <span class="fever-no">✔</span>
+        <span class="fever-yes" v-if="patient.fever == 'Y'">✔</span>
+        <span class="fever-no" v-else>✔</span>
         <p class="fever-date">{{ patient.fever_date }}</p>
 
-        <span class="rash-yes">✔</span>
-        <span class="rash-no">✔</span>
+        <span class="rash-yes" v-if="patient.rash == 'Y'">✔</span>
+        <span class="rash-no" v-else>✔</span>
         <p class="rash-date">{{ patient.rash_date }}</p>
 
-        <span class="cough-yes">✔</span>
-        <span class="cough-no">✔</span>
+        <span class="cough-yes" v-if="patient.cough == 'Y'">✔</span>
+        <span class="cough-no" v-else>✔</span>
 
-        <span class="koplik-yes">✔</span>
-        <span class="koplik-no">✔</span>
+        <span class="koplik-yes" v-if="patient.koplik == 'Y'">✔</span>
+        <span class="koplik-no" v-else>✔</span>
 
-        <span class="nose-yes">✔</span>
-        <span class="nose-no">✔</span>
+        <span class="nose-yes" v-if="patient.runny_nose == 'Y'">✔</span>
+        <span class="nose-no" v-else>✔</span>
 
-        <span class="eyes-yes">✔</span>
-        <span class="eyes-no">✔</span>
+        <span class="eyes-yes" v-if="patient.red_eyes == 'Y'">✔</span>
+        <span class="eyes-no" v-else>✔</span>
       </div>
 
       <div class="clinical-data-ii all-labels">
-        <span class="arthris-yes">✔</span>
-        <span class="arthris-no">✔</span>
+        <span class="arthris-yes" v-if="patient.artharalgia == 'Y'">✔</span>
+        <span class="arthris-no" v-else>✔</span>
 
-        <span class="swollen-yes">✔</span>
-        <span class="swollen-no">✔</span>
+        <span class="swollen-yes" v-if="patient.swollen_lymp == 'Y'">✔</span>
+        <span class="swollen-no" v-else>✔</span>
 
-        <span class="cervical">✔</span>
-        <span class="sub">✔</span>
-        <span class="post">✔</span>
-        <span class="other">✔</span>
+        <span class="cervical" v-if="patient.lym_location == 'CER'">✔</span>
+        <span class="sub" v-else-if="patient.lym_location == 'SUB-OCCI'"
+          >✔</span
+        >
+        <span class="post" v-else-if="patient.lym_location == 'POST-AUR'"
+          >✔</span
+        >
+        <span class="other" v-else-if="patient.lym_location == 'OTHERS'"
+          >✔</span
+        >
 
         <p class="other-lymp">{{ patient.lymp_others }}</p>
       </div>
 
       <div class="clinical-data-iii all-labels">
-        <span class="comp-yes">✔</span>
-        <span class="comp-no">✔</span>
+        <span class="comp-yes" v-if="patient.complications == 'Y'">✔</span>
+        <span class="comp-no" v-else>✔</span>
+
         <p class="comp-specify">{{ patient.complications_specify }}</p>
         <p class="other-specify">{{ patient.other_symptoms }}</p>
         <p class="working-diagnosis">{{ patient.working_diagnosis }}</p>
       </div>
 
       <div class="vaccination-data all-labels">
-        <span class="mcv-yes">✔</span>
-        <span class="mcv-no">✔</span>
+        <span class="mcv-yes" v-if="patient.received_mcv == 'Y'">✔</span>
+        <span class="mcv-no" v-else>✔</span>
 
         <p class="mv-dose">{{ patient.mcv_dose }}</p>
         <p class="mr-dose">{{ patient.mr_dose }}</p>
@@ -167,44 +176,58 @@
 
       <div class="vaccination-data-ii all-labels">
         <p class="mcv-date">{{ patient.date_last_mcv }}</p>
-        <span class="vaxcard">✔</span>
-        <span class="logsheet">✔</span>
-        <span class="recall">✔</span>
-        <span class="validate-others">✔</span>
-        <p class="validate-others-fields">by vaccinator</p>
+        <span class="vaxcard" v-if="patient.validated_through == 'VCARD'"
+          >✔</span
+        >
+        <span
+          class="logsheet"
+          v-else-if="patient.validated_through == 'LOGSHEET'"
+          >✔</span
+        >
+        <span class="recall" v-else-if="patient.validated_through == 'RECALL'"
+          >✔</span
+        >
+        <span
+          class="validate-others"
+          v-else-if="patient.validated_through == 'OTHERS'"
+          >✔</span
+        >
+        <!-- <p class="validate-others-fields">by vaccinator</p> -->
       </div>
 
       <div class="vaccination-data-iii all-labels">
-        <span class="campaign-yes">✔</span>
-        <span class="campaign-no">✔</span>
+        <span class="campaign-yes" v-if="patient.received_campaigns == 'Y'"
+          >✔</span
+        >
+        <span class="campaign-no" v-else>✔</span>
       </div>
 
       <div class="vaccination-data-iv all-labels">
-        <span class="busy">✔</span>
-        <span class="sick">✔</span>
-        <span class="forgot">✔</span>
+        <span class="busy" v-if="patient.mom_busy == '1'">✔</span>
+        <span class="sick" v-if="patient.child_sick == '1'">✔</span>
+        <span class="forgot" v-if="patient.forgot_sched == '1'">✔</span>
 
-        <span class="belief">✔</span>
-        <span class="vaccine">✔</span>
-        <span class="other">✔</span>
+        <span class="belief" v-if="patient.against_belief == '1'">✔</span>
+        <span class="vaccine" v-if="patient.no_available == '1'">✔</span>
+        <span class="other" v-if="patient.other_reason == '1'">✔</span>
 
-        <span class="medical">✔</span>
-        <span class="vaccinator">✔</span>
+        <span class="medical" v-if="patient.medical_counter == '1'">✔</span>
+        <span class="vaccinator" v-if="patient.no_vaccinator == '1'">✔</span>
 
-        <span class="fear">✔</span>
-        <span class="eligible">✔</span>
+        <span class="fear" v-if="patient.side_effects == 'Y'">✔</span>
+        <span class="eligible" v-if="patient.not_eligible == 'Y'">✔</span>
 
         <p class="other-reason">{{ patient.other_reason_specify }}</p>
       </div>
 
       <div class="vaccination-data-v all-labels">
-        <span class="vitamin-yes">✔</span>
-        <span class="vitamin-no">✔</span>
+        <span class="vitamin-yes" v-if="patient.vitamin_illness == 'Y'">✔</span>
+        <span class="vitamin-no" v-else>✔</span>
       </div>
 
       <div class="exposure all-labels">
-        <span class="travel-no">✔</span>
-        <span class="travel-yes">✔</span>
+        <span class="travel-no" v-if="patient.travel_history == 'N'">✔</span>
+        <span class="travel-yes" v-else>✔</span>
       </div>
 
       <div class="exposure-ii all-labels">
@@ -213,18 +236,34 @@
       </div>
 
       <div class="exposure-iii all-labels">
-        <span class="less-seven">✔</span>
-        <span class="more-seven">✔</span>
+        <span class="less-seven" v-if="patient.less_seven == 'Y'">✔</span>
+        <span class="more-seven" v-if="patient.more_seven == 'Y'">✔</span>
       </div>
 
       <div class="exposure-iv all-labels">
-        <span class="measles-yes">✔</span>
-        <span class="measles-no">✔</span>
-        <span class="measles-unknown">✔</span>
+        <span class="measles-yes" v-if="patient.confirmed_measles == 'Y'"
+          >✔</span
+        >
+        <span class="measles-no" v-else-if="patient.confirmed_measles == 'N'"
+          >✔</span
+        >
+        <span
+          class="measles-unknown"
+          v-else-if="patient.confirmed_measles == 'U'"
+          >✔</span
+        >
 
-        <span class="rubella-yes">✔</span>
-        <span class="rubella-no">✔</span>
-        <span class="rubella-unknown">✔</span>
+        <span class="rubella-yes" v-if="patient.confirmed_rubella == 'Y'"
+          >✔</span
+        >
+        <span class="rubella-no" v-else-if="patient.confirmed_rubella == 'N'"
+          >✔</span
+        >
+        <span
+          class="rubella-unknown"
+          v-else-if="patient.confirmed_rubella == 'U'"
+          >✔</span
+        >
       </div>
 
       <div class="exposure-v all-labels">
@@ -235,22 +274,24 @@
       </div>
 
       <div class="exposure-vi all-labels">
-        <span class="daycare">✔</span>
-        <span class="barangay">✔</span>
-        <span class="home">✔</span>
-        <span class="school">✔</span>
-        <span class="hci">✔</span>
+        <span class="daycare" v-if="patient.daycare == '1'">✔</span>
+        <span class="barangay" v-if="patient.barangay == '1'">✔</span>
+        <span class="home" v-if="patient.home == '1'">✔</span>
+        <span class="school" v-if="patient.school == '1'">✔</span>
+        <span class="hci" v-if="patient.hci == '1'">✔</span>
 
-        <span class="dorm">✔</span>
-        <span class="others">✔</span>
+        <span class="dorm" v-if="patient.dorm == '1'">✔</span>
+        <span class="others" v-if="patient.occur_specify == '1'">✔</span>
 
         <p class="occur-specify">{{ patient.occur_specify }}</p>
       </div>
 
       <div class="exposure-vii all-labels">
-        <span class="comm-yes">✔</span>
-        <span class="comm-no">✔</span>
-        <span class="comm-unknown">✔</span>
+        <span class="comm-yes" v-if="patient.known_case == 'Y'">✔</span>
+        <span class="comm-no" v-else-if="patient.known_case == 'N'">✔</span>
+        <span class="comm-unknown" v-else-if="patient.known_case == 'U'"
+          >✔</span
+        >
       </div>
     </div>
 

@@ -43,10 +43,10 @@
           <p>{{ patient.birthdate }}</p>
         </div>
         <div class="age all-labels">
-          <span class="count">{{ patient.age_year }}</span>
-          <span class="days">✔</span>
-          <span class="months">✔</span>
-          <span class="years">✔</span>
+          <span class="count">{{ patientAge.age }}</span>
+          <span class="days" v-if="patientAge.type == 'days'">✔</span>
+          <span class="months" v-if="patientAge.type == 'months'">✔</span>
+          <span class="years" v-if="patientAge.type == 'years'">✔</span>
         </div>
         <div class="curr_add all-labels" style="font-size: 12px !important">
           <span>{{ patient.curr_address }}</span>
@@ -205,7 +205,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, nextTick, watch, watchEffect } from "vue";
+import {
+  defineComponent,
+  ref,
+  nextTick,
+  watch,
+  watchEffect,
+  computed,
+} from "vue";
 import { useRouter } from "vue-router";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
@@ -337,12 +344,33 @@ export default defineComponent({
       }, 200);
     };
 
+    const patientAge = computed(() => {
+      const { age_year, age_month, age_day } = props.patient;
+      let age = 0;
+      let type = "";
+      if (age_year > 0) {
+        age = age_year;
+        type = "years";
+      } else if (age_month > 0) {
+        age = age_month;
+        type = "months";
+      } else {
+        age = age_day;
+        type = "days";
+      }
+
+      return {
+        age,
+        type,
+      };
+    });
     // context.expose({ generatePDF })
 
     return {
       generatePDF,
       pdfContent,
       patient,
+      patientAge,
     };
   },
 });
