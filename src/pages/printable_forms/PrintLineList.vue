@@ -1798,6 +1798,9 @@ export default defineComponent({
 
     const generatePDF = () => {
       const doc = new jsPDF();
+      doc.setProperties({
+        title: `Line List November 15, 2023`,
+      });
 
       const tableColumn = [
         "no",
@@ -1817,22 +1820,33 @@ export default defineComponent({
 
       // Function to add page count to the footer
       const addPageCount = () => {
-        const pageCount = doc.internal.getNumberOfPages();
-        doc.setFontSize(12);
+        const pageCount = doc.internal.pages.length; // Use internal.pages.length to get the correct page count
+        doc.setFontSize(7);
         doc.text(
-          `Page ${pageCount} of ${pageCount}`,
-          doc.internal.pageSize.width - 10,
-          doc.internal.pageSize.height - 10,
-          { align: "right" }
+          `Page ${pageCount}`,
+          doc.internal.pageSize.width - 15,
+          doc.internal.pageSize.height - 15
+          //   { align: "right" }`Page ${pageCount} of ${totalPages}`,
+          //   doc.internal.pageSize.width - 10,
+          //   doc.internal.pageSize.height - 10,
+          //   { align: "right" }
         );
       };
+
+      let totalPages = 0; // Variable to store the total number of pages
 
       // Set up a page event to add the page count to the footer on each page
       doc.autoTable({
         head: [tableColumn],
         body: tableRows,
+        theme: "grid",
         didDrawPage: () => addPageCount(),
+        styles: { fontSize: 8 },
+        headStyles: { fillColor: "#5D87FF" }, // Change header color
       });
+
+      // Increment total pages for the initial page
+      totalPages++;
 
       // Add logos and other content to the header
       const logoWidth = 30;
@@ -1858,7 +1872,11 @@ export default defineComponent({
       //   );
 
       // Save the PDF with a specific name
-      doc.save("table.pdf");
+      //   doc.save("table.pdf");
+      const pdfBlob = doc.output("blob");
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+      console.log(pdfUrl);
+      window.open(`/pdf-viewer?pdfUrl=${encodeURIComponent(pdfUrl)}`, "_blank");
     };
 
     onMounted(async () => {
