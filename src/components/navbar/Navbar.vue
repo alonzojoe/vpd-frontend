@@ -190,9 +190,19 @@
                   data-simplebar
                   v-if="!isSkeleton"
                 >
-                  <div class="py-3 px-7 pb-0">
+                  <div
+                    class="d-flex justify-content-between align-items-center py-3 px-7 pb-0"
+                  >
                     <h5 class="mb-0 fs-5 fw-semibold">User Profile</h5>
+                    <button
+                      type="button"
+                      class="btn mb-1 waves-effect waves-light btn-outline-dark btn-sm"
+                    >
+                      <i class="ti ti-settings"></i>
+                      Settings
+                    </button>
                   </div>
+
                   <div
                     class="d-flex align-items-center py-9 mx-7 border-bottom"
                   >

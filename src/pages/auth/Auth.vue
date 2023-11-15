@@ -113,6 +113,7 @@
                     @click.prevent="login()"
                     type="submit"
                     class="btn btn-primary w-100 py-8 mb-4 rounded-2"
+                    :disabled="isLoading"
                   >
                     <div
                       v-if="isLoading"

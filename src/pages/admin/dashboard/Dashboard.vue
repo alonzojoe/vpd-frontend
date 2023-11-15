@@ -196,8 +196,10 @@
               class="d-sm-flex d-block align-items-center justify-content-between mb-9"
             >
               <div class="mb-3 mb-sm-0">
-                <h5 class="card-title fw-semibold">Total Disease Summary</h5>
-                <p class="card-subtitle mb-0">Graph Representation</p>
+                <h2 class="card-title fw-semibold fs-6">
+                  Total Disease Summary
+                </h2>
+                <p class="card-subtitle mb-0 fs-4">Graph Representation</p>
               </div>
               <div>
                 <!-- <select class="form-select form-control form-control-sm">
@@ -235,8 +237,8 @@
                   <div class="d-flex align-items-baseline mb-4">
                     <span class="round-8 bg-danger rounded-circle me-6"></span>
                     <div>
-                      <p class="fs-3 mb-1">Measles-Rubella</p>
-                      <h6 class="fs-5 fw-semibold mb-0">
+                      <p class="fs-7 mb-1">Measles-Rubella</p>
+                      <h6 class="fs-6 fw-semibold mb-0">
                         {{ dashboard.measles_patients }}
                       </h6>
                     </div>
@@ -244,8 +246,8 @@
                   <div class="d-flex align-items-baseline mb-4">
                     <span class="round-8 bg-success rounded-circle me-6"></span>
                     <div>
-                      <p class="fs-3 mb-1">Rota Virus</p>
-                      <h6 class="fs-5 fw-semibold mb-0">
+                      <p class="fs-7 mb-1">Rota Virus</p>
+                      <h6 class="fs-6 fw-semibold mb-0">
                         {{ dashboard.rota_patients }}
                       </h6>
                     </div>
@@ -253,16 +255,16 @@
                   <div class="d-flex align-items-baseline mb-4 pb-1">
                     <span class="round-8 bg-warning rounded-circle me-6"></span>
                     <div>
-                      <p class="fs-3 mb-1">Meningitis-Encephalitis</p>
-                      <h6 class="fs-5 fw-semibold mb-0">
+                      <p class="fs-7 mb-1">Meningitis-Encephalitis</p>
+                      <h6 class="fs-6 fw-semibold mb-0">
                         {{ dashboard.meningitis_patients }}
                       </h6>
                     </div>
                   </div>
                   <div>
-                    <button class="btn btn-primary w-100">
+                    <!-- <button class="btn btn-primary w-100">
                       View Full Report
-                    </button>
+                    </button> -->
                   </div>
                 </div>
               </div>

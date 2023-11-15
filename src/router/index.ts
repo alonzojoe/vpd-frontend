@@ -11,15 +11,15 @@ const routes = [
     {
         path: '/',
         name: 'auth',
-        component: () => import('../pages/auth/Auth.vue'), 
-        meta: {requiresGuest:true}
+        component: () => import('../pages/auth/Auth.vue'),
+        meta: { requiresGuest: true }
     },
 
     {
         path: '/main',
         name: 'main',
         component: () => import('../layouts/AppLayout.vue'),
-        meta: {requiresAuth:true},
+        meta: { requiresAuth: true },
         children: [
             {
                 path: '',
@@ -87,7 +87,7 @@ const routes = [
                 ]
             },
 
-            
+
             {
                 path: 'registry',
                 // name: 'registry',
@@ -97,7 +97,7 @@ const routes = [
                         path: '',
                         name: 'patient-registry',
                         component: () => import('../pages/admin/registry/Registry.vue'),
-                        
+
                     },
                     {
                         path: 'form/:type',
@@ -117,16 +117,22 @@ const routes = [
     },
 
     {
+        path: '/line-list',
+        name: 'line-list',
+        component: () => import('../pages/printable_forms/PrintLineList.vue')
+    },
+
+    {
         path: '/unauthorized',
         name: 'unauthorized',
-        component: () => import ('../pages/404-pages/Unauthorized.vue')
+        component: () => import('../pages/404-pages/Unauthorized.vue')
     },
-    
+
 
     {
         path: '/:pathMatch(.*)*',
         name: 'not-found',
-        component: () => import ('../pages/404-pages/NotFound.vue')
+        component: () => import('../pages/404-pages/NotFound.vue')
     }
 ]
 
@@ -147,14 +153,14 @@ router.beforeEach((to, from) => {
             let title = null
             if (to.params.type == 'rota') {
                 title = `Rota Virus${patients}`
-            }else if(to.params.type == 'meningitis'){
+            } else if (to.params.type == 'meningitis') {
                 title = `Meningitis-Encephalitis${patients}`
-            }else if(to.params.type == 'measles'){
+            } else if (to.params.type == 'measles') {
                 title = `Measles-Rubella${patients}`
-            }else{
+            } else {
                 title = '404'
             }
-     
+
             to.meta.title = `${title}`;
 
         } else {
@@ -173,8 +179,8 @@ router.beforeEach((to, from) => {
         Cookies.remove('auth_token');
         return { name: 'auth' };
     } else if (to.meta.requireRole) {
- 
-        
+
+
         if (authenticated) {
 
 
@@ -182,25 +188,25 @@ router.beforeEach((to, from) => {
                 const authUser = decryptData(localStorage.getItem('userData'))
                 const currentRole = authUser.role
                 const requiredRoles = to.meta.requireRole;
-              
-                const userRole = currentRole; 
+
+                const userRole = currentRole;
 
                 if (requiredRoles.includes(userRole)) {
-           
+
                     return;
-                  } else {
-                    
+                } else {
+
                     return { name: 'unauthorized' }; // Redirect to an unauthorized page
-                  }
+                }
             } catch (error) {
                 return { name: 'auth' }
             }
 
-    
+
 
         } else {
-      
-          return { name: 'auth' }; // Redirect to the login page
+
+            return { name: 'auth' }; // Redirect to the login page
         }
     } else {
 
@@ -208,8 +214,8 @@ router.beforeEach((to, from) => {
 
     }
 
-    
- 
+
+
     // if (to.meta.requiresGuest && authenticated) {
     //     //next({name: 'main'})
     //     console.log('authuser from router', authUser)
@@ -230,7 +236,7 @@ router.afterEach((to, from) => {
     // console.log('authuser from router', currentRole)
     setTimeout(() => {
         stopLoading()
-    }, 500); 
+    }, 500);
 
 });
 
