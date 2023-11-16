@@ -2,7 +2,14 @@
   <div>
     <h2>TEST LINELIST JSPDF</h2>
     <button @click="generatePDF">Generate PDF</button>
-    <pre>{{ tableData }}</pre>
+    <!-- <pre>{{ tableData }}</pre> -->
+
+    <h5>CSV to JSON</h5>
+    <input type="file" @change="handleFileUpload" />
+    <button @click="convertCsvToJson">Convert to JSON</button>
+    <pre>{{ jsonArray }}</pre>
+    <table></table>
+    jt
   </div>
 </template>
 
@@ -10,6 +17,7 @@
 import { defineComponent, ref, onMounted } from "vue";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import csvtojson from "csvtojson";
 
 export default defineComponent({
   setup() {
@@ -1796,7 +1804,7 @@ export default defineComponent({
       },
     ]);
 
-    const generatePDF = () => {
+    const generatePDF2 = () => {
       const doc = new jsPDF();
       doc.setProperties({
         title: `Line List November 15, 2023`,
@@ -1820,16 +1828,12 @@ export default defineComponent({
 
       // Function to add page count to the footer
       const addPageCount = () => {
-        const pageCount = doc.internal.pages.length; // Use internal.pages.length to get the correct page count
+        const pageCount = doc.internal.getNumberOfPages(); // Use getNumberOfPages to get the correct page count
         doc.setFontSize(7);
         doc.text(
           `Page ${pageCount}`,
-          doc.internal.pageSize.width - 15,
-          doc.internal.pageSize.height - 15
-          //   { align: "right" }`Page ${pageCount} of ${totalPages}`,
-          //   doc.internal.pageSize.width - 10,
-          //   doc.internal.pageSize.height - 10,
-          //   { align: "right" }
+          doc.internal.pageSize.width - 10,
+          doc.internal.pageSize.height - 10
         );
       };
 
@@ -1840,7 +1844,34 @@ export default defineComponent({
         head: [tableColumn],
         body: tableRows,
         theme: "grid",
-        didDrawPage: () => addPageCount(),
+        didDrawPage: () => {
+          addPageCount();
+
+          // Left Logo
+          doc.addImage("./image/doh.png", "PNG", 10, 10, logoWidth, logoHeight);
+
+          // Right Logo
+          const rightLogoX = doc.internal.pageSize.width - logoWidth - 10;
+          doc.addImage(
+            "./image/doh.png",
+            "PNG",
+            rightLogoX,
+            10,
+            logoWidth,
+            logoHeight
+          );
+
+          // Title
+          doc.setFontSize(16);
+          doc.setTextColor("#5D87FF");
+          doc.setFontStyle("bold");
+          doc.text(
+            "Your Custom Header Text",
+            doc.internal.pageSize.width / 2,
+            20,
+            { align: "center" }
+          );
+        },
         styles: { fontSize: 8 },
         headStyles: { fillColor: "#5D87FF" }, // Change header color
       });
@@ -1878,6 +1909,111 @@ export default defineComponent({
       console.log(pdfUrl);
       window.open(`/pdf-viewer?pdfUrl=${encodeURIComponent(pdfUrl)}`, "_blank");
     };
+    const generatePDF = () => {
+      const doc = new jsPDF();
+      doc.setProperties({
+        title: `Line List November 15, 2023`,
+      });
+
+      const tableColumn = [
+        "no",
+        "accessionNo",
+        "name",
+        "biologicalMaterial",
+        "storedBy",
+        "remarks",
+      ];
+      let tableRows = [];
+
+      // Add table rows
+      tableData.value.forEach((dataRow) => {
+        const rowData = Object.values(dataRow);
+        tableRows.push(rowData);
+      });
+
+      // Function to add page count to the footer
+      const addPageCount = () => {
+        const pageCount = doc.internal.getNumberOfPages();
+        doc.setFontSize(7);
+        doc.text(
+          `Page ${pageCount}`,
+          doc.internal.pageSize.width - 10,
+          doc.internal.pageSize.height - 10
+        );
+      };
+
+      let totalPages = 0;
+      let startY = 40; // Initial startY value
+
+      // Logo dimensions
+      const logoWidth = 20;
+      const logoHeight = 20;
+
+      // Set up a page event to add the page count to the footer on each page
+      doc.autoTable({
+        head: [tableColumn],
+        body: tableRows,
+        theme: "grid",
+        startY: startY,
+        didDrawPage: () => {
+          addPageCount();
+
+          // Left Logo
+          doc.addImage(
+            "src/pages/printable_forms/image/doh.png",
+            "PNG",
+            10,
+            10,
+            logoWidth,
+            logoHeight
+          );
+
+          // Right Logo
+          const rightLogoX = doc.internal.pageSize.width - logoWidth - 10;
+          doc.addImage(
+            "src/pages/printable_forms/image/jbl.png",
+            "PNG",
+            rightLogoX,
+            10,
+            logoWidth,
+            logoHeight
+          );
+
+          // Title
+          doc.setFontSize(12);
+          doc.setTextColor("#00000");
+          doc.setFont("bold");
+          doc.text(
+            "JOSE B. LINGAD MEMORIAL GENERAL HOSPITAL",
+            doc.internal.pageSize.width / 2,
+            20,
+            { align: "center" }
+          );
+
+          // Adjust startY for the next page
+          if (totalPages > 0) {
+            startY = 10; // Adjust this value based on your desired margin between pages
+          }
+        },
+        styles: { fontSize: 8 },
+        headStyles: { fillColor: "#5D87FF" },
+        didParseCell: (data) => {
+          // Increase totalPages on each new page
+          if (data.row.index === 0) {
+            totalPages++;
+          }
+        },
+      });
+
+      // Increment total pages for the initial page
+      totalPages++;
+
+      // Save the PDF with a specific name
+      const pdfBlob = doc.output("blob");
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+      console.log(pdfUrl);
+      window.open(`/pdf-viewer?pdfUrl=${encodeURIComponent(pdfUrl)}`, "_blank");
+    };
 
     onMounted(async () => {
       //   try {
@@ -1892,9 +2028,42 @@ export default defineComponent({
       //   }
     });
 
+    const csvData = ref(null);
+    const jsonArray = ref([]);
+
+    const handleFileUpload = (event) => {
+      const file = event.target.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          csvData.value = e.target.result;
+        };
+        reader.readAsText(file);
+      }
+    };
+
+    const convertCsvToJson = async () => {
+      if (csvData.value) {
+        try {
+          const result = await csvtojson().fromString(csvData.value);
+          jsonArray.value = result;
+        } catch (error) {
+          console.error("Error converting CSV to JSON:", error);
+        }
+      } else {
+        console.warn("No CSV data to convert.");
+      }
+    };
+
     return {
       generatePDF,
       tableData,
+
+      csvData,
+      jsonArray,
+      handleFileUpload,
+      convertCsvToJson,
     };
   },
 });
