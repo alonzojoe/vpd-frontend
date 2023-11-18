@@ -102,13 +102,35 @@
         </template>
       </search-card>
       <!-- <form-skeleton :data="skeletonData" /> -->
-
+      <div class="d-flex align-items-center justify-content-start my-2">
+        <button
+          class="btn btn-primary btn-sm"
+          @click="toggleList = true"
+          v-if="!toggleList"
+        >
+          Create Line List
+        </button>
+        <div class="d-flex gap-2" v-else>
+          <button class="btn btn-success btn-sm" @click="">
+            Save Line List
+          </button>
+          <button class="btn btn-danger btn-sm" @click="cartResetter()">
+            Cancel
+          </button>
+        </div>
+      </div>
       <div>
         <div class="table-responsive p-0 m-0 border border-primary">
           <table-skeleton v-if="isSkeleton" />
           <table class="table table-bordered table-hover" v-else>
             <thead>
               <tr>
+                <th
+                  class="text-center bg-primary text-white p-1 m-0"
+                  v-if="toggleList"
+                >
+                  Select
+                </th>
                 <th class="text-center bg-primary text-white p-1 m-0">Ep ID</th>
                 <th class="text-center bg-primary text-white p-1 m-0">Print</th>
                 <th class="text-center bg-primary text-white p-1 m-0">
@@ -146,8 +168,47 @@
                 </th>
               </tr>
             </thead>
+
             <tbody>
               <tr v-for="p in patients" :key="p.rotavirus_id">
+                <td
+                  class="text-center align-middle fw-bold p-1 m-0"
+                  v-if="toggleList"
+                >
+                  <a
+                    href="javascript:void(0);"
+                    @click="removeToCart(p)"
+                    v-if="
+                      cart.some(
+                        (patient) =>
+                          patient.disease_history_id === p.disease_history_id
+                      )
+                    "
+                  >
+                    <i
+                      class="fa fa-minus-circle scale-icon text-warning"
+                      aria-hidden="true"
+                      style="transition: all 300ms ease"
+                      v-tooltip.right="{
+                        value: `<h6 class='text-white'>Select Patient</h6>`,
+                        escape: true,
+                        class: 'bg-dark rounded p-1',
+                      }"
+                    ></i>
+                  </a>
+                  <a href="javascript:void(0);" @click="addToCart(p)" v-else>
+                    <i
+                      class="fa fa-plus-circle scale-icon text-success"
+                      aria-hidden="true"
+                      style="transition: all 300ms ease"
+                      v-tooltip.right="{
+                        value: `<h6 class='text-white'>Select Patient</h6>`,
+                        escape: true,
+                        class: 'bg-dark rounded p-1',
+                      }"
+                    ></i>
+                  </a>
+                </td>
                 <td class="text-center align-middle fw-bold p-1 m-0">
                   {{ p.ep_id }}
                 </td>
@@ -225,6 +286,7 @@
               </tr>
             </tbody>
           </table>
+          {{ cart }}
         </div>
         <pagination-skeleton class="mt-4" v-if="isSkeleton" />
         <pagination
@@ -512,7 +574,30 @@ export default defineComponent({
       modalDetails.value.show = true;
     };
 
+    const cart = ref([]);
+    const addToCart = (patient) => {
+      cart.value.push(patient);
+    };
+
+    const removeToCart = (patient) => {
+      const index = cart.value.findIndex(
+        (c) => c.disease_history_id === patient.disease_history_id
+      );
+
+      if (index !== -1) {
+        cart.value.splice(index, 1);
+      }
+    };
+
+    const toggleList = ref(false);
+
+    const cartResetter = () => {
+      cart.value = [];
+      toggleList.value = false;
+    };
+
     onMounted(async () => {
+      cartResetter();
       setTimeout(async () => {
         await fetchPatients(1, formData.value);
       }, 500);
@@ -541,6 +626,13 @@ export default defineComponent({
       viewDiseaseProfile,
       modalDetails,
       isLoading,
+
+      //cart
+      cart,
+      addToCart,
+      removeToCart,
+      toggleList,
+      cartResetter,
     };
   },
 });

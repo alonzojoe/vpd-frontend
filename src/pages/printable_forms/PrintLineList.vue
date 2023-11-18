@@ -9,7 +9,7 @@
     <button @click="convertCsvToJson">Convert to JSON</button>
     <pre>{{ jsonArray }}</pre>
     <table></table>
-    jt
+    <h5></h5>
   </div>
 </template>
 
@@ -1950,6 +1950,60 @@ export default defineComponent({
       const logoHeight = 20;
 
       // Set up a page event to add the page count to the footer on each page
+      // doc.autoTable({
+      //   head: [tableColumn],
+      //   body: tableRows,
+      //   theme: "grid",
+      //   startY: startY,
+      //   didDrawPage: () => {
+      //     addPageCount();
+
+      //     // Left Logo
+      //     doc.addImage(
+      //       "src/pages/printable_forms/image/doh.png",
+      //       "PNG",
+      //       10,
+      //       10,
+      //       logoWidth,
+      //       logoHeight
+      //     );
+
+      //     // Right Logo
+      //     const rightLogoX = doc.internal.pageSize.width - logoWidth - 10;
+      //     doc.addImage(
+      //       "src/pages/printable_forms/image/jbl.png",
+      //       "PNG",
+      //       rightLogoX,
+      //       10,
+      //       logoWidth,
+      //       logoHeight
+      //     );
+
+      //     // Title
+      //     doc.setFontSize(12);
+      //     doc.setTextColor("#00000");
+      //     doc.setFont("bold");
+      //     doc.text(
+      //       "JOSE B. LINGAD MEMORIAL GENERAL HOSPITAL \n Dolores, City of San Fernando Pampanga \n Linelist Report \n From November 16, 2023 to November 17, 2023",
+      //       doc.internal.pageSize.width / 2,
+      //       20,
+      //       { align: "center" }
+      //     );
+
+      //     // Adjust startY for the next page
+      //     if (totalPages > 0) {
+      //       startY = 10; // Adjust this value based on your desired margin between pages
+      //     }
+      //   },
+      //   styles: { fontSize: 8 },
+      //   headStyles: { fillColor: "#5D87FF" },
+      //   didParseCell: (data) => {
+      //     // Increase totalPages on each new page
+      //     if (data.row.index === 0) {
+      //       totalPages++;
+      //     }
+      //   },
+      // });
       doc.autoTable({
         head: [tableColumn],
         body: tableRows,
@@ -1980,15 +2034,22 @@ export default defineComponent({
           );
 
           // Title
+          const titleText =
+            "JOSE B. LINGAD MEMORIAL GENERAL HOSPITAL \n Dolores, City of San Fernando Pampanga \n Linelist Report \n From November 16, 2023 to November 17, 2023";
+
           doc.setFontSize(12);
           doc.setTextColor("#00000");
           doc.setFont("bold");
-          doc.text(
-            "JOSE B. LINGAD MEMORIAL GENERAL HOSPITAL",
-            doc.internal.pageSize.width / 2,
-            20,
-            { align: "center" }
-          );
+
+          // Calculate the height of the multi-line text
+          const titleTextHeight = doc.getTextDimensions(titleText).h;
+
+          // Calculate the y-coordinate for centering the text vertically
+          const centerY = 10 + Math.max(logoHeight, titleTextHeight) / 2;
+
+          doc.text(titleText, doc.internal.pageSize.width / 2, centerY, {
+            align: "center",
+          });
 
           // Adjust startY for the next page
           if (totalPages > 0) {
@@ -2004,7 +2065,6 @@ export default defineComponent({
           }
         },
       });
-
       // Increment total pages for the initial page
       totalPages++;
 
