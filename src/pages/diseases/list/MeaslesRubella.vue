@@ -110,9 +110,15 @@
         >
           Create Line List
         </button>
-        <div class="d-flex gap-2" v-else>
-          <button class="btn btn-success btn-sm" @click="">
+        <div class="d-flex gap-3" v-else>
+          <button class="btn btn-success btn-sm position-relative" @click="">
             Save Line List
+            <span
+              v-if="cart.length"
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+            >
+              {{ cart.length }}
+            </span>
           </button>
           <button class="btn btn-danger btn-sm" @click="cartResetter()">
             Cancel
@@ -190,7 +196,7 @@
                       aria-hidden="true"
                       style="transition: all 300ms ease"
                       v-tooltip.right="{
-                        value: `<h6 class='text-white'>Select Patient</h6>`,
+                        value: `<h6 class='text-white'>Remove Patient</h6>`,
                         escape: true,
                         class: 'bg-dark rounded p-1',
                       }"
