@@ -376,7 +376,7 @@
                           class="form-select form-control form-control-sm"
                           required
                         >
-                          <option value="">Please Region</option>
+                          <option value="">Please Select Region</option>
                           <option
                             v-for="r in regions"
                             :key="r.RegionID"
@@ -404,7 +404,7 @@
                           class="form-select form-control form-control-sm"
                           required
                         >
-                          <option value="">Please Province</option>
+                          <option value="">Please Select Province</option>
                           <option
                             v-for="p in provinces"
                             :key="p.ProvinceID"
@@ -433,7 +433,7 @@
                           class="form-select form-control form-control-sm"
                           required
                         >
-                          <option value="">Please Municipality</option>
+                          <option value="">Please Select Municipality</option>
                           <option
                             v-for="m in municipalities"
                             :key="m.MunicipalityID"
@@ -462,7 +462,7 @@
                           class="form-select form-control form-control-sm"
                           required
                         >
-                          <option value="">Please Barangay</option>
+                          <option value="">Please Select Barangay</option>
                           <option
                             v-for="b in barangays"
                             :key="b.Id"

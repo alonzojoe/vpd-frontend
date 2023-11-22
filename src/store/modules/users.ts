@@ -92,7 +92,7 @@ const actions = {
         }
     },
 
-    async saveUser({ state }, { id, name, lname, mname, email, password, mobile, img, institution, role_id, signature, address_id }) {
+    async saveUser({ state }, { id, name, lname, mname, email, password, mobile, img, institution, role_id, signature, address_idd }) {
         const url = id == 0 ? `/users/create` : `/users/${id}`
 
         if (id == 0) {
@@ -105,7 +105,7 @@ const actions = {
                 mobile: mobile,
                 img: img,
                 institution: institution,
-                address_id: address_id,
+                address_id: address_idd,
                 role_id: role_id,
                 updated_by: state.data.authenticatedUser.id,
                 signature: signature,
@@ -120,7 +120,7 @@ const actions = {
                 mobile: mobile,
                 img: img,
                 institution: institution,
-                address_id: address_id,
+                address_id: address_idd,
                 role_id: role_id,
                 updated_by: state.data.authenticatedUser.id,
                 signature: signature,

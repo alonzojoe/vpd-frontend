@@ -357,14 +357,13 @@
                       Account Credentials
                     </h5>
                     <div class="mb-2">
-                      <label
-                        for="exampleInputPassword1"
+                      <lab
                         :class="{
                           'text-validation':
                             (flagvl && !formData.email) || flagemail,
                         }"
                         class="form-label fw-semibold"
-                        >Email</label
+                        >Email</lab
                       >
                       <input
                         type="email"
@@ -377,13 +376,12 @@
                       />
                     </div>
                     <div class="mb-2">
-                      <label
-                        for="exampleInputPassword1"
+                      <lab
                         :class="{
                           'text-validation': flagvl && !formData.role_id,
                         }"
                         class="form-label fw-semibold"
-                        >Role</label
+                        >Role</lab
                       >
                       <select
                         v-model="formData.role_id"
@@ -399,14 +397,13 @@
                       </select>
                     </div>
                     <div class="mb-2">
-                      <label
-                        for="exampleInputPassword1"
+                      <lab
                         :class="{
                           'text-validation':
                             (flagvl && !formData.password) || flagpass,
                         }"
                         class="form-label fw-semibold"
-                        >Password</label
+                        >Password</lab
                       >
                       <input
                         type="password"
@@ -419,14 +416,13 @@
                       />
                     </div>
                     <div class="">
-                      <label
-                        for="exampleInputPassword1"
+                      <lab
                         :class="{
                           'text-validation':
                             (flagvl && !formData.confirm_password) || flagpass,
                         }"
                         class="form-label fw-semibold"
-                        >Confirm Password</label
+                        >Confirm Password</lab
                       >
                       <input
                         type="password"
@@ -441,9 +437,9 @@
                   </div>
                 </div>
               </div>
-              <pre>
+              <!-- <pre>
                 {{ formData }}
-              </pre>
+              </pre> -->
               <div class="col-12">
                 <div class="card w-100 position-relative overflow-hidden mb-0">
                   <div class="card-body p-4">
@@ -469,7 +465,6 @@
                       <div class="col-sm-12 col-md-6 col-lg-4">
                         <div class="mb-4">
                           <label
-                            for="exampleInputPassword1"
                             :class="{
                               'text-validation': flagvl && !formData.name,
                             }"
@@ -486,9 +481,7 @@
                       </div>
                       <div class="col-sm-12 col-md-6 col-lg-4">
                         <div class="mb-4">
-                          <label
-                            for="exampleInputPassword1"
-                            class="form-label fw-semibold"
+                          <label class="form-label fw-semibold"
                             >Middle Name</label
                           >
                           <input
@@ -532,15 +525,17 @@
                         <div class="mb-4">
                           <label
                             :class="{
-                              'text-validation': flagvl && !formData.lname,
+                              'text-validation': flagvl && !formData.street,
                             }"
                             class="form-label fw-semibold"
                             >Street</label
                           >
                           <input
                             type="text"
-                            v-model="formData.lname"
-                            :class="{ 'is-invalid': flagvl && !formData.lname }"
+                            v-model="formData.street"
+                            :class="{
+                              'is-invalid': flagvl && !formData.street,
+                            }"
                             class="form-control form-control-sm custom-font"
                           />
                         </div>
@@ -550,51 +545,56 @@
                       <div class="col-sm-12 col-md-6 col-lg-4">
                         <div class="mb-4">
                           <label
-                            for="exampleInputPassword1"
                             :class="{
-                              'text-validation': flagvl && !formData.name,
+                              'text-validation': flagvl && !formData.region,
                             }"
                             class="form-label fw-semibold"
                             >Region</label
                           >
                           <select
-                            v-model="zxc"
-                            @change="zxc"
-                            :class="{ 'is-invalid': flagvl && !formData.name }"
+                            v-model="formData.region"
+                            @change="changePermRegion()"
+                            :class="{
+                              'is-invalid': flagvl && !formData.region,
+                            }"
                             class="form-select form-control form-control-sm"
                           >
-                            <option value="">Please Region</option>
-                            <!-- <option
+                            <option value="">Please Select Region</option>
+                            <option
                               v-for="r in regions"
                               :key="r.RegionID"
                               :value="r.RegionID"
                             >
                               {{ r.Description }}
-                            </option> -->
+                            </option>
                           </select>
                         </div>
                       </div>
                       <div class="col-sm-12 col-md-6 col-lg-4">
                         <div class="mb-4">
                           <label
-                            for="exampleInputPassword1"
+                            :class="{
+                              'text-validation': flagvl && !formData.province,
+                            }"
                             class="form-label fw-semibold"
                             >Province</label
                           >
                           <select
-                            v-model="zxc"
-                            @change="zxc"
-                            :class="{ 'is-invalid': flagvl && !formData.name }"
+                            v-model="formData.province"
+                            @change="changePermProvince()"
+                            :class="{
+                              'is-invalid': flagvl && !formData.province,
+                            }"
                             class="form-select form-control form-control-sm"
                           >
-                            <option value="">Please Province</option>
-                            <!-- <option
-                            v-for="r in regions"
-                            :key="r.RegionID"
-                            :value="r.RegionID"
-                          >
-                            {{ r.Description }}
-                          </option> -->
+                            <option value="">Please Select Province</option>
+                            <option
+                              v-for="p in provinces"
+                              :key="p.ProvinceID"
+                              :value="p.ProvinceID"
+                            >
+                              {{ p.Description }}
+                            </option>
                           </select>
                         </div>
                       </div>
@@ -603,61 +603,60 @@
                         <div class="mb-4">
                           <label
                             :class="{
-                              'text-validation':
-                                flagvl && !formData.institution,
+                              'text-validation': flagvl && !formData.province,
                             }"
                             class="form-label fw-semibold"
-                            >Municipality</label
+                            >Province</label
                           >
                           <select
-                            v-model="zxc"
-                            @change="zxc"
-                            :class="{ 'is-invalid': flagvl && !formData.name }"
+                            v-model="formData.city"
+                            @change="changePermCity()"
+                            :class="{ 'is-invalid': flagvl && !formData.city }"
                             class="form-select form-control form-control-sm"
                           >
-                            <option value="">Please Municipality</option>
-                            <!-- <option
-                            v-for="r in regions"
-                            :key="r.RegionID"
-                            :value="r.RegionID"
-                          >
-                            {{ r.Description }}
-                          </option> -->
+                            <option value="">Please Select Municipality</option>
+                            <option
+                              v-for="m in municipalities"
+                              :key="m.MunicipalityID"
+                              :value="m.MunicipalityID"
+                            >
+                              {{ m.Description }}
+                            </option>
                           </select>
                         </div>
                       </div>
                       <div class="col-sm-12 col-md-6 col-lg-4">
                         <div class="mb-4">
                           <label
-                            for="exampleInputPassword1"
                             :class="{
                               'text-validation':
-                                (flagvl && !formData.mobile) || flagmob,
+                                (flagvl && !formData.barangay) || flagmob,
                             }"
                             class="form-label fw-semibold"
                             >Barangay</label
                           >
                           <select
-                            v-model="zxc"
+                            v-model="formData.barangay"
                             @change="zxc"
-                            :class="{ 'is-invalid': flagvl && !formData.name }"
+                            :class="{
+                              'is-invalid': flagvl && !formData.barangay,
+                            }"
                             class="form-select form-control form-control-sm"
                           >
-                            <option value="">Please Barangay</option>
-                            <!-- <option
-                            v-for="r in regions"
-                            :key="r.RegionID"
-                            :value="r.RegionID"
-                          >
-                            {{ r.Description }}
-                          </option> -->
+                            <option value="">Please Select Barangay</option>
+                            <option
+                              v-for="b in barangays"
+                              :key="b.Id"
+                              :value="b.Id"
+                            >
+                              {{ b.Name }}
+                            </option>
                           </select>
                         </div>
                       </div>
                       <div class="col-sm-12 col-md-6 col-lg-4">
                         <div class="mb-4">
                           <label
-                            for="exampleInputPassword1"
                             :class="{
                               'text-validation':
                                 (flagvl && !formData.mobile) || flagmob,
@@ -749,12 +748,7 @@ import {
   deCrypto,
   NumericOnly,
 } from "../../../composables";
-import {
-  changePermRegion,
-  changePermProvince,
-  changePermCity,
-  fetchPermanentAddress,
-} from "@/pages/admin/settings/resources/Address";
+
 import Loader from "../../loader/Loader.vue";
 
 export default defineComponent({
@@ -864,6 +858,49 @@ export default defineComponent({
       barangay: "",
     });
 
+    const changePermRegion = async () => {
+      if (formData.value.region) {
+        await store.commit("resetPermAddress");
+        await store.dispatch("fetchProvinces", formData.value.region);
+      } else {
+        formData.value.province = "";
+        formData.value.city = "";
+        formData.value.barangay = "";
+        store.commit("setProvincesEmpty");
+        store.commit("setMunicipalitiesEmpty");
+        store.commit("setBarangaysEmpty");
+      }
+    };
+
+    const changePermProvince = async () => {
+      if (formData.value.province) {
+        await store.commit("resetPermCityBarangay");
+        store.dispatch("fetchMunicipalities", formData.value.province);
+      } else {
+        formData.value.city = "";
+        formData.value.barangay = "";
+        store.commit("setMunicipalitiesEmpty");
+        store.commit("setBarangaysEmpty");
+      }
+    };
+
+    const changePermCity = async (same) => {
+      if (formData.value.city) {
+        await store.commit("resetPermBarangay");
+        store.dispatch("fetchBarangays", formData.value.city);
+      } else {
+        formData.value.barangay = "";
+        store.commit("setBarangaysEmpty");
+      }
+    };
+
+    const fetchPermanentAddress = async () => {
+      await store.dispatch("fetchRegions");
+      await store.dispatch("fetchProvinces", formData.value.region);
+      await store.dispatch("fetchMunicipalities", formData.value.province);
+      await store.dispatch("fetchBarangays", formData.value.city);
+    };
+
     const setFormDate = (user) => {
       (formData.value.id = user.id),
         (formData.value.name = user.name),
@@ -879,11 +916,17 @@ export default defineComponent({
         (formData.value.institution = user.institution),
         (formData.value.role_id = user.role_id),
         (formData.value.address_id = user.address_id),
-        (formData.value.street = user.address.street),
-        (formData.value.region = user.address.region_id),
-        (formData.value.province = user.address.province_id),
-        (formData.value.city = user.address.municipality_id),
-        (formData.value.barangay = user.address.barangay_id);
+        (formData.value.street = user.address ? user.address.street : ""),
+        (formData.value.region = user.address ? user.address.region_id : ""),
+        (formData.value.province = user.address
+          ? user.address.province_id
+          : ""),
+        (formData.value.city = user.address
+          ? user.address.municipality_id
+          : ""),
+        (formData.value.barangay = user.address
+          ? user.address.barangay_id
+          : "");
 
       console.log("formData w/ address", formData.value);
     };
@@ -898,7 +941,7 @@ export default defineComponent({
     const provinces = computed(() => store.getters.getProvinces);
     const municipalities = computed(() => store.getters.getMunicipalities);
     const barangays = computed(() => store.getters.getBarangays);
-
+    const addResponse = computed(() => store.getters.getPermResponse);
     const modalDetails = ref({
       show: false,
       title: "Create New User",
@@ -915,8 +958,10 @@ export default defineComponent({
       modalDetails.value.title = "Create New User";
     };
 
-    const updateUser = (user) => {
+    const updateUser = async (user) => {
+      fetchPermanentAddress();
       setFormDate(user);
+
       (modalDetails.value.show = true),
         (modalDetails.value.title = "Update User");
       imageUrl.value = formData.value.img;
@@ -1263,7 +1308,13 @@ export default defineComponent({
       ).then(async (result) => {
         if (result.isConfirmed) {
           saveSubmitted.value = true;
-          await store.dispatch("saveUser", formData.value);
+          await store.dispatch("saveUserAddress", formData.value);
+          // console.log("new", addResponse.value.data.id);
+          // return;
+          await store.dispatch("saveUser", {
+            ...formData.value,
+            address_idd: addResponse.value.data.id,
+          });
           saveSubmitted.value = false;
           let message = formData.value.id == 0 ? "Created" : "Updated";
           swalMessage(
@@ -1326,6 +1377,15 @@ export default defineComponent({
       flagpass,
       flagmob,
       NumericOnly,
+
+      //address
+      regions,
+      provinces,
+      municipalities,
+      barangays,
+      changePermRegion,
+      changePermProvince,
+      changePermCity,
     };
   },
 });

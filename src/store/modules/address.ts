@@ -22,149 +22,149 @@ const state = {
 
 const mutations = {
 
-    setRegions:(state, payload) => {
+    setRegions: (state, payload) => {
         state.data.regions = payload
     },
 
-    setProvinces:(state, payload) => {
+    setProvinces: (state, payload) => {
         state.data.provinces = payload
     },
 
-    setMunicipalities:(state, payload) => {
+    setMunicipalities: (state, payload) => {
         state.data.municipalities = payload
     },
 
-    setBarangays:(state, payload) => {
+    setBarangays: (state, payload) => {
         state.data.barangays = payload
     },
 
-    setProvincesEmpty:(state) => {
+    setProvincesEmpty: (state) => {
         state.data.provinces = []
     },
 
-    setMunicipalitiesEmpty:(state) => {
+    setMunicipalitiesEmpty: (state) => {
         state.data.municipalities = []
     },
 
-    setBarangaysEmpty:(state) => {
+    setBarangaysEmpty: (state) => {
         state.data.barangays = []
     },
 
 
-    setCurrProvinces:(state, payload) => {
+    setCurrProvinces: (state, payload) => {
         state.data.curr_provinces = payload
     },
 
-    setCurrMunicipalities:(state, payload) => {
+    setCurrMunicipalities: (state, payload) => {
         state.data.curr_municipalities = payload
     },
 
-    setCurrBarangays:(state, payload) => {
+    setCurrBarangays: (state, payload) => {
         state.data.curr_barangays = payload
     },
 
-    setCurrProvincesEmpty:(state) => {
+    setCurrProvincesEmpty: (state) => {
         state.data.curr_provinces = []
     },
 
-    setCurrMunicipalitiesEmpty:(state) => {
+    setCurrMunicipalitiesEmpty: (state) => {
         state.data.curr_municipalities = []
     },
 
-    setCurrBarangaysEmpty:(state) => {
+    setCurrBarangaysEmpty: (state) => {
         state.data.curr_barangays = []
     },
 
 
-    setResponse:(state, payload) => {
+    setResponse: (state, payload) => {
         state.data.response = payload
     },
 
-    setResponseCurr:(state, payload) => {
+    setResponseCurr: (state, payload) => {
         state.data.responseCurr = payload
     },
 
-    setResponseEmpty:(state) => {
+    setResponseEmpty: (state) => {
         state.data.response = {}
     },
 
-    setResponseCurrEmpty:(state) => {
+    setResponseCurrEmpty: (state) => {
         state.data.responseCurr = {}
     },
-    
+
 
 };
 
 
-const actions  = {
+const actions = {
 
-    async fetchRegions({commit}) {
+    async fetchRegions({ commit }) {
         const response = await api.get(`/resources/region`)
         if (response.data.data.length > 0) {
             commit('setRegions', response.data.data)
-        }else{
+        } else {
             console.log('no data')
         }
 
     },
 
-    async fetchProvinces({commit}, regionId) {
+    async fetchProvinces({ commit }, regionId) {
         const response = await api.get(`/resources/province?region=${regionId}`)
         if (response.data.data.length > 0) {
             commit('setProvinces', response.data.data)
-        }else{
+        } else {
             commit('setProvincesEmpty')
         }
     },
 
-    async fetchMunicipalities({commit}, provinceId) {
+    async fetchMunicipalities({ commit }, provinceId) {
         const response = await api.get(`/resources/city?province=${provinceId}`)
         if (response.data.data.length > 0) {
             commit('setMunicipalities', response.data.data)
-        }else{
+        } else {
             commit('setMunicipalitiesEmpty')
         }
     },
 
-    async fetchBarangays({commit}, cityId) {
+    async fetchBarangays({ commit }, cityId) {
         const response = await api.get(`/resources/barangay?municipality=${cityId}`)
         if (response.data.data.length > 0) {
             commit('setBarangays', response.data.data)
-        }else{
+        } else {
             commit('setBarangaysEmpty')
         }
     },
 
-    async fetchCurrProvinces({commit}, regionId) {
+    async fetchCurrProvinces({ commit }, regionId) {
         const response = await api.get(`/resources/province?region=${regionId}`)
         if (response.data.data.length > 0) {
             commit('setCurrProvinces', response.data.data)
-        }else{
+        } else {
             commit('setCurrProvincesEmpty')
         }
     },
 
 
-    async fetchCurrMunicipalities({commit}, provinceId) {
+    async fetchCurrMunicipalities({ commit }, provinceId) {
         const response = await api.get(`/resources/city?province=${provinceId}`)
         if (response.data.data.length > 0) {
             commit('setCurrMunicipalities', response.data.data)
-        }else{
+        } else {
             commit('setCurrMunicipalitiesEmpty')
         }
     },
 
-    async fetchCurrBarangays({commit}, cityId) {
+    async fetchCurrBarangays({ commit }, cityId) {
         const response = await api.get(`/resources/barangay?municipality=${cityId}`)
         if (response.data.data.length > 0) {
             commit('setCurrBarangays', response.data.data)
-        }else{
+        } else {
             commit('setCurrBarangaysEmpty')
         }
     },
 
-    async savePermAddress({commit}, payload) {
-        if (payload.per_addressId == 0) {
+    async savePermAddress({ commit }, payload) {
+        if (payload.per_addressId == 0 || null) {
             const response = await api.post(`/address/create`, {
                 street: payload.per_street,
                 barangay_id: payload.per_barangay,
@@ -175,8 +175,8 @@ const actions  = {
             })
             if (response.data) {
                 commit('setResponse', response.data);
-            } 
-        }else{
+            }
+        } else {
             const response = await api.put(`/address/${payload.per_addressId}`, {
                 street: payload.per_street,
                 barangay_id: payload.per_barangay,
@@ -187,13 +187,13 @@ const actions  = {
             })
             if (response.data) {
                 commit('setResponse', response.data);
-            } 
+            }
 
         }
     },
 
-    async saveCurrAddress({commit}, payload) {
-        if (payload.curr_addressId == 0) {
+    async saveCurrAddress({ commit }, payload) {
+        if (payload.curr_addressId == 0 || null) {
             const response = await api.post(`/address/create`, {
                 street: payload.curr_street,
                 barangay_id: payload.curr_barangay,
@@ -204,8 +204,8 @@ const actions  = {
             })
             if (response.data) {
                 commit('setResponseCurr', response.data);
-            } 
-        }else{
+            }
+        } else {
             const response = await api.put(`/address/${payload.curr_addressId}`, {
                 street: payload.curr_street,
                 barangay_id: payload.curr_barangay,
@@ -216,7 +216,36 @@ const actions  = {
             })
             if (response.data) {
                 commit('setResponseCurr', response.data);
-            } 
+            }
+
+        }
+    },
+
+    async saveUserAddress({ commit }, payload) {
+        if (payload.address_id == 0 || null) {
+            const response = await api.post(`/address/create`, {
+                street: payload.street,
+                barangay_id: payload.barangay,
+                municipality_id: payload.city,
+                province_id: payload.province,
+                region_id: payload.region,
+                mobile: null
+            })
+            if (response.data) {
+                commit('setResponse', response.data);
+            }
+        } else {
+            const response = await api.put(`/address/${payload.address_id}`, {
+                street: payload.street,
+                barangay_id: payload.barangay,
+                municipality_id: payload.city,
+                province_id: payload.province,
+                region_id: payload.region,
+                mobile: null
+            })
+            if (response.data) {
+                commit('setResponse', response.data);
+            }
 
         }
     }
@@ -224,15 +253,15 @@ const actions  = {
 }
 
 const getters = {
-    getRegions:state => state.data.regions,
-    getProvinces:state => state.data.provinces,
-    getMunicipalities:state => state.data.municipalities,
-    getBarangays:state => state.data.barangays,
-    getCurrProvinces:state => state.data.curr_provinces,
-    getCurrMunicipalities:state => state.data.curr_municipalities,
-    getCurrBarangays:state => state.data.curr_barangays,
-    getPermResponse:state => state.data.response,
-    getCurrResponse:state => state.data.responseCurr
+    getRegions: state => state.data.regions,
+    getProvinces: state => state.data.provinces,
+    getMunicipalities: state => state.data.municipalities,
+    getBarangays: state => state.data.barangays,
+    getCurrProvinces: state => state.data.curr_provinces,
+    getCurrMunicipalities: state => state.data.curr_municipalities,
+    getCurrBarangays: state => state.data.curr_barangays,
+    getPermResponse: state => state.data.response,
+    getCurrResponse: state => state.data.responseCurr
 }
 
 
