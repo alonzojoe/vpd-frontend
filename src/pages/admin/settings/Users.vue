@@ -444,7 +444,7 @@
               <div class="col-12">
                 <div class="card w-100 position-relative overflow-hidden mb-0">
                   <div class="card-body p-4">
-                    <h5 class="card-title fw-semibold">Personal Information</h5>
+                    <h5 class="card-title fw-bolder">Personal Information</h5>
                     <div class="row p-0 m-0">
                       <div class="col-sm-12 col-md-6 col-lg-4">
                         <div class="mb-4">
@@ -496,7 +496,16 @@
                         </div>
                       </div>
 
-                      <div class="col-sm-12 col-md-6 col-lg-4">
+                      <!-- <div class="col-12">
+                                                <div class="d-flex align-items-center justify-content-end mt-4 gap-2">
+                                                    <button @click.prevent="btnSave" class="btn btn-primary">Save</button>
+                                                    <button @click.prevent="modalDetails.show = false" class="btn btn-danger">Cancel</button>
+                                                </div>
+                                            </div> -->
+                    </div>
+                    <h5 class="card-title fw-bolder">HCI Information</h5>
+                    <div class="row p-0 m-0">
+                      <div class="col-sm-12 col-md-6 col-lg-8">
                         <div class="mb-4">
                           <label
                             :class="{
@@ -519,13 +528,139 @@
                       <div class="col-sm-12 col-md-6 col-lg-4">
                         <div class="mb-4">
                           <label
+                            :class="{
+                              'text-validation': flagvl && !formData.lname,
+                            }"
+                            class="form-label fw-semibold"
+                            >Street</label
+                          >
+                          <input
+                            type="text"
+                            v-model="formData.lname"
+                            :class="{ 'is-invalid': flagvl && !formData.lname }"
+                            class="form-control form-control-sm custom-font"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row p-0 m-0">
+                      <div class="col-sm-12 col-md-6 col-lg-4">
+                        <div class="mb-4">
+                          <label
+                            for="exampleInputPassword1"
+                            :class="{
+                              'text-validation': flagvl && !formData.name,
+                            }"
+                            class="form-label fw-semibold"
+                            >Region</label
+                          >
+                          <select
+                            v-model="zxc"
+                            @change="zxc"
+                            :class="{ 'is-invalid': flagvl && !formData.name }"
+                            class="form-select form-control form-control-sm"
+                          >
+                            <option value="">Please Region</option>
+                            <!-- <option
+                              v-for="r in regions"
+                              :key="r.RegionID"
+                              :value="r.RegionID"
+                            >
+                              {{ r.Description }}
+                            </option> -->
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-sm-12 col-md-6 col-lg-4">
+                        <div class="mb-4">
+                          <label
+                            for="exampleInputPassword1"
+                            class="form-label fw-semibold"
+                            >Province</label
+                          >
+                          <select
+                            v-model="zxc"
+                            @change="zxc"
+                            :class="{ 'is-invalid': flagvl && !formData.name }"
+                            class="form-select form-control form-control-sm"
+                          >
+                            <option value="">Please Province</option>
+                            <!-- <option
+                            v-for="r in regions"
+                            :key="r.RegionID"
+                            :value="r.RegionID"
+                          >
+                            {{ r.Description }}
+                          </option> -->
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-12 col-md-6 col-lg-4">
+                        <div class="mb-4">
+                          <label
+                            :class="{
+                              'text-validation':
+                                flagvl && !formData.institution,
+                            }"
+                            class="form-label fw-semibold"
+                            >Municipality</label
+                          >
+                          <select
+                            v-model="zxc"
+                            @change="zxc"
+                            :class="{ 'is-invalid': flagvl && !formData.name }"
+                            class="form-select form-control form-control-sm"
+                          >
+                            <option value="">Please Municipality</option>
+                            <!-- <option
+                            v-for="r in regions"
+                            :key="r.RegionID"
+                            :value="r.RegionID"
+                          >
+                            {{ r.Description }}
+                          </option> -->
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-sm-12 col-md-6 col-lg-4">
+                        <div class="mb-4">
+                          <label
                             for="exampleInputPassword1"
                             :class="{
                               'text-validation':
                                 (flagvl && !formData.mobile) || flagmob,
                             }"
                             class="form-label fw-semibold"
-                            >Mobile Number</label
+                            >Barangay</label
+                          >
+                          <select
+                            v-model="zxc"
+                            @change="zxc"
+                            :class="{ 'is-invalid': flagvl && !formData.name }"
+                            class="form-select form-control form-control-sm"
+                          >
+                            <option value="">Please Barangay</option>
+                            <!-- <option
+                            v-for="r in regions"
+                            :key="r.RegionID"
+                            :value="r.RegionID"
+                          >
+                            {{ r.Description }}
+                          </option> -->
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-sm-12 col-md-6 col-lg-4">
+                        <div class="mb-4">
+                          <label
+                            for="exampleInputPassword1"
+                            :class="{
+                              'text-validation':
+                                (flagvl && !formData.mobile) || flagmob,
+                            }"
+                            class="form-label fw-semibold"
+                            >Mobile No.</label
                           >
                           <input
                             type="text"
@@ -544,7 +679,7 @@
                       <div class="col-sm-12 col-md-6 col-lg-4">
                         <div class="mb-4">
                           <div
-                            class="d-flex align-items-center justify-content-end mt-4 gap-2"
+                            class="d-flex align-items-center justify-content-start mt-4 gap-2"
                           >
                             <button
                               @click.prevent="saveUser"
