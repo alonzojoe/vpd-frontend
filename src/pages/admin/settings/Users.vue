@@ -441,6 +441,9 @@
                   </div>
                 </div>
               </div>
+              <pre>
+                {{ formData }}
+              </pre>
               <div class="col-12">
                 <div class="card w-100 position-relative overflow-hidden mb-0">
                   <div class="card-body p-4">
@@ -746,6 +749,12 @@ import {
   deCrypto,
   NumericOnly,
 } from "../../../composables";
+import {
+  changePermRegion,
+  changePermProvince,
+  changePermCity,
+  fetchPermanentAddress,
+} from "@/pages/admin/settings/resources/Address";
 import Loader from "../../loader/Loader.vue";
 
 export default defineComponent({
@@ -847,6 +856,12 @@ export default defineComponent({
       type: "",
       institution: "",
       role_id: 0,
+      address_id: 0,
+      street: "",
+      region: "",
+      province: "",
+      city: "",
+      barangay: "",
     });
 
     const setFormDate = (user) => {
@@ -862,7 +877,15 @@ export default defineComponent({
         (formData.value.signature = user.signature),
         (formData.value.type = user.type),
         (formData.value.institution = user.institution),
-        (formData.value.role_id = user.role_id);
+        (formData.value.role_id = user.role_id),
+        (formData.value.address_id = user.address_id),
+        (formData.value.street = user.address.street),
+        (formData.value.region = user.address.region_id),
+        (formData.value.province = user.address.province_id),
+        (formData.value.city = user.address.municipality_id),
+        (formData.value.barangay = user.address.barangay_id);
+
+      console.log("formData w/ address", formData.value);
     };
 
     const resetFormData = () => {
@@ -870,6 +893,11 @@ export default defineComponent({
         formData.value[key] = key === "id" || key === "role_id" ? 0 : "";
       });
     };
+
+    const regions = computed(() => store.getters.getRegions);
+    const provinces = computed(() => store.getters.getProvinces);
+    const municipalities = computed(() => store.getters.getMunicipalities);
+    const barangays = computed(() => store.getters.getBarangays);
 
     const modalDetails = ref({
       show: false,
