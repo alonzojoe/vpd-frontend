@@ -224,3 +224,7 @@ select.form-select:required {
 .fade-effect.fade-out {
   opacity: 1;
 }
+
+button:disabled {
+  cursor: not-allowed !important;
+}

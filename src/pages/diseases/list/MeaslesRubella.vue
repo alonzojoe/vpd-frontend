@@ -111,7 +111,11 @@
           Create Line List
         </button>
         <div class="d-flex gap-3" v-else>
-          <button class="btn btn-success btn-sm position-relative" @click="">
+          <button
+            class="btn btn-success btn-sm position-relative"
+            :disabled="!cart.length"
+            @click=""
+          >
             Save Line List
             <span
               v-if="cart.length"
@@ -292,7 +296,7 @@
               </tr>
             </tbody>
           </table>
-          {{ cart }}
+          <!-- {{ cart }} -->
         </div>
         <pagination-skeleton class="mt-4" v-if="isSkeleton" />
         <pagination

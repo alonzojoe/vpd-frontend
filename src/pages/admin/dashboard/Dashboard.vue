@@ -375,7 +375,7 @@
 </template>
 
 <script lang="ts">
-import { ref, computed, onMounted, defineComponent } from "vue";
+import { ref, computed, onMounted, defineComponent, watch } from "vue";
 import Chart from "primevue/chart";
 import { useStore } from "vuex";
 import moment from "moment";
@@ -414,17 +414,23 @@ export default defineComponent({
     const series = ref([
       {
         name: "",
-        data: [
-          dashboard.value.measles_patients,
-          dashboard.value.rota_patients,
-          dashboard.value.meningitis_patients,
-        ],
+        data: [0, 0, 0],
       },
     ]);
 
+    watch(() => {
+      if (dashboard.value) {
+        series.value[0].data = [
+          dashboard.value.measles_patients,
+          dashboard.value.rota_patients,
+          dashboard.value.meningitis_patients,
+        ];
+      }
+    });
+
     onMounted(async () => {
-      fetchDashboardItems();
-      chartData.value = setChartData();
+      await fetchDashboardItems();
+      // chartData.value = setChartData.value;
     });
 
     return {
