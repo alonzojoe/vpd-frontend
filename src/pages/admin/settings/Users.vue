@@ -637,7 +637,6 @@
                           >
                           <select
                             v-model="formData.barangay"
-                            @change="zxc"
                             :class="{
                               'is-invalid': flagvl && !formData.barangay,
                             }"
@@ -884,7 +883,7 @@ export default defineComponent({
       }
     };
 
-    const changePermCity = async (same) => {
+    const changePermCity = async () => {
       if (formData.value.city) {
         await store.commit("resetPermBarangay");
         store.dispatch("fetchBarangays", formData.value.city);
@@ -915,7 +914,7 @@ export default defineComponent({
         (formData.value.type = user.type),
         (formData.value.institution = user.institution),
         (formData.value.role_id = user.role_id),
-        (formData.value.address_id = user.address_id),
+        (formData.value.address_id = user.address_id ? user.address_id : 0),
         (formData.value.street = user.address ? user.address.street : ""),
         (formData.value.region = user.address ? user.address.region_id : ""),
         (formData.value.province = user.address
