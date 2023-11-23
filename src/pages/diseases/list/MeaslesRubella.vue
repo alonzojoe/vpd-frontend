@@ -114,9 +114,9 @@
           <button
             class="btn btn-success btn-sm position-relative"
             :disabled="!cart.length"
-            @click=""
+            @click="setFormHeader(authUser)"
           >
-            Save Line List
+            Finalized Line List
             <span
               v-if="cart.length"
               class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
@@ -307,6 +307,7 @@
       </div>
     </div>
   </div>
+  <pre>{{ cart }}</pre>
   <modal-form :details="modalDetails" @close-modal="modalDetails.show = false">
     <div class="row p-2 m-0">
       <div class="col-12">
@@ -343,6 +344,170 @@
       />
     </div>
   </modal-form>
+  <modal-md :details="modalLineList" @close-modal="modalLineList.show = false">
+    <pre>
+      {{ authUser }}
+    </pre>
+    <div class="row m-2">
+      <div class="col-sm-12 col-md-12 col-lg-12 mb-2">
+        <div class="d-flex align-items-center justify-content-end">
+          <button class="btn btn-primary btn-sm m-1">Save Linelist</button>
+          <button class="btn btn-danger btn-sm m-1">Cancel</button>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
+        <div class="search">
+          <Label class="mb-2">DRU Reporting Unit</Label>
+          <input
+            type="text"
+            v-model="formHeader.dru"
+            class="form-control form-control-sm w-100 custom-font"
+          />
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
+        <div class="search">
+          <Label class="mb-2">Disease Surveillance Officer</Label>
+          <input
+            type="text"
+            v-model="formHeader.dru_officer"
+            class="form-control form-control-sm w-100 custom-font"
+          />
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
+        <div class="search">
+          <Label class="mb-2">Contact No</Label>
+          <input
+            type="text"
+            v-model="formHeader.contact"
+            class="form-control form-control-sm w-100 custom-font"
+          />
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
+        <div class="search">
+          <Label class="mb-2">Region:</Label>
+          <input
+            type="text"
+            v-model="formHeader.region"
+            class="form-control form-control-sm w-100 custom-font"
+          />
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
+        <div class="search">
+          <Label class="mb-2">Province:</Label>
+          <input
+            type="text"
+            v-model="formHeader.province"
+            class="form-control form-control-sm w-100 custom-font"
+          />
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
+        <div class="search">
+          <Label class="mb-2">Email:</Label>
+          <input
+            type="text"
+            v-model="formHeader.email"
+            class="form-control form-control-sm w-100 custom-font"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="m-3 table-responsive p-0 m-0 border border-primary mb-4">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th class="text-center bg-primary text-white p-0 m-0">No</th>
+            <th class="text-center bg-primary text-white p-0 m-0">Last Name</th>
+            <th class="text-center bg-primary text-white p-0 m-0">
+              First Name
+            </th>
+            <th class="text-center bg-primary text-white p-0 m-0">
+              Middle Name
+            </th>
+            <th class="text-center bg-primary text-white p-0 m-0">Age</th>
+            <th class="text-center bg-primary text-white p-0 m-0">Gender</th>
+            <th class="text-center bg-primary text-white p-0 m-0">
+              Date of Birth
+            </th>
+            <th class="text-center bg-primary text-white p-0 m-0">Specimen</th>
+            <th class="text-center bg-primary text-white p-0 m-0">
+              Date and Time Collection
+            </th>
+            <th class="text-center bg-primary text-white p-0 m-0">
+              Disease Type
+            </th>
+            <th class="text-center bg-primary text-white p-0 m-0">Remove</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(c, index) in cart" :key="index">
+            <td class="text-center align-middle fw-bold p-1 m-0">
+              {{ index + 1 }}
+            </td>
+            <td class="text-center align-middle fw-bold p-1 m-0">
+              {{ c.lname }}
+            </td>
+            <td class="text-center align-middle fw-bold p-1 m-0">
+              {{ c.fname }}
+            </td>
+            <td class="text-center align-middle fw-bold p-1 m-0">
+              {{ c.mname }}
+            </td>
+            <td class="text-center align-middle fw-bold p-1 m-0">
+              {{ c.age_year }}
+            </td>
+            <td class="text-center align-middle fw-bold p-1 m-0">
+              {{ c.gender == 1 ? "MALE" : "FEMALE" }}
+            </td>
+            <td class="text-center align-middle fw-bold p-1 m-0">
+              {{ c.birthdate }}
+            </td>
+            <td class="text-center align-middle fw-bold p-1 m-0">
+              <select class="form-select form-control form-control-sm">
+                <option value="">Please Select</option>
+              </select>
+            </td>
+            <td class="text-center align-middle fw-bold p-1 m-0">
+              <input
+                type="datetime-local"
+                v-model="zxc"
+                class="form-control form-control-sm w-100 custom-font"
+              />
+            </td>
+            <td class="text-center align-middle fw-bold p-1 m-0">
+              {{
+                c.type === 1
+                  ? "Rota Virus"
+                  : c.type === 2
+                  ? "Meningitis-Encephalitis"
+                  : c.type === 3
+                  ? "Measles-Rubella"
+                  : "Unknown Type"
+              }}
+            </td>
+            <td class="text-center align-middle fw-bold p-1 m-0">
+              <a href="javascript:void(0);" @click="removeToCart(c)">
+                <i
+                  class="fa fa-times-circle scale-icon text-danger"
+                  aria-hidden="true"
+                  style="transition: all 300ms ease"
+                  v-tooltip.right="{
+                    value: `<h6 class='text-white'>Remove Patient</h6>`,
+                    escape: true,
+                    class: 'bg-dark rounded p-1',
+                  }"
+                ></i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </modal-md>
   <!-- <pre>{{ patientData }}</pre> -->
   <!-- <print-rota :patient="patientData" ref="printComponent" style="opacity: 1; border: 1px solid red"/> -->
 </template>
@@ -365,6 +530,7 @@ import FormSkeleton from "@/pages/loader/FormSkeleton.vue";
 import TableSkeleton from "@/pages/loader/TableSkeleton.vue";
 import SkeletonPlaceholder from "@/pages/loader/SkeletonPlaceholder.vue";
 import PaginationSkeleton from "@/pages/loader/PaginationSkeleton.vue";
+import ModalMd from "@/components/modals/ModalMd.vue";
 import { encryptData } from "@/composables";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -390,12 +556,13 @@ export default defineComponent({
     PaginationSkeleton,
     PrintMeasles,
     ModalSemiSm,
+    ModalMd,
   },
   setup() {
     const store = useStore();
     const router = useRouter();
     const swal = inject("$swal");
-
+    const authUser = computed(() => store.getters.getAuthenticatedUser);
     const patients = computed(() => store.getters.getMeasePatients);
     const totalPatients = computed(() => store.getters.getMeaseTotal);
     const patientsPage = computed(() => store.getters.getMeasePaginated);
@@ -606,6 +773,30 @@ export default defineComponent({
       toggleList.value = false;
     };
 
+    const modalLineList = ref({
+      show: false,
+      title: "Finalize Linelist",
+    });
+
+    const formHeader = ref({
+      dru: "",
+      dru_officer: "",
+      contact: "",
+      region: "",
+      province: "",
+      email: "",
+    });
+
+    const setFormHeader = (payload) => {
+      modalLineList.value.show = true;
+      (formHeader.value.dru = payload.institution),
+        (formHeader.value.dru_officer = payload.fullname),
+        (formHeader.value.contact = payload.mobile),
+        (formHeader.value.region = payload.address.region),
+        (formHeader.value.province = payload.address.province),
+        (formHeader.value.email = payload.email);
+    };
+
     onMounted(async () => {
       cartResetter();
       setTimeout(async () => {
@@ -643,6 +834,10 @@ export default defineComponent({
       removeToCart,
       toggleList,
       cartResetter,
+      modalLineList,
+      authUser,
+      setFormHeader,
+      formHeader,
     };
   },
 });
