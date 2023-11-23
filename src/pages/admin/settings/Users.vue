@@ -1238,7 +1238,12 @@ export default defineComponent({
         !formData.value.lname ||
         !formData.value.name ||
         !formData.value.mobile ||
-        !formData.value.institution
+        !formData.value.institution ||
+        !formData.value.street ||
+        !formData.value.region ||
+        !formData.value.province ||
+        !formData.value.city ||
+        !formData.value.barangay
       ) {
         swalMessage(
           swal,

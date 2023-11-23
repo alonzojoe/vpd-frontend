@@ -20,7 +20,8 @@ const state = {
             updated_at: "2023-09-09T01:29:21.000000Z",
             created_at: "2023-09-09T01:29:21.000000Z",
             id: 0,
-            fullname: ''
+            fullname: '',
+            address: {}
         },
         users: [],
         total_users: 0,
@@ -47,7 +48,8 @@ const mutations = {
             address_id: payload.address_id,
             role_id: payload.role_id,
             role: payload.role,
-            fullname: payload.fullname
+            fullname: payload.fullname,
+            address: payload.address
         }
     },
 

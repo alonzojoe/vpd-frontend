@@ -1990,6 +1990,7 @@ export default defineComponent({
       isLoading,
       skelPatientInfo,
       skelClinical,
+      authUser,
     };
   },
 });
