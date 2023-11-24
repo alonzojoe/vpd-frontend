@@ -345,9 +345,6 @@
     </div>
   </modal-form>
   <modal-md :details="modalLineList" @close-modal="modalLineList.show = false">
-    <pre>
-      {{ authUser }}
-    </pre>
     <div class="row m-2">
       <div class="col-sm-12 col-md-12 col-lg-12 mb-2">
         <div class="d-flex align-items-center justify-content-end">
@@ -387,7 +384,7 @@
       </div>
       <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
         <div class="search">
-          <Label class="mb-2">Region:</Label>
+          <Label class="mb-2">Region</Label>
           <input
             type="text"
             v-model="formHeader.region"
@@ -397,7 +394,7 @@
       </div>
       <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
         <div class="search">
-          <Label class="mb-2">Province:</Label>
+          <Label class="mb-2">Province</Label>
           <input
             type="text"
             v-model="formHeader.province"
@@ -407,7 +404,7 @@
       </div>
       <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
         <div class="search">
-          <Label class="mb-2">Email:</Label>
+          <Label class="mb-2">Email</Label>
           <input
             type="text"
             v-model="formHeader.email"
@@ -467,15 +464,21 @@
               {{ c.birthdate }}
             </td>
             <td class="text-center align-middle fw-bold p-1 m-0">
-              <select class="form-select form-control form-control-sm">
+              <select
+                v-model="c.specimen_type"
+                class="form-select form-control form-control-sm"
+              >
                 <option value="">Please Select</option>
+                <option v-for="(s, index) in specimens" :value="s">
+                  {{ s }}
+                </option>
               </select>
             </td>
             <td class="text-center align-middle fw-bold p-1 m-0">
               <input
                 type="datetime-local"
-                v-model="zxc"
-                class="form-control form-control-sm w-100 custom-font"
+                v-model="c.datetime_collection"
+                class="form-control form-control-sm custom-font"
               />
             </td>
             <td class="text-center align-middle fw-bold p-1 m-0">
@@ -566,6 +569,7 @@ export default defineComponent({
     const patients = computed(() => store.getters.getMeasePatients);
     const totalPatients = computed(() => store.getters.getMeaseTotal);
     const patientsPage = computed(() => store.getters.getMeasePaginated);
+    const specimens = computed(() => store.getters.getMeaseSpecimens);
 
     const paginationData = ref({
       totalRecords: totalPatients.value,
@@ -754,6 +758,13 @@ export default defineComponent({
     const cart = ref([]);
     const addToCart = (patient) => {
       cart.value.push(patient);
+      cart.value = cart.value.map((c) => {
+        return {
+          ...c,
+          datetime_collection: moment(Date.now()).format("YYYY-MM-DD HH:mm"),
+          specimen_type: "",
+        };
+      });
     };
 
     const removeToCart = (patient) => {
@@ -838,6 +849,7 @@ export default defineComponent({
       authUser,
       setFormHeader,
       formHeader,
+      specimens,
     };
   },
 });

@@ -86,6 +86,14 @@ const state = {
         measeTotalPatients: 0,
         measePaginatedPatients: 0,
         measeResponse: '',
+        measeSpecimens: [
+            'Whole Blood',
+            'Serum',
+            'DBS',
+            'OPS',
+            'NPS',
+            'NPS/OPS'
+        ]
     }
 }
 
@@ -248,6 +256,7 @@ const mutations = {
         state.data.measePatients = payload.map((m) => {
             return {
                 ...m,
+                birthdate: moment(m.birthdate).format('ll'),
                 date_created: moment(m.date_created).format('lll'),
                 date_updated: moment(m.date_updated).format('lll')
             }
@@ -510,7 +519,8 @@ const getters = {
     getMeasePatients: state => state.data.measePatients,
     getMeaseTotal: state => state.data.measeTotalPatients,
     getMeasePaginated: state => state.data.measePaginatedPatients,
-    getMeaseResponse: state => state.data.measeResponse
+    getMeaseResponse: state => state.data.measeResponse,
+    getMeaseSpecimens: state => state.data.measeSpecimens
 }
 
 export default {
