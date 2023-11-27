@@ -8,6 +8,7 @@ import RotaVirus from './modules/rota'
 import Meningitis from './modules/meningitis'
 import Measles from './modules/measles'
 import Dashboard from './modules/dashboard'
+import Linelist from './modules/linelist'
 
 const store = createStore({
     modules: {
@@ -19,7 +20,8 @@ const store = createStore({
         RotaVirus,
         Meningitis,
         Measles,
-        Dashboard
+        Dashboard,
+        Linelist
     }
 })
 
