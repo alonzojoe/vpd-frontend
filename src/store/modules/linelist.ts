@@ -80,11 +80,32 @@ const actions = {
                 region: formData.region,
                 province: formData.province,
                 email: formData.email,
-                created_by: formData.created_by,
                 updated_by: formData.updated_by,
             })
             commit('setLnResponse', response.data.data)
         }
+    },
+
+    async saveLinelistDetails({ commit }, formData) {
+        const id = formData.idd
+        if (id == 0) {
+            const response = await api.post('/linelist/details/create', {
+                linelist_header_id: formData.linelist_header_id,
+                disease_history_id: formData.disease_history_id,
+                specimen: formData.specimen_type,
+                datetime_collection: formData.datetime_collection
+            });
+            commit('setLdResponse', response.data.data)
+        } else {
+            const response = await api.put(`/linelist/details/${id}`, {
+                linelist_header_id: formData.linelist_header_id,
+                disease_history_id: formData.disease_history_id,
+                specimen: formData.specimen_type,
+                datetime_collection: formData.datetime_collection
+            });
+            commit('setLdResponse', response.data.data)
+        }
+
     }
 }
 
@@ -92,7 +113,9 @@ const getters = {
     getLnHeader: state => state.data.lnheader,
     getLnDetails: state => state.data.lndetails,
     getLnTotal: state => state.data.totalLn,
-    getLnPaginated: state => state.data.paginatedLn
+    getLnPaginated: state => state.data.paginatedLn,
+    getLnhResponse: state => state.data.lnhresponse,
+    getLndResponse: state => state.data.lndresponse,
 }
 
 export default {

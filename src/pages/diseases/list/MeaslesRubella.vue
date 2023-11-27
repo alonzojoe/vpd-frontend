@@ -348,7 +348,9 @@
     <div class="row m-2">
       <div class="col-sm-12 col-md-12 col-lg-12 mb-2">
         <div class="d-flex align-items-center justify-content-end">
-          <button class="btn btn-primary btn-sm m-1">Save Linelist</button>
+          <button class="btn btn-primary btn-sm m-1" @click="saveLinelist()">
+            Save Linelist
+          </button>
           <button class="btn btn-danger btn-sm m-1">Cancel</button>
         </div>
       </div>
@@ -546,6 +548,13 @@ import {
   formData,
   resetFormData,
 } from "./actions/RotaVirus";
+import {
+  swalConfirmation,
+  swalMessage,
+  trimZeroes,
+  decryptData,
+  NumericOnly,
+} from "@/composables";
 import PrintMeasles from "@/pages/printable_forms/PrintMeasles.vue";
 
 export default defineComponent({
@@ -790,6 +799,8 @@ export default defineComponent({
     });
 
     const formHeader = ref({
+      id: 0,
+      linelist_code: "MEA",
       dru: "",
       dru_officer: "",
       contact: "",
@@ -806,6 +817,52 @@ export default defineComponent({
         (formHeader.value.region = payload.address.region),
         (formHeader.value.province = payload.address.province),
         (formHeader.value.email = payload.email);
+    };
+
+    const saveLinelistHeader = async () => {
+      await store.dispatch("saveLnHeader", {
+        ...formHeader.value,
+        created_by: authUser.value.id,
+        updated_by: authUser.value.id,
+      });
+    };
+    const headerResponse = computed(() => store.getters.getLnhResponse);
+
+    const currentCount = ref(0);
+    const patientName = ref("");
+    const saveLinelistDetails = async () => {
+      for (let i = 0; i < cart.value.length; i++) {
+        patientName.value = `${cart.value[i].lname}, ${cart.value[i].fname} ${cart.value[i].mname}`;
+        await store.dispatch("saveLinelistDetails", {
+          idd: 0,
+          linelist_header_id: headerResponse.value.id,
+          ...cart.value[i],
+        });
+
+        if (currentCount.value < cart.value.length) {
+          currentCount.value += 1;
+        }
+
+        if (i === cart.value.length - 1) {
+          alert("saved");
+        }
+      }
+    };
+
+    const saveLinelist = async () => {
+      if (!cart.value.length) {
+        swalMessage(
+          swal,
+          "Warning",
+          "Please Add Patient/s Before Saving",
+          "warning"
+        );
+        return;
+      }
+      await saveLinelistHeader();
+      await saveLinelistDetails();
+
+      //proceed to saving
     };
 
     onMounted(async () => {
@@ -850,6 +907,7 @@ export default defineComponent({
       setFormHeader,
       formHeader,
       specimens,
+      saveLinelist,
     };
   },
 });
