@@ -466,22 +466,28 @@
               {{ c.birthdate }}
             </td>
             <td class="text-center align-middle fw-bold p-1 m-0">
-              <select
-                v-model="c.specimen_type"
-                class="form-select form-control form-control-sm"
+              <div
+                :class="{ 'group-invalid': flagChecker && !c.specimen_type }"
               >
-                <option value="">Please Select</option>
-                <option v-for="(s, index) in specimens" :value="s">
-                  {{ s }}
-                </option>
-              </select>
+                <select
+                  v-model="c.specimen_type"
+                  class="form-select form-control form-control-sm"
+                >
+                  <option value="">Please Select</option>
+                  <option v-for="(s, index) in specimens" :value="s">
+                    {{ s }}
+                  </option>
+                </select>
+              </div>
             </td>
             <td class="text-center align-middle fw-bold p-1 m-0">
-              <input
-                type="datetime-local"
-                v-model="c.datetime_collection"
-                class="form-control form-control-sm custom-font"
-              />
+              <div>
+                <input
+                  type="datetime-local"
+                  v-model="c.datetime_collection"
+                  class="form-control form-control-sm custom-font"
+                />
+              </div>
             </td>
             <td class="text-center align-middle fw-bold p-1 m-0">
               {{
@@ -513,6 +519,12 @@
       </table>
     </div>
   </modal-md>
+  <loader
+    title="Creating Measles-Rubella Linelist..."
+    :subTitle="subTitle"
+    warning="true"
+    v-if="savingFlag"
+  />
   <!-- <pre>{{ patientData }}</pre> -->
   <!-- <print-rota :patient="patientData" ref="printComponent" style="opacity: 1; border: 1px solid red"/> -->
 </template>
@@ -536,6 +548,7 @@ import TableSkeleton from "@/pages/loader/TableSkeleton.vue";
 import SkeletonPlaceholder from "@/pages/loader/SkeletonPlaceholder.vue";
 import PaginationSkeleton from "@/pages/loader/PaginationSkeleton.vue";
 import ModalMd from "@/components/modals/ModalMd.vue";
+import Loader from "@/pages/loader/Loader.vue";
 import { encryptData } from "@/composables";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -569,6 +582,7 @@ export default defineComponent({
     PrintMeasles,
     ModalSemiSm,
     ModalMd,
+    Loader,
   },
   setup() {
     const store = useStore();
@@ -828,11 +842,35 @@ export default defineComponent({
     };
     const headerResponse = computed(() => store.getters.getLnhResponse);
 
-    const currentCount = ref(0);
-    const patientName = ref("");
+    const currentCount = ref(1);
+    const subTitle = ref("");
+    const savingFlag = ref(false);
+    const flagChecker = ref(false);
+
+    const resetResource = () => {
+      cart.value = [];
+      currentCount.value = 1;
+      subTitle.value = "";
+      flagChecker.value = false;
+    };
+
+    const validateLinelist = () => {
+      flagChecker.value = true;
+      const hasError = cart.value.some((c) => {
+        if (!c.specimen_type) {
+          swalMessage(swal, "Error", "Please select Specimen Type", "error");
+          return true;
+        }
+        return false;
+      });
+
+      return hasError;
+    };
+
     const saveLinelistDetails = async () => {
       for (let i = 0; i < cart.value.length; i++) {
-        patientName.value = `${cart.value[i].lname}, ${cart.value[i].fname} ${cart.value[i].mname}`;
+        subTitle.value = `Patient ${cart.value[i].lname}, ${cart.value[i].fname} ${cart.value[i].mname} has been added to the Linelist \n
+        ${currentCount.value} out of ${cart.value.length}`;
         await store.dispatch("saveLinelistDetails", {
           idd: 0,
           linelist_header_id: headerResponse.value.id,
@@ -844,7 +882,15 @@ export default defineComponent({
         }
 
         if (i === cart.value.length - 1) {
-          alert("saved");
+          savingFlag.value = false;
+          swalMessage(
+            swal,
+            "Information",
+            `Linelist ${headerResponse.value.linelist_code} Created Successfully`,
+            "success"
+          ).then(() => {
+            resetResource();
+          });
         }
       }
     };
@@ -859,10 +905,16 @@ export default defineComponent({
         );
         return;
       }
+
+      const hasError = validateLinelist();
+
+      if (hasError) {
+        return;
+      }
+
+      savingFlag.value = true;
       await saveLinelistHeader();
       await saveLinelistDetails();
-
-      //proceed to saving
     };
 
     onMounted(async () => {
@@ -908,6 +960,11 @@ export default defineComponent({
       formHeader,
       specimens,
       saveLinelist,
+      //cart saving
+      savingFlag,
+      currentCount,
+      subTitle,
+      flagChecker,
     };
   },
 });
