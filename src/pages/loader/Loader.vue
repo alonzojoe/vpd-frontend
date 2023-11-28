@@ -13,6 +13,7 @@
     <div class="loader-text text-center">
       <h3>{{ title }}</h3>
       <h4>{{ subTitle }}</h4>
+      <h4>{{ counts }}</h4>
       <h4
         class="m-0 p-0 cst-loader-text-4"
         v-if="warning"
@@ -36,6 +37,10 @@ export default defineComponent({
       default: "",
     },
     subTitle: {
+      type: String,
+      default: "",
+    },
+    counts: {
       type: String,
       default: "",
     },

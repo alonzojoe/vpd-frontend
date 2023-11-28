@@ -522,7 +522,8 @@
   <loader
     title="Creating Measles-Rubella Linelist..."
     :subTitle="subTitle"
-    warning="true"
+    :counts="patientCount"
+    :warning="true"
     v-if="savingFlag"
   />
   <!-- <pre>{{ patientData }}</pre> -->
@@ -843,6 +844,7 @@ export default defineComponent({
     const headerResponse = computed(() => store.getters.getLnhResponse);
 
     const currentCount = ref(1);
+    const patientCount = ref("");
     const subTitle = ref("");
     const savingFlag = ref(false);
     const flagChecker = ref(false);
@@ -851,7 +853,9 @@ export default defineComponent({
       cart.value = [];
       currentCount.value = 1;
       subTitle.value = "";
+      patientCount.value = "";
       flagChecker.value = false;
+      modalLineList.value.show = false;
     };
 
     const validateLinelist = () => {
@@ -869,8 +873,8 @@ export default defineComponent({
 
     const saveLinelistDetails = async () => {
       for (let i = 0; i < cart.value.length; i++) {
-        subTitle.value = `Patient ${cart.value[i].lname}, ${cart.value[i].fname} ${cart.value[i].mname} has been added to the Linelist \n
-        ${currentCount.value} out of ${cart.value.length}`;
+        subTitle.value = `Patient ${cart.value[i].lname}, ${cart.value[i].fname} ${cart.value[i].mname} has been added to the Linelist`;
+        patientCount.value = `${currentCount.value} out of ${cart.value.length} Patient/s`;
         await store.dispatch("saveLinelistDetails", {
           idd: 0,
           linelist_header_id: headerResponse.value.id,
@@ -886,10 +890,11 @@ export default defineComponent({
           swalMessage(
             swal,
             "Information",
-            `Linelist ${headerResponse.value.linelist_code} Created Successfully`,
+            `Linelist ${headerResponse.value.linelist_code} has been Created Successfully`,
             "success"
           ).then(() => {
             resetResource();
+            router.push({ name: "linelist" });
           });
         }
       }
@@ -965,6 +970,7 @@ export default defineComponent({
       currentCount,
       subTitle,
       flagChecker,
+      patientCount,
     };
   },
 });
