@@ -351,7 +351,12 @@
           <button class="btn btn-primary btn-sm m-1" @click="saveLinelist()">
             Save Linelist
           </button>
-          <button class="btn btn-danger btn-sm m-1">Cancel</button>
+          <button
+            class="btn btn-danger btn-sm m-1"
+            @click="modalLineList.show = false"
+          >
+            Cancel
+          </button>
         </div>
       </div>
       <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
@@ -433,10 +438,16 @@
               Date of Birth
             </th>
             <th class="text-center bg-primary text-white p-0 m-0">Specimen</th>
-            <th class="text-center bg-primary text-white p-0 m-0">
+            <th
+              class="text-center bg-primary text-white p-0 m-0"
+              style="width: 10%"
+            >
               Date and Time Collection
             </th>
-            <th class="text-center bg-primary text-white p-0 m-0">
+            <th
+              class="text-center bg-primary text-white p-0 m-0"
+              style="width: 10%"
+            >
               Disease Case
             </th>
             <th class="text-center bg-primary text-white p-0 m-0">Remove</th>
@@ -810,6 +821,7 @@ export default defineComponent({
     const cartResetter = () => {
       cart.value = [];
       toggleList.value = false;
+      flagChecker.value = false;
     };
 
     const modalLineList = ref({
@@ -836,6 +848,11 @@ export default defineComponent({
         (formHeader.value.region = payload.address.region),
         (formHeader.value.province = payload.address.province),
         (formHeader.value.email = payload.email);
+    };
+
+    const cancelHeader = () => {
+      modalLineList.value.show = false;
+      flagChecker.value = false;
     };
 
     const saveLinelistHeader = async () => {
@@ -926,9 +943,18 @@ export default defineComponent({
         return;
       }
 
-      savingFlag.value = true;
-      await saveLinelistHeader();
-      await saveLinelistDetails();
+      swalConfirmation(
+        swal,
+        "Confirmation",
+        `Are you sure to save Line list?`,
+        "question"
+      ).then(async (res) => {
+        if (res.isConfirmed) {
+          savingFlag.value = true;
+          await saveLinelistHeader();
+          await saveLinelistDetails();
+        }
+      });
     };
 
     onMounted(async () => {
@@ -980,6 +1006,7 @@ export default defineComponent({
       subTitle,
       flagChecker,
       patientCount,
+      cancelHeader,
     };
   },
 });

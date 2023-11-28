@@ -269,7 +269,11 @@ export default defineComponent({
 
     const resetFormData = () => {
       Object.keys(formData.value).forEach((key) => {
-        formData.value[key] = "";
+        if (key === "dateFrom" || key === "dateTo") {
+          formData.value[key] = moment(dateToday.value).format("YYYY-MM-DD");
+        } else {
+          formData.value[key] = "";
+        }
       });
     };
 
