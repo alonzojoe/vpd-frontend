@@ -481,7 +481,11 @@
               </div>
             </td>
             <td class="text-center align-middle fw-bold p-1 m-0">
-              <div>
+              <div
+                :class="{
+                  'group-invalid': flagChecker && !c.datetime_collection,
+                }"
+              >
                 <input
                   type="datetime-local"
                   v-model="c.datetime_collection"
@@ -785,7 +789,7 @@ export default defineComponent({
       cart.value = cart.value.map((c) => {
         return {
           ...c,
-          datetime_collection: moment(Date.now()).format("YYYY-MM-DD HH:mm"),
+          datetime_collection: "",
           specimen_type: "",
         };
       });
@@ -861,11 +865,11 @@ export default defineComponent({
     const validateLinelist = () => {
       flagChecker.value = true;
       const hasError = cart.value.some((c) => {
-        if (!c.specimen_type) {
+        if (!c.specimen_type || !c.datetime_collection) {
           swalMessage(
             swal,
             "Validation Failed",
-            "Please select Specimen Type",
+            "Please fill out required fields.",
             "error"
           );
           return true;
@@ -899,7 +903,7 @@ export default defineComponent({
             "success"
           ).then(() => {
             resetResource();
-            router.push({ name: "linelist" });
+            router.push({ name: "linelists" });
           });
         }
       }

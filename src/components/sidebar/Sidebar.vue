@@ -184,6 +184,23 @@
                         </li>
                       </ul>
                     </li>
+                    <li
+                      class="sidebar-item"
+                      :class="{
+                        selected: route.name === 'linelists',
+                      }"
+                    >
+                      <router-link
+                        :to="{ name: 'linelists' }"
+                        class="sidebar-link"
+                        aria-expanded="false"
+                      >
+                        <span>
+                          <i class="ti ti-list-numbers"></i>
+                        </span>
+                        <span class="hide-menu">Line Lists</span>
+                      </router-link>
+                    </li>
 
                     <li
                       v-if="authUser.role == 'Administrator'"
