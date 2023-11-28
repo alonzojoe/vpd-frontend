@@ -91,7 +91,7 @@ const routes = [
                 path: 'linelist',
                 name: 'linelist',
                 component: () => import('@/pages/linelist/LineList.vue'),
-                meta: { title: 'Linelist', requireRole: ['Administrator', 'Regular'] }
+                meta: { title: 'Patient Line List', requireRole: ['Administrator', 'Regular'] }
             },
 
 
