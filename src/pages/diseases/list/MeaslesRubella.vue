@@ -437,7 +437,7 @@
               Date and Time Collection
             </th>
             <th class="text-center bg-primary text-white p-0 m-0">
-              Disease Type
+              Disease Case
             </th>
             <th class="text-center bg-primary text-white p-0 m-0">Remove</th>
           </tr>
@@ -862,7 +862,12 @@ export default defineComponent({
       flagChecker.value = true;
       const hasError = cart.value.some((c) => {
         if (!c.specimen_type) {
-          swalMessage(swal, "Error", "Please select Specimen Type", "error");
+          swalMessage(
+            swal,
+            "Validation Failed",
+            "Please select Specimen Type",
+            "error"
+          );
           return true;
         }
         return false;

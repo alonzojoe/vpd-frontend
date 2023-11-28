@@ -1,7 +1,7 @@
 <template>
   <div class="card my-0">
     <div class="card-body py-4">
-      <search-card title="Search Patient">
+      <search-card title="Search Line list">
         <template v-slot:formInput="pObject">
           <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
             <div class="search">
@@ -77,6 +77,126 @@
           </div>
         </template>
       </search-card>
+      <div>
+        <div class="table-responsive p-0 m-0 border border-primary">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="text-center bg-primary text-white p-1 m-0">ID</th>
+                <th class="text-center bg-primary text-white p-1 m-0">View</th>
+                <th class="text-center bg-primary text-white p-1 m-0">Code</th>
+                <th class="text-center bg-primary text-white p-1 m-0">DRU</th>
+                <th class="text-center bg-primary text-white p-1 m-0">
+                  DRU Officer
+                </th>
+                <th class="text-center bg-primary text-white p-1 m-0">
+                  Contact
+                </th>
+                <th class="text-center bg-primary text-white p-1 m-0">Email</th>
+                <th class="text-center bg-primary text-white p-1 m-0">
+                  Created At
+                </th>
+                <th class="text-center bg-primary text-white p-1 m-0">
+                  Updated At
+                </th>
+                <th
+                  class="text-center bg-primary text-white p-1 m-0"
+                  style="width: 5%"
+                >
+                  Update
+                </th>
+                <th
+                  class="text-center bg-primary text-white p-1 m-0"
+                  style="width: 5%"
+                >
+                  Delete
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr v-for="l in linelists" :key="l.id">
+                <td class="text-center align-middle fw-bold p-1 m-0">
+                  {{ l.id }}
+                </td>
+                <td class="text-center align-middle fw-bold p-1 m-0">
+                  <a href="javascript:void(0);" @click="zxc">
+                    <!-- <i class="scale-icon ti ti-file-invoice fs-6"></i> -->
+                    <img
+                      class="scale-icon"
+                      src="./../../assets/images/icons/print.png"
+                      height="30"
+                      width="30"
+                      v-tooltip.right="{
+                        value: `<h6 class='text-white'>Print Form</h6>`,
+                        escape: true,
+                        class: 'bg-dark rounded p-1',
+                      }"
+                    />
+                  </a>
+                </td>
+                <td class="text-center align-middle fw-bold p-1 m-0">
+                  {{ l.linelist_code }}
+                </td>
+                <td class="text-center align-middle fw-bold p-1 m-0">
+                  {{ l.dru }}
+                </td>
+                <td class="text-center align-middle fw-bold p-1 m-0">
+                  {{ l.dru_officer }}
+                </td>
+                <td class="text-center align-middle fw-bold p-1 m-0">
+                  {{ l.contact }}
+                </td>
+                <td class="text-center align-middle fw-bold p-1 m-0">
+                  {{ l.email }}
+                </td>
+                <td class="text-center align-middle fw-bold p-1 m-0">
+                  {{ l.created_at }}
+                </td>
+                <td class="text-center align-middle fw-bold p-1 m-0">
+                  {{ l.updated_at }}
+                </td>
+                <td class="text-center align-middle fw-bold p-1 m-0">
+                  <button @click="zxc" class="btn btn-sm btn-info m-1">
+                    Update
+                  </button>
+                </td>
+                <td class="text-center align-middle fw-bold p-1 m-0">
+                  <button @click="zxc" class="btn btn-sm btn-danger m-1">
+                    Delete
+                  </button>
+                </td>
+              </tr>
+              <tr v-if="!linelists.length && !isLoading">
+                <td
+                  class="text-center align-middle fw-bold p-1 m-0"
+                  colspan="11"
+                >
+                  No records found.
+                </td>
+              </tr>
+              <tr v-if="isLoading">
+                <td colspan="11">
+                  <div class="d-flex align-items-center justify-content-center">
+                    <div
+                      class="spinner-border spinner-border-sm text-dark"
+                      role="status"
+                    ></div>
+                    <span class="text-dark ml-4"
+                      >&nbsp;&nbsp;&nbsp;Loading Please Wait...</span
+                    >
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <pagination
+        v-if="!isLoading"
+        :data="paginationData"
+        @update:currentPage="updateCurrentPage"
+      />
     </div>
   </div>
 </template>
@@ -160,7 +280,7 @@ export default defineComponent({
       currentPage: 1,
     });
 
-    watch([totalLinelist, linelistPage], (total, pages) => {
+    watch([totalLinelist, linelistPage], ([total, pages]) => {
       paginationData.value.totalRecords = total;
       paginationData.value.totalPages = pages;
     });
@@ -202,6 +322,7 @@ export default defineComponent({
     });
 
     return {
+      isLoading,
       linelists,
       paginationData,
       updateCurrentPage,

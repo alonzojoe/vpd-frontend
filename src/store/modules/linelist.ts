@@ -16,7 +16,13 @@ const state = {
 
 const mutations = {
     setLnHeader: (state, payload) => {
-        state.data.lnheader = payload
+        state.data.lnheader = payload.map((p) => {
+            return {
+                ...p,
+                created_at: moment(p.created_at).format('lll'),
+                updated_at: moment(p.updated_at).format('lll')
+            }
+        })
     },
 
     setLnHeaderEmpty: (state) => {

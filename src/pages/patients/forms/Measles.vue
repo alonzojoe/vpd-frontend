@@ -1632,7 +1632,10 @@
                     <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
                       <div
                         class="search"
-                        :class="saveSubmitted && !validationStatus.outcome"
+                        :class="{
+                          'group-invalid':
+                            saveSubmitted && !validationStatus.outcome,
+                        }"
                       >
                         <Label class="mb-2"
                           >Outcome <span class="text-danger">*</span></Label
