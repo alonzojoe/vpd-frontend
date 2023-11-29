@@ -1,62 +1,11 @@
 <template>
-  <ul
-    class="nav nav-pills user-profile-tab justify-content-start bg-light-info d-flex"
-    id="pills-tab"
-    role="tablist"
-  >
-    <div class="d-flex justify-content-between align-items-center w-100">
-      <div class="d-flex">
-        <li class="nav-item" role="presentation" @click="selectTab(1)">
-          <button
-            :class="{ active: selectedTab == 1 }"
-            class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent fs-3 py-6"
-          >
-            <span class="d-none d-md-block">Clinical Information</span>
-          </button>
-        </li>
-        <li class="nav-item" role="presentation" @click="selectTab(2)">
-          <button
-            :class="{ active: selectedTab == 2 }"
-            class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent fs-3 py-6"
-          >
-            <span class="d-none d-md-block"
-              >Vaccination Information & Exposure History</span
-            >
-          </button>
-        </li>
-        <li class="nav-item" role="presentation" @click="selectTab(3)">
-          <button
-            :class="{ active: selectedTab == 3 }"
-            class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent fs-3 py-6"
-          >
-            <span class="d-none d-md-block"
-              >Exposure Occurence & Other Information</span
-            >
-          </button>
-        </li>
-      </div>
-      <div
-        class="btn-container d-flex align-items-center justify-content-end gap-2 mx-3"
-      >
-        <router-link
-          :to="{ name: 'patientlist' }"
-          class="btn waves-effect waves-light btn-rounded btn-dark"
-        >
-          Back to Patient Profile List
-        </router-link>
-        <button
-          class="btn waves-effect waves-light btn-rounded btn-info"
-          @click="saveData()"
-        >
-          {{
-            !patient.registry
-              ? "Update Patient Disease"
-              : "Save Patient Disease"
-          }}
-        </button>
-      </div>
-    </div>
-  </ul>
+  <registry-nav
+    :tabs="tabs"
+    :patient="patient"
+    :selectedTab="selectedTab"
+    @save-data="saveData()"
+    @select-tab="selectTab($event)"
+  ></registry-nav>
   <div class="card my-0">
     <div class="card-body py-4">
       <Toast />
@@ -184,6 +133,7 @@ import { useToast } from "primevue/usetoast";
 import Loader from "../../loader/Loader.vue";
 import FormSkeleton from "../../loader/FormSkeleton.vue";
 import PatientInfoCard from "../../../components/cards/PatientInfoCard.vue";
+import RegistryNav from "@/components/pagination/RegistryNav.vue";
 import SwitchTab from "@/components/pagination/SwitchTab.vue";
 import * as fnMease from "./functions/measles";
 import MeaslesClinical from "./measles/MeaslesClinical.vue";
@@ -200,6 +150,7 @@ export default defineComponent({
     PatientInfoCard,
     Loader,
     FormSkeleton,
+    RegistryNav,
     SwitchTab,
     MeaslesClinical,
     MeaslesVaccination,
@@ -234,6 +185,12 @@ export default defineComponent({
         store.commit("setMeaseEmpty");
       }
     };
+
+    const tabs = ref([
+      { id: 1, name: "Clinical Information" },
+      { id: 2, name: "Vaccination Information & Exposure History" },
+      { id: 3, name: "Exposure Occurence & Other Information" },
+    ]);
 
     const selectedTab = ref(1);
     const selectTab = (tab: Number) => {
@@ -423,6 +380,7 @@ export default defineComponent({
       patient,
       formData,
       currentDate,
+      tabs,
       selectTab,
       selectedTab,
       formDiseaseHistory,
