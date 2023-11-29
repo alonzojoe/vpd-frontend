@@ -138,7 +138,7 @@ export default defineComponent({
     const formDiseaseHistory = computed(() => store.getters.getDiseaseHistory);
     const formRota = computed(() => store.getters.getRota);
     const currentDate = moment(Date.now()).format("yyyy-MM-DD");
-    return { currentDate, formDiseaseHistory, formRota, validFn };
+    return { NumericOnly, currentDate, formDiseaseHistory, formRota, validFn };
   },
 });
 </script>

@@ -81,7 +81,7 @@
         : 'Saving Rota Virus Record'
     "
     subTitle="Please Wait...."
-    warning="true"
+    :warning="true"
     v-if="savingFlag"
   />
 </template>
@@ -112,11 +112,11 @@ import Loader from "../../loader/Loader.vue";
 import FormSkeleton from "../../loader/FormSkeleton.vue";
 import RegistryNav from "@/components/pagination/RegistryNav.vue";
 import SwitchTab from "@/components/pagination/SwitchTab.vue";
-import RotaClinical from "./rota/RotaClinical.vue";
-import RotaEpidemiologic from "./rota/RotaEpidemiologic.vue";
-import RotaImmunization from "./rota/RotaImmunization.vue";
-import RotaInvestigator from "./rota/RotaInvestigator.vue";
-import RotaOutcome from "./rota/RotaOutcome.vue";
+import RotaClinical from "./rotacomponents/RotaClinical.vue";
+import RotaEpidemiologic from "./rotacomponents/RotaEpidemiologic.vue";
+import RotaImmunization from "./rotacomponents/RotaImmunization.vue";
+import RotaInvestigator from "./rotacomponents/RotaInvestigator.vue";
+import RotaOutcome from "./rotacomponents/RotaOutcome.vue";
 export default defineComponent({
   components: {
     FormCard,
@@ -364,14 +364,30 @@ export default defineComponent({
   border-radius: 5px;
 }
 
-.rota-content {
-  margin-top: 50px !important;
-}
-
 /*.nav-pills{
   position: fixed;
   top: -10;
   z-index: 100;
   width: 100%;
 }*/
+
+.card {
+  margin-right: 50px;
+}
+
+.rota-content {
+  margin-top: 50px !important;
+}
+
+@media screen and (max-width: 991px) {
+  .nav-pills {
+    display: none !important;
+  }
+  .card {
+    margin-right: 0;
+  }
+  .rota-content {
+    margin-top: 0px !important;
+  }
+}
 </style>
