@@ -1,5 +1,7 @@
 <template>
   <registry-nav
+    class="position-fixed z-3 mr-5"
+    id="navlink"
     :tabs="tabs"
     :patient="patient"
     :selectedTab="selectedTab"
@@ -7,7 +9,7 @@
     @select-tab="selectTab($event)"
   ></registry-nav>
   <div class="card my-0">
-    <div class="card-body py-4">
+    <div class="card-body py-4 mt-5">
       <Toast />
       <div class="tab-Item" v-if="selectedTab == 1">
         <div class="row">
@@ -101,7 +103,7 @@
         : 'Saving Measles-Rubella Record'
     "
     subTitle="Please Wait...."
-    warning="true"
+    :warning="true"
     v-if="savingFlag"
   />
   <!-- <pre>{{ validationStatus }}</pre>
@@ -371,9 +373,12 @@ export default defineComponent({
       }, 1500);
     };
 
+    const navlink = document.getElementById("navlink");
+
     onMounted(async () => {
       await fetchPatientInfo();
       resetter;
+      console.log("navlink", navlink);
     });
 
     return {
@@ -417,7 +422,6 @@ export default defineComponent({
   padding: 5px;
   border-radius: 5px;
 }
-
 /*.nav-pills{
   position: fixed;
   top: -10;

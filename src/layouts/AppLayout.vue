@@ -57,6 +57,7 @@ export default {
     const pageTitle = ref("");
 
     const isFull = ref(false);
+    provide("isFull", isFull);
 
     watch(
       () => route.meta.title,

@@ -1,6 +1,6 @@
 <template>
   <ul
-    class="nav nav-pills user-profile-tab justify-content-start bg-light-info d-flex"
+    class="nav nav-pills user-profile-tab justify-content-start bg-light-info d-flex registry-nav"
     id="pills-tab"
     role="tablist"
   >
@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, inject, computed } from "vue";
 
 export default defineComponent({
   name: "Registry Navbar",
@@ -57,16 +57,24 @@ export default defineComponent({
   },
 
   setup(props, { emit }) {
-    const chooseTab = (tabId) => {
+    const isFull = inject("isFull");
+    const calculateWidth = computed(() => {
+      return isFull.value ? "calc(100% - 269px)" : "calc(100% - 86px)";
+    });
+    const chooseTab = (tabId: Number) => {
       emit("select-tab", tabId);
     };
 
-    return { chooseTab };
+    return { chooseTab, isFull, calculateWidth };
   },
 });
 </script>
 
 <style scoped>
+.registry-nav {
+  position: fixed;
+  width: v-bind(calculateWidth);
+}
 @media screen and (max-width: 991px) {
   .nav-pills {
     display: none !important;
