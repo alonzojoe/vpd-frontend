@@ -290,7 +290,7 @@ export default defineComponent({
     });
 
     const isLoading = ref(false);
-    const fetchLinelist = async (page, form) => {
+    const fetchLinelist = async (page: number, form: any) => {
       const mime =
         authUser.value.role == "Administrator" ? null : authUser.value.id;
       await store.commit("setLnHeaderEmpty");
