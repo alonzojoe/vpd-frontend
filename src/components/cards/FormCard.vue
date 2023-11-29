@@ -28,7 +28,7 @@
 import { defineComponent, ref } from "vue";
 
 export default defineComponent({
-  name: "Form Card",
+  name: "FormCard",
   props: {
     title: String,
     withCbo: {

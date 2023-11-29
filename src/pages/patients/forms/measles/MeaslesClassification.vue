@@ -136,7 +136,7 @@ import FormCard from "@/components/cards/FormCard.vue";
 import * as fnMease from "../functions/measles";
 import { useStore } from "vuex";
 export default defineComponent({
-  name: "Measles Final Classification",
+  name: "MeaslesClassification",
   props: {
     saveSubmitted: {
       type: Boolean,

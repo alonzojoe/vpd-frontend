@@ -243,7 +243,7 @@ import FormCard from "@/components/cards/FormCard.vue";
 import * as fnMease from "../functions/measles";
 import { useStore } from "vuex";
 export default defineComponent({
-  name: "Measles Exposure History",
+  name: "MeaslesExposure",
   props: {
     saveSubmitted: {
       type: Boolean,

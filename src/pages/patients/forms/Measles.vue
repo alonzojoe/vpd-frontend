@@ -7,9 +7,9 @@
     :selectedTab="selectedTab"
     @save-data="saveData()"
     @select-tab="selectTab($event)"
-  ></registry-nav>
+  />
   <div class="card my-0">
-    <div class="card-body py-4">
+    <div class="card-body measles-content py-4">
       <Toast />
       <div class="tab-Item" v-if="selectedTab == 1">
         <div class="row">
@@ -215,13 +215,11 @@ export default defineComponent({
 
     const modifyTab = (tab: number) => {
       switchTabDetails.value.currentTab = tab;
-      if (selectedTab.value == 1) {
-        switchTabDetails.value.title = "Clinical Information";
-      } else if (selectedTab.value == 2) {
-        switchTabDetails.value.title =
-          "Vaccination Information & Exposure History";
-      } else {
-        switchTabDetails.value.title = "Exposure Occurence & Other Information";
+
+      const selectedTab = tabs.value.find((t) => t.id === tab);
+
+      if (selectedTab) {
+        switchTabDetails.value.title = selectedTab.name;
       }
     };
 
@@ -439,7 +437,7 @@ export default defineComponent({
   margin-right: 50px;
 }
 
-.card-body {
+.measles-content {
   margin-top: 50px !important;
 }
 
@@ -450,7 +448,7 @@ export default defineComponent({
   .card {
     margin-right: 0;
   }
-  .card-body {
+  .measles-content {
     margin-top: 0px !important;
   }
 }

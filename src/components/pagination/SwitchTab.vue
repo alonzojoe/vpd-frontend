@@ -6,7 +6,7 @@
       @click="$emit('patient-list')"
       :disabled="selectedHeader == 1 ? 1 : 0"
       v-tooltip.top="{
-        value: `<h6 class='text-white'>Back to Patient Profile List</h6>`,
+        value: `<h6 class='text-white'>Back to Patient Profiles</h6>`,
         escape: true,
         class: 'bg-dark rounded p-1',
       }"
@@ -79,6 +79,7 @@
 import { defineComponent, ref, watch } from "vue";
 
 export default defineComponent({
+  name: "SwitchTab",
   props: {
     details: {
       type: Object,

@@ -783,13 +783,19 @@
           </div>
         </div>
       </div>
-      <pre>{{ validationStatus }}</pre>
+      <switch-tab
+        :details="switchTabDetails"
+        @switch-tab="switchSelect"
+        @patient-list="backTo"
+        @save-data="saveData()"
+      />
+      <!-- <pre>{{ validationStatus }}</pre>
       <pre>{{ diseaseDetails }}</pre>
       <pre>{{ patient }}</pre>
       <pre>{{ formDiseaseHistory }}</pre>
       <pre>{{ diseaseResponse }}</pre>
       <pre>{{ formRota }}</pre>
-      <pre>{{ rotaResponse }}</pre>
+      <pre>{{ rotaResponse }}</pre> -->
     </div>
   </div>
   <loader
@@ -828,6 +834,8 @@ import {
 import { useToast } from "primevue/usetoast";
 import Loader from "../../loader/Loader.vue";
 import FormSkeleton from "../../loader/FormSkeleton.vue";
+import RegistryNav from "@/components/pagination/RegistryNav.vue";
+import SwitchTab from "@/components/pagination/SwitchTab.vue";
 
 export default defineComponent({
   components: {
@@ -835,6 +843,8 @@ export default defineComponent({
     FormPatientInfo,
     Loader,
     FormSkeleton,
+    RegistryNav,
+    SwitchTab,
   },
   setup() {
     const store = useStore();

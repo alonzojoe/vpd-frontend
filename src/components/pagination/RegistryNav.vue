@@ -49,7 +49,7 @@
 import { defineComponent, inject, computed } from "vue";
 
 export default defineComponent({
-  name: "Registry Navbar",
+  name: "RegistryNav",
   props: {
     tabs: Array,
     patient: Object,
