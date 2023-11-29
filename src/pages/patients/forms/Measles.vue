@@ -9,7 +9,7 @@
     @select-tab="selectTab($event)"
   ></registry-nav>
   <div class="card my-0">
-    <div class="card-body py-4 mt-5">
+    <div class="card-body py-4">
       <Toast />
       <div class="tab-Item" v-if="selectedTab == 1">
         <div class="row">
@@ -31,14 +31,14 @@
       </div>
       <div class="tab-Item" v-if="selectedTab == 2">
         <div class="row">
-          <div class="col-sm-12 col-md-6 col-lg-12 mb-2">
+          <div class="col-sm-12 col-md-12 col-lg-12 mb-2">
             <measles-vaccination
               :saveSubmitted="saveSubmitted"
               :validationStatus="validationStatus"
             >
             </measles-vaccination>
           </div>
-          <div class="col-sm-12 col-md-6 col-lg-12 mb-2">
+          <div class="col-sm-12 col-md-12 col-lg-12 mb-2">
             <measles-mcv
               :saveSubmitted="saveSubmitted"
               :validationStatus="validationStatus"
@@ -47,7 +47,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-sm-12 col-md-6 col-lg-12 mb-2">
+          <div class="col-sm-12 col-md-12 col-lg-12 mb-2">
             <measles-exposure
               :saveSubmitted="saveSubmitted"
               :validationStatus="validationStatus"
@@ -58,28 +58,28 @@
       </div>
       <div class="tab-item" v-if="selectedTab == 3">
         <div class="row">
-          <div class="col-sm-12 col-md-6 col-lg-12 mb-2">
+          <div class="col-sm-12 col-md-12 col-lg-12 mb-2">
             <measles-occurance
               :saveSubmitted="saveSubmitted"
               :validationStatus="validationStatus"
             >
             </measles-occurance>
           </div>
-          <div class="col-sm-12 col-md-6 col-lg-8 mb-2">
+          <div class="col-sm-12 col-md-12 col-lg-8 mb-2">
             <measles-classification
               :saveSubmitted="saveSubmitted"
               :validationStatus="validationStatus"
             >
             </measles-classification>
           </div>
-          <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
+          <div class="col-sm-12 col-md-12 col-lg-4 mb-2">
             <measles-infection
               :saveSubmitted="saveSubmitted"
               :validationStatus="validationStatus"
             >
             </measles-infection>
           </div>
-          <div class="col-sm-12 col-md-6 col-lg-12 mb-2">
+          <div class="col-sm-12 col-md-12 col-lg-12 mb-2">
             <measles-outcome
               :saveSubmitted="saveSubmitted"
               :validationStatus="validationStatus"
@@ -439,12 +439,19 @@ export default defineComponent({
   margin-right: 50px;
 }
 
+.card-body {
+  margin-top: 50px !important;
+}
+
 @media screen and (max-width: 991px) {
   .nav-pills {
     display: none !important;
   }
   .card {
     margin-right: 0;
+  }
+  .card-body {
+    margin-top: 0px !important;
   }
 }
 </style>
