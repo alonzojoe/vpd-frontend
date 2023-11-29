@@ -7,54 +7,9 @@
     @save-data="saveData()"
     @select-tab="selectTab($event)"
   />
-  <ul
-    class="nav nav-pills user-profile-tab justify-content-start bg-light-info d-flex"
-    id="pills-tab"
-    role="tablist"
-  >
-    <div class="d-flex justify-content-between align-items-center w-100">
-      <div class="d-flex">
-        <li class="nav-item" role="presentation" @click="selectTab(1)">
-          <button
-            :class="{ active: selectedTab == 1 }"
-            class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent fs-3 py-6"
-          >
-            <span class="d-none d-md-block">Clinical Information</span>
-          </button>
-        </li>
-        <li class="nav-item" role="presentation" @click="selectTab(2)">
-          <button
-            :class="{ active: selectedTab == 2 }"
-            class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent fs-3 py-6"
-          >
-            <span class="d-none d-md-block">Other Information</span>
-          </button>
-        </li>
-      </div>
-      <div
-        class="btn-container d-flex align-items-center justify-content-end gap-2 mx-3"
-      >
-        <router-link
-          :to="{ name: 'patientlist' }"
-          class="btn waves-effect waves-light btn-rounded btn-dark"
-        >
-          Back to Patient Profile List
-        </router-link>
-        <button
-          class="btn waves-effect waves-light btn-rounded btn-info"
-          @click="saveData()"
-        >
-          {{
-            !patient.registry
-              ? "Update Patient Disease"
-              : "Save Patient Disease"
-          }}
-        </button>
-      </div>
-    </div>
-  </ul>
+
   <div class="card my-0" style="margin-right: 50px">
-    <div class="card-body py-4">
+    <div class="card-body rota-content py-4">
       <Toast />
       <div class="tab-Item" v-if="selectedTab == 1">
         <div class="row">
@@ -77,402 +32,30 @@
       <div class="tab-Item" v-if="selectedTab == 2">
         <div class="row">
           <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
-            <form-card title="Epidemiologic Data">
-              <template v-slot:formInput>
-                <div>
-                  <div class="row">
-                    <div class="col-sm-12 col-md-12 col-lg-12 mb-2">
-                      <div
-                        class="search"
-                        :class="{
-                          'group-invalid':
-                            saveSubmitted && !validationStatus.more_diarrhea,
-                        }"
-                      >
-                        <Label class="mb-2"
-                          >Are there two or more diarrhea cases?
-                          <span class="text-danger">*</span></Label
-                        >
-                        <select
-                          class="form-select form-control form-control-sm"
-                          @change="validFn.changeMoreDia($event)"
-                          v-model="formRota.more_diarrhea"
-                          required
-                        >
-                          <option value="">PLEASE SELECT</option>
-                          <option value="Y">YES</option>
-                          <option value="N">NO</option>
-                          <option value="U">UNKNOWN</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-12 col-lg-12 mb-2">
-                      <div
-                        class="search"
-                        :class="{
-                          'group-invalid':
-                            saveSubmitted &&
-                            !validationStatus.where_diarrhea &&
-                            formRota.more_diarrhea == 'Y',
-                        }"
-                      >
-                        <Label class="mb-2"
-                          >If Yes, where?
-                          <span
-                            v-if="formRota.more_diarrhea == 'Y'"
-                            class="text-danger"
-                            >*</span
-                          ></Label
-                        >
-                        <select
-                          class="form-select form-control form-control-sm"
-                          v-model="formRota.where_diarrhea"
-                          :disabled="formRota.more_diarrhea != 'Y'"
-                          :required="formRota.more_diarrhea == 'Y'"
-                        >
-                          <option value="">PLEASE SELECT</option>
-                          <option value="COM">COMMUNITY</option>
-                          <option value="SCH">SCHOOL</option>
-                          <option value="HOU">HOUSEHOLD</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </template>
-            </form-card>
+            <rota-epidemiologic
+              :saveSubmitted="saveSubmitted"
+              :validationStatus="validationStatus"
+            />
           </div>
           <div class="col-sm-12 col-md-6 col-lg-8 mb-2">
-            <form-card title="Immunization History">
-              <template v-slot:formInput>
-                <div>
-                  <div class="row">
-                    <div class="col-sm-12 col-md-6 col-lg-6 mb-2">
-                      <div
-                        class="search"
-                        :class="{
-                          'group-invalid':
-                            saveSubmitted && !validationStatus.received_rota,
-                        }"
-                      >
-                        <Label class="mb-2"
-                          >Received Rotavirus Vaccine?
-                          <span class="text-danger">*</span></Label
-                        >
-                        <select
-                          class="form-select form-control form-control-sm"
-                          @change="validFn.changeDose($event)"
-                          v-model="formRota.received_rota"
-                          required
-                        >
-                          <option value="">PLEASE SELECT</option>
-                          <option value="Y">YES</option>
-                          <option value="N">NO</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-6 mb-2">
-                      <div
-                        class="search"
-                        :class="{
-                          'group-invalid':
-                            saveSubmitted &&
-                            !validationStatus.dose_received &&
-                            formRota.received_rota == 'Y',
-                        }"
-                      >
-                        <Label class="mb-2"
-                          >If Yes, Total dose received
-                          <span
-                            v-if="formRota.received_rota == 'Y'"
-                            class="text-danger"
-                            >*</span
-                          ></Label
-                        >
-                        <input
-                          type="text"
-                          v-model="formRota.dose_received"
-                          @keypress="NumericOnly()"
-                          :disabled="formRota.received_rota != 'Y'"
-                          :required="formRota.received_rota == 'Y'"
-                          class="form-control form-control-sm w-100 custom-font"
-                        />
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-6 mb-2">
-                      <div class="search">
-                        <Label class="mb-2">Date First Dose received</Label>
-                        <input
-                          type="date"
-                          v-model="formRota.first_dose"
-                          :max="currentDate"
-                          :disabled="formRota.received_rota != 'Y'"
-                          class="form-control form-control-sm w-100 custom-font"
-                        />
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-6 mb-2">
-                      <div class="search">
-                        <Label class="mb-2">Date Second Dose received</Label>
-                        <input
-                          type="date"
-                          v-model="formRota.second_dose"
-                          :max="currentDate"
-                          :disabled="formRota.received_rota != 'Y'"
-                          class="form-control form-control-sm w-100 custom-font"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </template>
-            </form-card>
+            <rota-immunization
+              :saveSubmitted="saveSubmitted"
+              :validationStatus="validationStatus"
+            />
           </div>
         </div>
         <div class="row">
           <div class="col-sm-12 col-md-6 col-lg-6 mb-2">
-            <form-card title="Details of Investigator">
-              <template v-slot:formInput>
-                <div>
-                  <div class="row">
-                    <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
-                      <div
-                        class="search"
-                        :class="{
-                          'group-invalid':
-                            saveSubmitted &&
-                            !validationStatus.investigator_name,
-                        }"
-                      >
-                        <Label class="mb-2"
-                          >Name of Investigator
-                          <span class="text-danger">*</span></Label
-                        >
-
-                        <input
-                          type="text"
-                          v-model="formRota.investigator_name"
-                          class="form-control form-control-sm w-100 custom-font"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
-                      <div
-                        class="search"
-                        :class="{
-                          'group-invalid':
-                            saveSubmitted && !validationStatus.position,
-                        }"
-                      >
-                        <Label class="mb-2"
-                          >Position / Designation
-                          <span class="text-danger">*</span></Label
-                        >
-                        <input
-                          type="text"
-                          v-model="formRota.position"
-                          class="form-control form-control-sm w-100 custom-font"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
-                      <div
-                        class="search"
-                        :class="{
-                          'group-invalid':
-                            saveSubmitted && !validationStatus.contact,
-                        }"
-                      >
-                        <Label class="mb-2"
-                          >Contact No. <span class="text-danger">*</span></Label
-                        >
-                        <input
-                          type="text"
-                          v-model="formRota.contact"
-                          maxlength="11"
-                          @keypress="NumericOnly()"
-                          class="form-control form-control-sm w-100 custom-font"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-6 mb-2">
-                      <div
-                        class="search"
-                        :class="{
-                          'group-invalid':
-                            saveSubmitted &&
-                            !validationStatus.investigation_date,
-                        }"
-                      >
-                        <Label class="mb-2"
-                          >Date of Investigation
-                          <span class="text-danger">*</span></Label
-                        >
-                        <input
-                          type="date"
-                          v-model="formRota.investigation_date"
-                          :max="currentDate"
-                          class="form-control form-control-sm w-100 custom-font"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-6 mb-2">
-                      <div
-                        class="search"
-                        :class="{
-                          'group-invalid':
-                            saveSubmitted && !validationStatus.report_date,
-                        }"
-                      >
-                        <Label class="mb-2"
-                          >Date of Report
-                          <span class="text-danger">*</span></Label
-                        >
-                        <input
-                          type="date"
-                          v-model="formRota.report_date"
-                          :max="currentDate"
-                          class="form-control form-control-sm w-100 custom-font"
-                          required
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </template>
-            </form-card>
+            <rota-investigator
+              :saveSubmitted="saveSubmitted"
+              :validationStatus="validationStatus"
+            />
           </div>
           <div class="col-sm-12 col-md-6 col-lg-6 mb-2">
-            <form-card title="Classification and Outcome">
-              <template v-slot:formInput>
-                <div>
-                  <div class="row">
-                    <div class="col-sm-12 col-md-6 col-lg-6 mb-2">
-                      <div
-                        class="search"
-                        :class="{
-                          'group-invalid':
-                            saveSubmitted &&
-                            !validationStatus.case_classification,
-                        }"
-                      >
-                        <Label class="mb-2"
-                          >Case Classification
-                          <span class="text-danger">*</span></Label
-                        >
-                        <select
-                          class="form-select form-control form-control-sm"
-                          v-model="formRota.case_classification"
-                          required
-                        >
-                          <option value="">PLEASE SELECT</option>
-                          <option value="SUS">SUSPECT</option>
-                          <option value="PROB">PROBABLE</option>
-                          <option value="CON">CONFIRMED</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-6 mb-2">
-                      <div
-                        class="search"
-                        :class="{
-                          'group-invalid':
-                            saveSubmitted && !validationStatus.outcome,
-                        }"
-                      >
-                        <Label class="mb-2"
-                          >Outcome <span class="text-danger">*</span></Label
-                        >
-                        <select
-                          class="form-select form-control form-control-sm"
-                          @change="validFn.changeOutcome($event)"
-                          v-model="formRota.outcome"
-                          required
-                        >
-                          <option value="">PLEASE SELECT</option>
-                          <option value="A">ALIVE</option>
-                          <option value="D">DIED</option>
-                          <option value="HAMA">
-                            HOME AGAINST MEDICAL ADVICE
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-12 col-md-6 col-lg-6 mb-2">
-                      <div
-                        class="search"
-                        :class="{
-                          'group-invalid':
-                            saveSubmitted &&
-                            !validationStatus.discharge_date &&
-                            (formRota.outcome == 'A' ||
-                              formRota.outcome == 'HAMA'),
-                        }"
-                      >
-                        <Label class="mb-2"
-                          >Date of Discharge
-                          <span
-                            v-if="
-                              formRota.outcome == 'A' ||
-                              formRota.outcome == 'HAMA'
-                            "
-                            class="text-danger"
-                            >*</span
-                          ></Label
-                        >
-                        <input
-                          type="date"
-                          v-model="formRota.discharge_date"
-                          :max="currentDate"
-                          :disabled="
-                            formRota.outcome == '' || formRota.outcome == 'D'
-                          "
-                          :required="
-                            formRota.outcome == 'A' ||
-                            formRota.outcome == 'HAMA'
-                          "
-                          class="form-control form-control-sm w-100 custom-font"
-                        />
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-6 mb-2">
-                      <div
-                        class="search"
-                        :class="{
-                          'group-invalid':
-                            saveSubmitted &&
-                            !validationStatus.died_date &&
-                            formRota.outcome == 'D',
-                        }"
-                      >
-                        <Label class="mb-2"
-                          >Date Died
-                          <span
-                            v-if="formRota.outcome == 'D'"
-                            class="text-danger"
-                            >*</span
-                          ></Label
-                        >
-                        <input
-                          type="date"
-                          v-model="formRota.died_date"
-                          :max="currentDate"
-                          :disabled="formRota.outcome != 'D'"
-                          :required="formRota.outcome == 'D'"
-                          class="form-control form-control-sm w-100 custom-font"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </template>
-            </form-card>
+            <rota-outcome
+              :saveSubmitted="saveSubmitted"
+              :validationStatus="validationStatus"
+            />
           </div>
         </div>
       </div>
@@ -530,6 +113,10 @@ import FormSkeleton from "../../loader/FormSkeleton.vue";
 import RegistryNav from "@/components/pagination/RegistryNav.vue";
 import SwitchTab from "@/components/pagination/SwitchTab.vue";
 import RotaClinical from "./rota/RotaClinical.vue";
+import RotaEpidemiologic from "./rota/RotaEpidemiologic.vue";
+import RotaImmunization from "./rota/RotaImmunization.vue";
+import RotaInvestigator from "./rota/RotaInvestigator.vue";
+import RotaOutcome from "./rota/RotaOutcome.vue";
 export default defineComponent({
   components: {
     FormCard,
@@ -539,6 +126,10 @@ export default defineComponent({
     RegistryNav,
     SwitchTab,
     RotaClinical,
+    RotaEpidemiologic,
+    RotaImmunization,
+    RotaInvestigator,
+    RotaOutcome,
   },
   setup() {
     const store = useStore();
@@ -771,6 +362,10 @@ export default defineComponent({
   background: #eaeff4;
   padding: 5px;
   border-radius: 5px;
+}
+
+.rota-content {
+  margin-top: 50px !important;
 }
 
 /*.nav-pills{
