@@ -1,4 +1,12 @@
 <template>
+  <registry-nav
+    class="position-fixed z-3 mr-5"
+    :tabs="tabs"
+    :patient="patient"
+    :selectedTab="selectedTab"
+    @save-data="saveData()"
+    @select-tab="selectTab($event)"
+  />
   <ul
     class="nav nav-pills user-profile-tab justify-content-start bg-light-info d-flex"
     id="pills-tab"
@@ -871,9 +879,52 @@ export default defineComponent({
       }
     };
 
+    const tabs = ref([
+      { id: 1, name: "Clinical Information" },
+      { id: 2, name: "Other Information" },
+    ]);
+
     const selectedTab = ref(1);
     const selectTab = (tab: Number) => {
       selectedTab.value = tab;
+    };
+
+    const switchSelect = (type: Number) => {
+      if (type == 0) {
+        selectedTab.value--;
+      } else {
+        selectedTab.value++;
+      }
+    };
+
+    const switchTabDetails = ref({
+      currentTab: 1,
+      maxTab: 2,
+      title: "",
+    });
+
+    const modifyTab = (tab: number) => {
+      switchTabDetails.value.currentTab = tab;
+
+      const selectedTab = tabs.value.find((t) => t.id === tab);
+
+      if (selectedTab) {
+        switchTabDetails.value.title = selectedTab.name;
+      }
+    };
+
+    watch(
+      () => {
+        selectedTab.value;
+        if (selectedTab.value) {
+          modifyTab(selectedTab.value);
+        }
+      },
+      { deep: true }
+    );
+
+    const backTo = () => {
+      router.push({ name: "patientlist" });
     };
 
     const currentDate = moment(Date.now()).format("yyyy-MM-DD");
@@ -1019,6 +1070,11 @@ export default defineComponent({
       skelPatientInfo,
       skelClinical,
       skelEpi,
+      //tabs
+      tabs,
+      switchSelect,
+      switchTabDetails,
+      backTo,
     };
   },
 });

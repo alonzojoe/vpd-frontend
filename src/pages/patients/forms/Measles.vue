@@ -1,7 +1,6 @@
 <template>
   <registry-nav
     class="position-fixed z-3 mr-5"
-    id="navlink"
     :tabs="tabs"
     :patient="patient"
     :selectedTab="selectedTab"

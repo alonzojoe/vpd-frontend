@@ -94,6 +94,7 @@ import {
 import FormCard from "@/components/cards/FormCard.vue";
 import * as fnMease from "../functions/measles";
 import { useStore } from "vuex";
+import moment from "moment";
 export default defineComponent({
   name: "MeaslesIncome",
   props: {
@@ -111,11 +112,13 @@ export default defineComponent({
     const store = useStore();
     const formDiseaseHistory = computed(() => store.getters.getDiseaseHistory);
     const formMease = computed(() => store.getters.getMease);
+    const currentDate = moment(Date.now()).format("yyyy-MM-DD");
     return {
       NumericOnly,
       fnMease,
       formDiseaseHistory,
       formMease,
+      currentDate,
     };
   },
 });
