@@ -108,445 +108,32 @@
       <div class="tab-item" v-if="selectedTab == 3">
         <div class="row">
           <div class="col-sm-12 col-md-6 col-lg-12 mb-2">
-            <form-card
-              title="Tick The Type of Place Where Exposure Probably Occur"
+            <measles-occurance
+              :saveSubmitted="saveSubmitted"
+              :validationStatus="validationStatus"
             >
-              <template v-slot:formInput>
-                <div>
-                  <div class="row">
-                    <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
-                      <div class="search">
-                        <div class="form-check form-check-inline">
-                          <input
-                            class="form-check-input primary check-outline outline-primary"
-                            type="checkbox"
-                            id="daycare"
-                            v-model="formMease.day_care"
-                            true-value="1"
-                            false-value="0"
-                          />
-                          <label class="form-check-label" for="daycare"
-                            >Day Care</label
-                          >
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
-                      <div class="search">
-                        <div class="form-check form-check-inline">
-                          <input
-                            class="form-check-input primary check-outline outline-primary"
-                            type="checkbox"
-                            id="barangay"
-                            v-model="formMease.barangay"
-                            true-value="1"
-                            false-value="0"
-                          />
-                          <label class="form-check-label" for="barangay"
-                            >Barangay</label
-                          >
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
-                      <div class="search">
-                        <div class="form-check form-check-inline">
-                          <input
-                            class="form-check-input primary check-outline outline-primary"
-                            type="checkbox"
-                            id="home"
-                            v-model="formMease.home"
-                            true-value="1"
-                            false-value="0"
-                          />
-                          <label class="form-check-label" for="home"
-                            >Home</label
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
-                      <div class="search">
-                        <div class="form-check form-check-inline">
-                          <input
-                            class="form-check-input primary check-outline outline-primary"
-                            type="checkbox"
-                            id="school"
-                            v-model="formMease.school"
-                            true-value="1"
-                            false-value="0"
-                          />
-                          <label class="form-check-label" for="school"
-                            >School</label
-                          >
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
-                      <div class="search">
-                        <div class="form-check form-check-inline">
-                          <input
-                            class="form-check-input primary check-outline outline-primary"
-                            type="checkbox"
-                            id="hci"
-                            v-model="formMease.hci"
-                            true-value="1"
-                            false-value="0"
-                          />
-                          <label class="form-check-label" for="hci"
-                            >Health Care Facility</label
-                          >
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
-                      <div class="search">
-                        <div class="form-check form-check-inline">
-                          <input
-                            class="form-check-input primary check-outline outline-primary"
-                            type="checkbox"
-                            id="dorm"
-                            v-model="formMease.dorm"
-                            true-value="1"
-                            false-value="0"
-                          />
-                          <label class="form-check-label" for="dorm"
-                            >Dormitory</label
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
-                      <div class="search">
-                        <Label class="mb-2">Others, Specify</Label>
-                        <input
-                          type="text"
-                          v-model="formMease.occur_specify"
-                          class="form-control form-control-sm w-100 custom-font"
-                        />
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-3 mb-2">
-                      <div class="search">
-                        <Label class="mb-2"
-                          >Are there other known cases with fever and
-                          rash<button
-                            type="button"
-                            class="btn btn-sm btn-light-info text-info p-0 m-0"
-                            v-tooltip.top="{
-                              value: `<h6 class='text-white'>(regardless of presence of 3 C’s)in the community?</h6>`,
-                              escape: true,
-                              class: 'bg-dark rounded p-1',
-                            }"
-                            required
-                          >
-                            .....</button
-                          >?
-                        </Label>
-
-                        <select
-                          class="form-select form-control form-control-sm"
-                          v-model="formMease.known_case"
-                        >
-                          <option value="Y">YES</option>
-                          <option value="N">NO</option>
-                          <option value="U">UNKNOWN</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </template>
-            </form-card>
+            </measles-occurance>
           </div>
           <div class="col-sm-12 col-md-6 col-lg-8 mb-2">
-            <form-card title="Final Classification" class="position-relative">
-              <template v-slot:formInput>
-                <button
-                  @click="fnMease.resetClassification()"
-                  class="btn btn-danger btn-sm reset-btn"
-                >
-                  Reset Selection
-                </button>
-                <div>
-                  <div class="row">
-                    <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
-                      <div class="search">
-                        <div class="form-check form-check-inline">
-                          <div class="form-check form-check-inline">
-                            <input
-                              class="form-check-input primary"
-                              type="radio"
-                              id="ch1"
-                              value="Laboratory Confirmed Measles"
-                              v-model="formMease.final_classification"
-                            />
-                            <label class="form-check-label" for="ch1"
-                              >Laboratory Confirmed Measles</label
-                            >
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
-                      <div class="search">
-                        <div class="form-check form-check-inline">
-                          <div class="form-check form-check-inline">
-                            <input
-                              class="form-check-input primary"
-                              type="radio"
-                              id="ch2"
-                              value="Epi-linked Confirmed Measles"
-                              v-model="formMease.final_classification"
-                            />
-                            <label class="form-check-label" for="ch2"
-                              >Epi-linked Confirmed Measles</label
-                            >
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
-                      <div class="search">
-                        <div class="form-check form-check-inline">
-                          <div class="form-check form-check-inline">
-                            <input
-                              class="form-check-input primary"
-                              type="radio"
-                              id="ch3"
-                              value="Clinically Compatible Measles"
-                              v-model="formMease.final_classification"
-                            />
-                            <label class="form-check-label" for="ch3"
-                              >Clinically Compatible Measles</label
-                            >
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
-                      <div class="search">
-                        <div class="form-check form-check-inline">
-                          <div class="form-check form-check-inline">
-                            <input
-                              class="form-check-input primary"
-                              type="radio"
-                              id="ch4"
-                              value="Laboratory Confirmed Rubella"
-                              v-model="formMease.final_classification"
-                            />
-                            <label class="form-check-label" for="ch4"
-                              >Laboratory Confirmed Rubella</label
-                            >
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
-                      <div class="search">
-                        <div class="form-check form-check-inline">
-                          <div class="form-check form-check-inline">
-                            <input
-                              class="form-check-input primary"
-                              type="radio"
-                              id="ch5"
-                              value="Epi-linked Confirmed Rubella"
-                              v-model="formMease.final_classification"
-                            />
-                            <label class="form-check-label" for="ch5"
-                              >Epi-linked Confirmed Rubella</label
-                            >
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
-                      <div class="search">
-                        <div class="form-check form-check-inline">
-                          <div class="form-check form-check-inline">
-                            <input
-                              class="form-check-input primary"
-                              type="radio"
-                              id="ch6"
-                              value="Non-Measles/Rubella Discarded Case"
-                              v-model="formMease.final_classification"
-                            />
-                            <label class="form-check-label" for="ch6"
-                              >Non-Measles/Rubella Discarded Case</label
-                            >
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </template>
-            </form-card>
+            <measles-classification
+              :saveSubmitted="saveSubmitted"
+              :validationStatus="validationStatus"
+            >
+            </measles-classification>
           </div>
           <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
-            <form-card title="Source of Infection" class="position-relative">
-              <template v-slot:formInput>
-                <button
-                  @click="fnMease.resetInfection()"
-                  class="btn btn-danger btn-sm reset-btn"
-                >
-                  Reset Selection
-                </button>
-                <div>
-                  <div class="row">
-                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3">
-                      <div class="search">
-                        <div class="form-check form-check-inline">
-                          <div class="form-check form-check-inline">
-                            <input
-                              class="form-check-input primary"
-                              type="radio"
-                              id="si1"
-                              value="Endemic"
-                              v-model="formMease.source_infection"
-                            />
-                            <label class="form-check-label" for="si1"
-                              >Endemic</label
-                            >
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3">
-                      <div class="search">
-                        <div class="form-check form-check-inline">
-                          <div class="form-check form-check-inline">
-                            <input
-                              class="form-check-input primary"
-                              type="radio"
-                              id="si2"
-                              value="Imported"
-                              v-model="formMease.source_infection"
-                            />
-                            <label class="form-check-label" for="si2"
-                              >Imported</label
-                            >
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3">
-                      <div class="search">
-                        <div class="form-check form-check-inline">
-                          <div class="form-check form-check-inline">
-                            <input
-                              class="form-check-input primary"
-                              type="radio"
-                              id="si3"
-                              value="Import-related"
-                              v-model="formMease.source_infection"
-                            />
-                            <label class="form-check-label" for="si3"
-                              >Import-related</label
-                            >
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-6 mb-3">
-                      <div class="search">
-                        <div class="form-check form-check-inline">
-                          <div class="form-check form-check-inline">
-                            <input
-                              class="form-check-input primary"
-                              type="radio"
-                              id="si4"
-                              value="Unknown"
-                              v-model="formMease.source_infection"
-                            />
-                            <label class="form-check-label" for="si4"
-                              >Unknown</label
-                            >
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </template>
-            </form-card>
+            <measles-infection
+              :saveSubmitted="saveSubmitted"
+              :validationStatus="validationStatus"
+            >
+            </measles-infection>
           </div>
           <div class="col-sm-12 col-md-6 col-lg-12 mb-2">
-            <form-card title="Outcome">
-              <template v-slot:formInput>
-                <div>
-                  <div class="row">
-                    <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
-                      <div
-                        class="search"
-                        :class="{
-                          'group-invalid':
-                            saveSubmitted && !validationStatus.outcome,
-                        }"
-                      >
-                        <Label class="mb-2"
-                          >Outcome <span class="text-danger">*</span></Label
-                        >
-                        <select
-                          class="form-select form-control form-control-sm"
-                          @change="fnMease.changeOutcomed($event)"
-                          v-model="formMease.outcome"
-                          required
-                        >
-                          <option value="">Please Select</option>
-                          <option value="A">Alive</option>
-                          <option value="D">Died</option>
-                          <option value="HAMA">HAMA</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
-                      <div
-                        class="search"
-                        :class="{
-                          'group-invalid':
-                            saveSubmitted &&
-                            !validationStatus.date_died &&
-                            formMease.outcome == 'D',
-                        }"
-                      >
-                        <Label class="mb-2"
-                          >Date Died
-                          <span
-                            class="text-danger"
-                            v-if="formMease.outcome == 'D'"
-                            >*</span
-                          ></Label
-                        >
-                        <input
-                          type="date"
-                          v-model="formMease.date_died"
-                          :max="currentDate"
-                          class="form-control form-control-sm w-100 custom-font"
-                          :disabled="formMease.outcome != 'D'"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
-                      <div class="search">
-                        <Label class="mb-2">Final Diagnosis</Label>
-                        <textarea
-                          class="form-control form-control-sm custom-font"
-                          v-model="formMease.final_diagnosis"
-                          rows="4"
-                        ></textarea>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </template>
-            </form-card>
+            <measles-outcome
+              :saveSubmitted="saveSubmitted"
+              :validationStatus="validationStatus"
+            >
+            </measles-outcome>
           </div>
         </div>
       </div>
@@ -603,6 +190,10 @@ import MeaslesClinical from "./measles/MeaslesClinical.vue";
 import MeaslesVaccination from "./measles/MeaslesVaccination.vue";
 import MeaslesMcv from "./measles/MeaslesMcv.vue";
 import MeaslesExposure from "./measles/MeaslesExposure.vue";
+import MeaslesOccurance from "./measles/MeaslesOccurance.vue";
+import MeaslesClassification from "./measles/MeaslesClassification.vue";
+import MeaslesInfection from "./measles/MeaslesInfection.vue";
+import MeaslesOutcome from "./measles/MeaslesOutcome.vue";
 export default defineComponent({
   components: {
     FormCard,
@@ -614,6 +205,10 @@ export default defineComponent({
     MeaslesVaccination,
     MeaslesMcv,
     MeaslesExposure,
+    MeaslesOccurance,
+    MeaslesClassification,
+    MeaslesInfection,
+    MeaslesOutcome,
   },
   setup() {
     const store = useStore();
@@ -858,7 +453,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style>
 .btn-container {
   background: #eaeff4;
   padding: 5px;
