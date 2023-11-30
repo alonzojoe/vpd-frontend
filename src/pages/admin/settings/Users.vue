@@ -192,163 +192,39 @@
           <form enctype="multipart/form-data">
             <div class="row p-0 m-0">
               <div class="col-lg-6 d-flex align-items-stretch">
-                <div class="card w-100 position-relative overflow-hidden">
-                  <ul
-                    class="nav nav-pills user-profile-tab border-bottom"
-                    id="pills-tab"
-                    role="tablist"
-                  >
-                    <div
-                      class="d-flex justify-content-between align-items-center w-100"
-                    >
-                      <div>
-                        <li class="nav-item pe-none" role="presentation">
-                          <button
-                            class="nav-link fw-semibold position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent fs-3 py-6"
-                            id="pills-description-tab"
-                            type="button"
-                            role="tab"
-                            aria-controls="pills-description"
-                          >
-                            {{ modalDetails.title }} Profile
-                          </button>
-                        </li>
-                      </div>
-                      <div class="d-flex">
-                        <li class="nav-item" role="presentation">
-                          <button
-                            class="nav-link position-relative rounded-0 active d-flex align-items-center justify-content-center bg-transparent fs-3 py-6"
-                            id="pills-description-tab"
-                            data-bs-toggle="pill"
-                            data-bs-target="#pills-description"
-                            type="button"
-                            role="tab"
-                            aria-controls="pills-description"
-                            aria-selected="true"
-                          >
-                            <i class="ti ti-photo fs-4"></i>&nbsp; Photo
-                          </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                          <button
-                            class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent fs-3 py-6"
-                            id="pills-reviews-tab"
-                            data-bs-toggle="pill"
-                            data-bs-target="#pills-reviews"
-                            type="button"
-                            role="tab"
-                            aria-controls="pills-reviews"
-                            aria-selected="false"
-                          >
-                            <i class="ti ti-signature fs-4"></i>&nbsp; Signature
-                          </button>
-                        </li>
-                      </div>
-                    </div>
-                  </ul>
-                  <div class="tab-content" id="pills-tabContent">
-                    <div
-                      class="tab-pane fade show active"
-                      id="pills-description"
-                      role="tabpanel"
-                      aria-labelledby="pills-description-tab"
-                      tabindex="0"
-                    >
-                      <div class="card-body p-4">
-                        <p class="card-subtitle mb-4">
-                          Upload Photo (Optional)
-                        </p>
-                        <div class="text-center">
-                          <img
-                            ref="userProfileImage"
-                            id="profile-image"
-                            :src="imageUrl"
-                            alt="user-profile"
-                            class="rounded-circle border border-secondary"
-                            width="120"
-                            height="120"
-                          />
-                          <div
-                            class="d-flex align-items-center justify-content-center my-4 gap-2"
-                          >
-                            <input
-                              type="file"
-                              @change="validateImage"
-                              accept="image/jpeg, image/jpg, image/png, image/gif"
-                              style="display: none"
-                              ref="imageInput"
-                            />
-                            <button
-                              class="btn btn-primary"
-                              @click.prevent="$refs.imageInput.click()"
-                            >
-                              Upload
-                            </button>
-                            <button
-                              class="btn btn-outline-danger"
-                              @click.prevent="resetImage"
-                            >
-                              Reset
-                            </button>
-                          </div>
-                          <p class="mb-0">
-                            Allowed JPG, JPEG, PNG or GIF. Max size of 2MB
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      class="tab-pane fade"
-                      id="pills-reviews"
-                      role="tabpanel"
-                      aria-labelledby="pills-reviews-tab"
-                      tabindex="0"
-                    >
-                      <div class="card-body p-4">
-                        <p class="card-subtitle mb-4">
-                          Upload Signature (Optional)
-                        </p>
-                        <div class="text-center">
-                          <img
-                            ref="userSignImage"
-                            id="profile-signature"
-                            :src="signatureURL"
-                            alt="user-profile"
-                            class="border border-secondary"
-                            width="120"
-                            height="120"
-                          />
-                          <div
-                            class="d-flex align-items-center justify-content-center my-4 gap-2"
-                          >
-                            <input
-                              type="file"
-                              @change="validateSign"
-                              accept="image/jpeg, image/jpg, image/png, image/gif"
-                              style="display: none"
-                              ref="signInput"
-                            />
-                            <button
-                              class="btn btn-primary"
-                              @click.prevent="$refs.signInput.click()"
-                            >
-                              Upload
-                            </button>
-                            <button
-                              class="btn btn-outline-danger"
-                              @click.prevent="resetSign"
-                            >
-                              Reset
-                            </button>
-                          </div>
-                          <p class="mb-0">
-                            Allowed JPG, JPEG, PNG or GIF. Max size of 2MB
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                <div>
+                  <input
+                    type="file"
+                    @change="validateImage"
+                    accept="image/jpeg, image/jpg, image/png, image/gif"
+                    style="display: none"
+                    ref="imageInput"
+                  />
+                  <input
+                    type="file"
+                    @change="validateSign"
+                    accept="image/jpeg, image/jpg, image/png, image/gif"
+                    style="display: none"
+                    ref="signInput"
+                  />
                 </div>
+
+                <photo-signature
+                  :formData="formData"
+                  :modalDetails="modalDetails"
+                  :imageUrl="imageUrl"
+                  :signatureURL="signatureURL"
+                  :signInput="signInput"
+                  :imageInput="imageInput"
+                  :userProfileImage="userProfileImage"
+                  :userSignImage="userSignImage"
+                  @change-photo="$refs.imageInput.click()"
+                  @validate-image="validateImage"
+                  @reset-image="resetImage"
+                  @change-signature="$refs.signInput.click()"
+                  @validate-sign="validateSign"
+                  @reset-signature="resetSign"
+                />
               </div>
               <div class="col-lg-6 d-flex align-items-stretch">
                 <account-credentials
@@ -425,6 +301,7 @@ import ModalMd from "@/components/modals/ModalMd.vue";
 import AccountCredentials from "./users-components/AccountCredentials.vue";
 import UserInformation from "./users-components/UserInformation.vue";
 import HciInformation from "./users-components/HciInformation.vue";
+import PhotoSignature from "./users-components/PhotoSignature.vue";
 import Loader from "../../loader/Loader.vue";
 
 export default defineComponent({
@@ -436,6 +313,7 @@ export default defineComponent({
     AccountCredentials,
     UserInformation,
     HciInformation,
+    PhotoSignature,
   },
 
   setup() {

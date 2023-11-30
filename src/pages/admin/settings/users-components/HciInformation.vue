@@ -13,6 +13,7 @@
         <input
           type="text"
           v-model="formData.institution"
+          required
           :class="{
             'is-invalid': flagvl && !formData.institution,
           }"
@@ -32,6 +33,7 @@
         <input
           type="text"
           v-model="formData.street"
+          required
           :class="{
             'is-invalid': flagvl && !formData.street,
           }"
@@ -52,6 +54,7 @@
         >
         <select
           v-model="formData.region"
+          required
           @change="$emit('change-region')"
           :class="{
             'is-invalid': flagvl && !formData.region,
@@ -76,6 +79,7 @@
         >
         <select
           v-model="formData.province"
+          required
           @change="$emit('change-province')"
           :class="{
             'is-invalid': flagvl && !formData.province,
@@ -105,6 +109,7 @@
         >
         <select
           v-model="formData.city"
+          required
           @change="$emit('change-city')"
           :class="{ 'is-invalid': flagvl && !formData.city }"
           class="form-select form-control form-control-sm"
@@ -131,6 +136,7 @@
         >
         <select
           v-model="formData.barangay"
+          required
           :class="{
             'is-invalid': flagvl && !formData.barangay,
           }"
@@ -155,6 +161,7 @@
         <input
           type="text"
           v-model="formData.mobile"
+          required
           :class="{
             'is-invalid': (flagvl && !formData.mobile) || flagmob,
           }"
