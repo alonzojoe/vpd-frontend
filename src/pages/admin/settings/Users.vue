@@ -351,91 +351,12 @@
                 </div>
               </div>
               <div class="col-lg-6 d-flex align-items-stretch">
-                <div class="card w-100 position-relative overflow-hidden">
-                  <div class="card-body p-4">
-                    <h5 class="card-title fw-semibold mb-2">
-                      Account Credentials
-                    </h5>
-                    <div class="mb-2">
-                      <lab
-                        :class="{
-                          'text-validation':
-                            (flagvl && !formData.email) || flagemail,
-                        }"
-                        class="form-label fw-semibold"
-                        >Email</lab
-                      >
-                      <input
-                        type="email"
-                        v-model="formData.email"
-                        :class="{
-                          'is-invalid':
-                            (flagvl && !formData.email) || flagemail,
-                        }"
-                        class="form-control form-control-sm custom-font"
-                      />
-                    </div>
-                    <div class="mb-2">
-                      <lab
-                        :class="{
-                          'text-validation': flagvl && !formData.role_id,
-                        }"
-                        class="form-label fw-semibold"
-                        >Role</lab
-                      >
-                      <select
-                        v-model="formData.role_id"
-                        :class="{
-                          'custom-validation': flagvl && formData.role_id == 0,
-                        }"
-                        class="form-select form-control form-control-sm"
-                      >
-                        <option value="0">Please Select</option>
-                        <option v-for="r in roles" :key="r.id" :value="r.id">
-                          {{ r.role }}
-                        </option>
-                      </select>
-                    </div>
-                    <div class="mb-2">
-                      <lab
-                        :class="{
-                          'text-validation':
-                            (flagvl && !formData.password) || flagpass,
-                        }"
-                        class="form-label fw-semibold"
-                        >Password</lab
-                      >
-                      <input
-                        type="password"
-                        v-model="formData.password"
-                        :class="{
-                          'is-invalid':
-                            (flagvl && !formData.password) || flagpass,
-                        }"
-                        class="form-control form-control-sm custom-font"
-                      />
-                    </div>
-                    <div class="">
-                      <lab
-                        :class="{
-                          'text-validation':
-                            (flagvl && !formData.confirm_password) || flagpass,
-                        }"
-                        class="form-label fw-semibold"
-                        >Confirm Password</lab
-                      >
-                      <input
-                        type="password"
-                        v-model="formData.confirm_password"
-                        :class="{
-                          'is-invalid':
-                            (flagvl && !formData.confirm_password) || flagpass,
-                        }"
-                        class="form-control form-control-sm custom-font"
-                      />
-                    </div>
-                  </div>
-                </div>
+                <account-credentials
+                  :flagvl="flagvl"
+                  :flagemail="flagemail"
+                  :formData="formData"
+                  :roles="roles"
+                />
               </div>
               <!-- <pre>
                 {{ formData }}
@@ -443,268 +364,21 @@
               <div class="col-12">
                 <div class="card w-100 position-relative overflow-hidden mb-0">
                   <div class="card-body p-4">
-                    <h5 class="card-title fw-bolder">Personal Information</h5>
-                    <div class="row p-0 m-0">
-                      <div class="col-sm-12 col-md-6 col-lg-4">
-                        <div class="mb-4">
-                          <label
-                            :class="{
-                              'text-validation': flagvl && !formData.lname,
-                            }"
-                            class="form-label fw-semibold"
-                            >Last Name</label
-                          >
-                          <input
-                            type="text"
-                            v-model="formData.lname"
-                            :class="{ 'is-invalid': flagvl && !formData.lname }"
-                            class="form-control form-control-sm custom-font"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-sm-12 col-md-6 col-lg-4">
-                        <div class="mb-4">
-                          <label
-                            :class="{
-                              'text-validation': flagvl && !formData.name,
-                            }"
-                            class="form-label fw-semibold"
-                            >First Name</label
-                          >
-                          <input
-                            type="text"
-                            v-model="formData.name"
-                            :class="{ 'is-invalid': flagvl && !formData.name }"
-                            class="form-control form-control-sm custom-font"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-sm-12 col-md-6 col-lg-4">
-                        <div class="mb-4">
-                          <label class="form-label fw-semibold"
-                            >Middle Name</label
-                          >
-                          <input
-                            type="text"
-                            v-model="formData.mname"
-                            class="form-control form-control-sm custom-font"
-                          />
-                        </div>
-                      </div>
-
-                      <!-- <div class="col-12">
-                                                <div class="d-flex align-items-center justify-content-end mt-4 gap-2">
-                                                    <button @click.prevent="btnSave" class="btn btn-primary">Save</button>
-                                                    <button @click.prevent="modalDetails.show = false" class="btn btn-danger">Cancel</button>
-                                                </div>
-                                            </div> -->
-                    </div>
-                    <h5 class="card-title fw-bolder">HCI Information</h5>
-                    <div class="row p-0 m-0">
-                      <div class="col-sm-12 col-md-6 col-lg-8">
-                        <div class="mb-4">
-                          <label
-                            :class="{
-                              'text-validation':
-                                flagvl && !formData.institution,
-                            }"
-                            class="form-label fw-semibold"
-                            >Name of Institution</label
-                          >
-                          <input
-                            type="text"
-                            v-model="formData.institution"
-                            :class="{
-                              'is-invalid': flagvl && !formData.institution,
-                            }"
-                            class="form-control form-control-sm custom-font"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-sm-12 col-md-6 col-lg-4">
-                        <div class="mb-4">
-                          <label
-                            :class="{
-                              'text-validation': flagvl && !formData.street,
-                            }"
-                            class="form-label fw-semibold"
-                            >Street</label
-                          >
-                          <input
-                            type="text"
-                            v-model="formData.street"
-                            :class="{
-                              'is-invalid': flagvl && !formData.street,
-                            }"
-                            class="form-control form-control-sm custom-font"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row p-0 m-0">
-                      <div class="col-sm-12 col-md-6 col-lg-4">
-                        <div class="mb-4">
-                          <label
-                            :class="{
-                              'text-validation': flagvl && !formData.region,
-                            }"
-                            class="form-label fw-semibold"
-                            >Region</label
-                          >
-                          <select
-                            v-model="formData.region"
-                            @change="changePermRegion()"
-                            :class="{
-                              'is-invalid': flagvl && !formData.region,
-                            }"
-                            class="form-select form-control form-control-sm"
-                          >
-                            <option value="">Please Select Region</option>
-                            <option
-                              v-for="r in regions"
-                              :key="r.RegionID"
-                              :value="r.RegionID"
-                            >
-                              {{ r.Description }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-sm-12 col-md-6 col-lg-4">
-                        <div class="mb-4">
-                          <label
-                            :class="{
-                              'text-validation': flagvl && !formData.province,
-                            }"
-                            class="form-label fw-semibold"
-                            >Province</label
-                          >
-                          <select
-                            v-model="formData.province"
-                            @change="changePermProvince()"
-                            :class="{
-                              'is-invalid': flagvl && !formData.province,
-                            }"
-                            class="form-select form-control form-control-sm"
-                          >
-                            <option value="">Please Select Province</option>
-                            <option
-                              v-for="p in provinces"
-                              :key="p.ProvinceID"
-                              :value="p.ProvinceID"
-                            >
-                              {{ p.Description }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div class="col-sm-12 col-md-6 col-lg-4">
-                        <div class="mb-4">
-                          <label
-                            :class="{
-                              'text-validation': flagvl && !formData.province,
-                            }"
-                            class="form-label fw-semibold"
-                            >Province</label
-                          >
-                          <select
-                            v-model="formData.city"
-                            @change="changePermCity()"
-                            :class="{ 'is-invalid': flagvl && !formData.city }"
-                            class="form-select form-control form-control-sm"
-                          >
-                            <option value="">Please Select Municipality</option>
-                            <option
-                              v-for="m in municipalities"
-                              :key="m.MunicipalityID"
-                              :value="m.MunicipalityID"
-                            >
-                              {{ m.Description }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-sm-12 col-md-6 col-lg-4">
-                        <div class="mb-4">
-                          <label
-                            :class="{
-                              'text-validation':
-                                (flagvl && !formData.barangay) || flagmob,
-                            }"
-                            class="form-label fw-semibold"
-                            >Barangay</label
-                          >
-                          <select
-                            v-model="formData.barangay"
-                            :class="{
-                              'is-invalid': flagvl && !formData.barangay,
-                            }"
-                            class="form-select form-control form-control-sm"
-                          >
-                            <option value="">Please Select Barangay</option>
-                            <option
-                              v-for="b in barangays"
-                              :key="b.Id"
-                              :value="b.Id"
-                            >
-                              {{ b.Name }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-sm-12 col-md-6 col-lg-4">
-                        <div class="mb-4">
-                          <label
-                            :class="{
-                              'text-validation':
-                                (flagvl && !formData.mobile) || flagmob,
-                            }"
-                            class="form-label fw-semibold"
-                            >Mobile No.</label
-                          >
-                          <input
-                            type="text"
-                            v-model="formData.mobile"
-                            :class="{
-                              'is-invalid':
-                                (flagvl && !formData.mobile) || flagmob,
-                            }"
-                            maxlength="11"
-                            @keypress="NumericOnly()"
-                            class="form-control form-control-sm custom-font"
-                            placeholder="090XXXXXXXX"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-sm-12 col-md-6 col-lg-4">
-                        <div class="mb-4">
-                          <div
-                            class="d-flex align-items-center justify-content-start mt-4 gap-2"
-                          >
-                            <button
-                              @click.prevent="saveUser"
-                              type="submit"
-                              class="btn btn-primary"
-                            >
-                              Save
-                            </button>
-                            <button
-                              @click.prevent="modalDetails.show = false"
-                              class="btn btn-danger"
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- <div class="col-12">
-                                                <div class="d-flex align-items-center justify-content-end mt-4 gap-2">
-                                                    <button @click.prevent="btnSave" class="btn btn-primary">Save</button>
-                                                    <button @click.prevent="modalDetails.show = false" class="btn btn-danger">Cancel</button>
-                                                </div>
-                                            </div> -->
-                    </div>
+                    <user-information
+                      :flagvl="flagvl"
+                      :flagemail="flagemail"
+                      :formData="formData"
+                    />
+                    <hci-information
+                      :flagvl="flagvl"
+                      :flagemail="flagemail"
+                      :formData="formData"
+                      @change-region="changePermRegion()"
+                      @change-province="changePermProvince()"
+                      @change-city="changePermCity()"
+                      @save-user="saveUser()"
+                      @close-modal="modalDetails.show = false"
+                    />
                   </div>
                 </div>
               </div>
@@ -737,17 +411,20 @@ import {
   watch,
   watchEffect,
 } from "vue";
-import SearchCard from "../../../components/cards/SearchCard.vue";
-import Pagination from "../../../components/pagination/Pagination.vue";
-import ModalMd from "../../../components/modals/ModalMd.vue";
+
 import { useStore } from "vuex";
 import {
   swalMessage,
   swalConfirmation,
   deCrypto,
   NumericOnly,
-} from "../../../composables";
-
+} from "@/composables";
+import SearchCard from "@/components/cards/SearchCard.vue";
+import Pagination from "@/components/pagination/Pagination.vue";
+import ModalMd from "@/components/modals/ModalMd.vue";
+import AccountCredentials from "./users-components/AccountCredentials.vue";
+import UserInformation from "./users-components/UserInformation.vue";
+import HciInformation from "./users-components/HciInformation.vue";
 import Loader from "../../loader/Loader.vue";
 
 export default defineComponent({
@@ -756,6 +433,9 @@ export default defineComponent({
     SearchCard,
     ModalMd,
     Loader,
+    AccountCredentials,
+    UserInformation,
+    HciInformation,
   },
 
   setup() {
@@ -986,12 +666,6 @@ export default defineComponent({
         }
 
         const reader = new FileReader();
-
-        // reader.onload = () => {
-        //     imageUrl.value = reader.result
-        //     base64Img.value = reader.result
-        //     formData.value.img = reader.result
-        // }
 
         reader.onload = () => {
           const img = new Image();
