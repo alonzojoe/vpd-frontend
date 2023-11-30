@@ -11,6 +11,178 @@
     <table></table>
     <h5></h5>
   </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card w-100">
+        <div class="card-body">
+          <div class="mb-2">
+            <h5 class="mb-0">Scrollspy with nested nav</h5>
+          </div>
+          <p class="mb-3 card-subtitle">
+            Scrollspy also works with nested .navs. If a nested .nav is .active,
+            its parents will also be .active. Scroll the area next to the navbar
+            and watch the active class change.
+          </p>
+          <div class="row">
+            <div class="col-4">
+              <nav id="navbar-example3" class="navbar navbar-light">
+                <a class="navbar-brand ps-3" href="#">
+                  <img
+                    src="https://demos.adminmart.com/premium/bootstrap/modernize-bootstrap/package/dist/images/logos/favicon.ico"
+                  />
+                </a>
+                <nav class="nav nav-pills flex-column">
+                  <a class="nav-link" href="#item-1">Item 1</a>
+                  <nav class="nav nav-pills flex-column">
+                    <a class="nav-link ms-3 my-1" href="#item-1-1">Item 1-1</a>
+                    <a class="nav-link ms-3 my-1" href="#item-1-2">Item 1-2</a>
+                  </nav>
+                  <a class="nav-link" href="#item-2">Item 2</a>
+                  <a class="nav-link" href="#item-3">Item 3</a>
+                  <nav class="nav nav-pills flex-column">
+                    <a class="nav-link ms-3 my-1" href="#item-3-1">Item 3-1</a>
+                    <a class="nav-link ms-3 my-1" href="#item-3-2">Item 3-2</a>
+                  </nav>
+                </nav>
+              </nav>
+            </div>
+            <div class="col-8">
+              <div
+                class="position-relative mt-3 p-3 border overflow-auto"
+                style="height: 300px"
+                data-bs-spy="scroll"
+                data-bs-target="#navbar-example3"
+                data-bs-offset="0"
+                tabindex="0"
+              >
+                <h4 id="item-1">Item 1</h4>
+                <p>
+                  farm-to-table bicycle rights whatever. Anim keffiyeh carles
+                  cardigan. Velit seitan mcsweeney's photo booth 3 wolf moon
+                  irure. Cosby sweater lomo jean shorts, williamsburg hoodie
+                  minim qui you probably haven't heard of them et cardigan trust
+                  fund culpa biodiesel wes anderson aesthetic. Nihil tattooed
+                  accusamus, cred irony biodiesel keffiyeh artisan ullamco
+                  consequat.
+                </p>
+
+                <h5 id="item-1-1">Item 1-1</h5>
+                <p>
+                  Veniam marfa mustache skateboard, adipisicing fugiat velit
+                  pitchfork beard. Freegan beard aliqua cupidatat mcsweeney's
+                  vero. Cupidatat four loko nisi, ea helvetica nulla carles.
+                  Tattooed cosby sweater food truck, mcsweeney's quis non
+                  freegan vinyl. Lo-fi wes anderson +1 sartorial. Carles non
+                  aesthetic exercitation quis gentrify. Brooklyn adipisicing
+                  craft beer vice keytar deserunt.
+                </p>
+
+                <h5 id="item-1-2">Item 1-1</h5>
+                <p>
+                  Occaecat commodo aliqua delectus. Fap craft beer deserunt
+                  skateboard ea. Lomo bicycle rights adipisicing banh mi, velit
+                  ea sunt next level locavore single-origin coffee in magna
+                  veniam. High life id vinyl, echo park consequat quis aliquip
+                  banh mi pitchfork. Vero VHS est adipisicing. Consectetur nisi
+                  DIY minim messenger bag. Cred ex in, sustainable delectus
+                  consectetur fanny pack iphone.
+                </p>
+
+                <h4 id="item-2">Item 2</h4>
+                <p>
+                  In incididunt echo park, officia deserunt mcsweeney's proident
+                  master cleanse thundercats sapiente veniam. Excepteur VHS
+                  elit, proident shoreditch +1 biodiesel laborum craft beer.
+                  Single-origin coffee wayfarers irure four loko, cupidatat
+                  terry richardson master cleanse. Assumenda you probably
+                  haven't heard of them art party fanny pack, tattooed nulla
+                  cardigan tempor ad. Proident wolf nesciunt sartorial keffiyeh
+                  eu banh mi sustainable. Elit wolf voluptate, lo-fi ea portland
+                  before they sold out four loko. Locavore enim nostrud mlkshk
+                  brooklyn nesciunt.
+                </p>
+
+                <h4 id="item-3">Item 3</h4>
+                <p>
+                  Ad leggings keytar, brunch id art party dolor labore.
+                  Pitchfork yr enim lo-fi before they sold out qui. Tumblr
+                  farm-to-table bicycle rights whatever. Anim keffiyeh carles
+                  cardigan. Velit seitan mcsweeney's photo booth 3 wolf moon
+                  irure. Cosby sweater lomo jean shorts, williamsburg hoodie
+                  minim qui you probably haven't heard of them et cardigan trust
+                  fund culpa biodiesel wes anderson aesthetic. Nihil tattooed
+                  accusamus, cred irony biodiesel keffiyeh artisan ullamco
+                  consequat.
+                </p>
+
+                <h5 id="item-3-1">Item 3-1</h5>
+                <p>
+                  Ad leggings keytar, brunch id art party dolor labore.
+                  Pitchfork yr enim lo-fi before they sold out qui. Tumblr
+                  farm-to-table bicycle rights whatever. Anim keffiyeh carles
+                  cardigan. Velit seitan mcsweeney's photo booth 3 wolf moon
+                  irure. Cosby sweater lomo jean shorts, williamsburg hoodie
+                  minim qui you probably haven't heard of them et cardigan trust
+                  fund culpa biodiesel wes anderson aesthetic. Nihil tattooed
+                  accusamus, cred irony biodiesel keffiyeh artisan ullamco
+                  consequat.
+                </p>
+
+                <h5 id="item-3-2">Item 3-2</h5>
+                <p>
+                  Ad leggings keytar, brunch id art party dolor labore.
+                  Pitchfork yr enim lo-fi before they sold out qui. Tumblr
+                  farm-to-table bicycle rights whatever. Anim keffiyeh carles
+                  cardigan. Velit seitan mcsweeney's photo booth 3 wolf moon
+                  irure. Cosby sweater lomo jean shorts, williamsburg hoodie
+                  minim qui you probably haven't heard of them et cardigan trust
+                  fund culpa biodiesel wes anderson aesthetic. Nihil tattooed
+                  accusamus, cred irony biodiesel keffiyeh artisan ullamco
+                  consequat.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <Knob v-model="valueAdded" />
+  <Timeline :value="events">
+    <template #content="slotProps">
+      {{ slotProps.item.status }}
+    </template>
+  </Timeline>
+  <div class="card dock-demo">
+    <div class="flex flex-wrap gap-3 mb-5">
+      <div
+        v-for="pos of positions"
+        :key="pos.label"
+        class="flex align-items-center"
+      >
+        <RadioButton
+          v-model="position"
+          :value="pos.value"
+          :inputId="pos.label"
+          name="dock"
+        />
+        <label :for="pos.label" class="ml-2"> {{ pos.label }} </label>
+      </div>
+    </div>
+    <div
+      class="dock-window"
+      style="
+        backgroundimage: 'url(https://primefaces.org/cdn/primevue/images/dock/window.jpg))';
+      "
+    >
+      <Dock :model="items" :position="position">
+        <template #icon="{ item }">
+          <img :alt="item.label" :src="item.icon" style="width: 100%" />
+        </template>
+      </Dock>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -18,8 +190,15 @@ import { defineComponent, ref, onMounted } from "vue";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import csvtojson from "csvtojson";
-
+import Knob from "primevue/knob";
+import Timeline from "primevue/timeline";
+import Dock from "primevue/dock";
 export default defineComponent({
+  components: {
+    Knob,
+    Timeline,
+    Dock,
+  },
   setup() {
     const tableData = ref([
       {
@@ -2116,6 +2295,73 @@ export default defineComponent({
       }
     };
 
+    const valueAdded = ref(85);
+
+    const events = ref([
+      {
+        status: "Ordered",
+        date: "15/10/2020 10:30",
+        icon: "pi pi-shopping-cart",
+        color: "#9C27B0",
+      },
+      {
+        status: "Processing",
+        date: "15/10/2020 14:00",
+        icon: "pi pi-cog",
+        color: "#673AB7",
+      },
+      {
+        status: "Shipped",
+        date: "15/10/2020 16:15",
+        icon: "pi pi-shopping-cart",
+        color: "#FF9800",
+      },
+      {
+        status: "Delivered",
+        date: "16/10/2020 10:00",
+        icon: "pi pi-check",
+        color: "#607D8B",
+      },
+    ]);
+
+    const items = ref([
+      {
+        label: "Finder",
+        icon: "https://primefaces.org/cdn/primevue/images/dock/finder.svg",
+      },
+      {
+        label: "App Store",
+        icon: "https://primefaces.org/cdn/primevue/images/dock/appstore.svg",
+      },
+      {
+        label: "Photos",
+        icon: "https://primefaces.org/cdn/primevue/images/dock/photos.svg",
+      },
+      {
+        label: "Trash",
+        icon: "https://primefaces.org/cdn/primevue/images/dock/trash.png",
+      },
+    ]);
+    const position = ref("bottom");
+    const positions = ref([
+      {
+        label: "Bottom",
+        value: "bottom",
+      },
+      {
+        label: "Top",
+        value: "top",
+      },
+      {
+        label: "Left",
+        value: "left",
+      },
+      {
+        label: "Right",
+        value: "right",
+      },
+    ]);
+
     return {
       generatePDF,
       tableData,
@@ -2124,9 +2370,28 @@ export default defineComponent({
       jsonArray,
       handleFileUpload,
       convertCsvToJson,
+      valueAdded,
+      events,
+      items,
+      position,
+      positions,
     };
   },
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.dock-demo > .dock-window {
+  width: 100%;
+  height: 450px;
+  position: relative;
+  background-image: url("https://primefaces.org/cdn/primevue/images/dock/window.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: 1;
+}
+
+.dock-demo > .p-dock {
+  z-index: 1000;
+}
+</style>

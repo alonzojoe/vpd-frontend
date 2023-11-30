@@ -137,14 +137,14 @@ import PatientInfoCard from "../../../components/cards/PatientInfoCard.vue";
 import RegistryNav from "@/components/pagination/RegistryNav.vue";
 import SwitchTab from "@/components/pagination/SwitchTab.vue";
 import * as fnMease from "./functions/measles";
-import MeaslesClinical from "./measlescomponents/MeaslesClinical.vue";
-import MeaslesVaccination from "./measlescomponents/MeaslesVaccination.vue";
-import MeaslesMcv from "./measlescomponents/MeaslesMcv.vue";
-import MeaslesExposure from "./measlescomponents/MeaslesExposure.vue";
-import MeaslesOccurance from "./measlescomponents/MeaslesOccurance.vue";
-import MeaslesClassification from "./measlescomponents/MeaslesClassification.vue";
-import MeaslesInfection from "./measlescomponents/MeaslesInfection.vue";
-import MeaslesOutcome from "./measlescomponents/MeaslesOutcome.vue";
+import MeaslesClinical from "./measles-components/MeaslesClinical.vue";
+import MeaslesVaccination from "./measles-components/MeaslesVaccination.vue";
+import MeaslesMcv from "./measles-components/MeaslesMcv.vue";
+import MeaslesExposure from "./measles-components/MeaslesExposure.vue";
+import MeaslesOccurance from "./measles-components/MeaslesOccurance.vue";
+import MeaslesClassification from "./measles-components/MeaslesClassification.vue";
+import MeaslesInfection from "./measles-components/MeaslesInfection.vue";
+import MeaslesOutcome from "./measles-components/MeaslesOutcome.vue";
 export default defineComponent({
   components: {
     FormCard,

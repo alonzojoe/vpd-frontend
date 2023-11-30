@@ -34,11 +34,20 @@
           class="btn waves-effect waves-light btn-rounded btn-info"
           @click="$emit('save-data')"
         >
-          {{
-            !patient.registry
-              ? "Update Patient Disease"
-              : "Save Patient Disease"
-          }}
+          <span v-if="profileRegistry">
+            {{
+              patient.registry == true || patient.noRecord == true
+                ? "Save Patient Profile"
+                : "Update Patient Profile"
+            }}
+          </span>
+          <span v-else>
+            {{
+              !patient.registry
+                ? "Update Patient Disease"
+                : "Save Patient Disease"
+            }}
+          </span>
         </button>
       </div>
     </div>
@@ -54,6 +63,10 @@ export default defineComponent({
     tabs: Array,
     patient: Object,
     selectedTab: Number,
+    profileRegistry: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   setup(props, { emit }) {

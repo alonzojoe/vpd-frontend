@@ -1,65 +1,15 @@
 <template>
-  <ul
-    class="nav nav-pills user-profile-tab justify-content-start bg-light-info d-flex"
-    id="pills-tab"
-    role="tablist"
-  >
-    <div class="d-flex justify-content-between align-items-center w-100">
-      <div class="d-flex">
-        <li class="nav-item" role="presentation">
-          <button
-            class="nav-link position-relative rounded-0 active d-flex align-items-center justify-content-center bg-transparent fs-3 py-3"
-            id="pills-account-tab"
-            data-bs-toggle="pill"
-            data-bs-target="#pills-account"
-            type="button"
-            role="tab"
-            aria-controls="pills-account"
-            aria-selected="true"
-          >
-            <span class="d-none d-md-block">Patient Profile Registry</span>
-          </button>
-        </li>
-      </div>
-      <div
-        class="btn-container d-flex align-items-center gap-2 mx-3"
-        v-if="isLoading"
-      >
-        <skeleton-placeholder
-          height="37px"
-          width="207px"
-          radius="5px"
-          bg="#2A3547"
-        />
-        <skeleton-placeholder
-          height="37px"
-          width="162px"
-          radius="5px"
-          bg="#539BFF"
-        />
-      </div>
-      <div class="btn-container d-flex align-items-center gap-2 mx-3" v-else>
-        <router-link
-          :to="{ name: 'patientlist' }"
-          class="btn waves-effect waves-light btn-rounded btn-dark"
-        >
-          Back to Patient Profile List
-        </router-link>
-        <button
-          class="btn waves-effect waves-light btn-rounded btn-info"
-          @click="savePatientProfile()"
-        >
-          {{
-            patientInfo.registry == true || patientInfo.noRecord == true
-              ? "Save Patient Profile"
-              : "Update Patient Profile"
-          }}
-        </button>
-      </div>
-    </div>
-  </ul>
+  <registry-nav
+    class="position-fixed z-3 mr-5"
+    :tabs="tabs"
+    :patient="patientInfo"
+    :selectedTab="selectedTab"
+    :profileRegistry="true"
+    @save-data="savePatientProfile()"
+  />
+
   <div class="card my-0">
-    <div class="card-body py-4">
+    <div class="card-body profile-content py-4">
       <Toast />
       <div class="row">
         <div class="col-sm-12 col-lg-12">
@@ -653,14 +603,19 @@
           </div>
         </div>
       </div>
+      <switch-tab
+        :details="switchTabDetails"
+        @patient-list="backTo"
+        @save-data="savePatientProfile()"
+      />
     </div>
   </div>
-  <div>
+  <!-- <div>
     <pre>{{ validationStatus }}</pre>
     <pre>{{ savingResponse }}</pre>
     <pre>{{ formData }}</pre>
     <pre>{{ patientInfo }}</pre>
-  </div>
+  </div> -->
   <loader
     title="Saving Patient Profile"
     subTitle="Please Wait...."
@@ -702,6 +657,8 @@ import {
 import { swalConfirmation, swalMessage } from "../../composables/index";
 import FormSkeleton from "../loader/FormSkeleton.vue";
 import SkeletonPlaceholder from "../loader/SkeletonPlaceholder.vue";
+import RegistryNav from "@/components/pagination/RegistryNav.vue";
+import SwitchTab from "@/components/pagination/SwitchTab.vue";
 import {
   validateFields,
   validationStatus,
@@ -716,6 +673,8 @@ export default defineComponent({
     FormSkeleton,
     SkeletonPlaceholder,
     Loader,
+    RegistryNav,
+    SwitchTab,
   },
   setup() {
     const store = useStore();
@@ -886,6 +845,19 @@ export default defineComponent({
       });
     };
 
+    const tabs = ref([{ id: 1, name: "Patient Profile Registry" }]);
+    const selectedTab = ref(1);
+
+    const switchTabDetails = ref({
+      currentTab: 1,
+      maxTab: 1,
+      title: "Patient Profile Registry",
+    });
+
+    const backTo = () => {
+      router.push({ name: "patientlist" });
+    };
+
     onMounted(async () => {
       await loadResources();
       resetResponse();
@@ -928,6 +900,11 @@ export default defineComponent({
       sameAsPermanent,
       flagSaving,
       showError,
+      //tabs
+      tabs,
+      selectedTab,
+      switchTabDetails,
+      backTo,
     };
   },
 });
@@ -946,5 +923,25 @@ export default defineComponent({
 
 .nav-pills {
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.card {
+  margin-right: 50px;
+}
+
+.profile-content {
+  margin-top: 50px !important;
+}
+
+@media screen and (max-width: 991px) {
+  .nav-pills {
+    display: none !important;
+  }
+  .card {
+    margin-right: 0;
+  }
+  .profile-content {
+    margin-top: 0px !important;
+  }
 }
 </style>

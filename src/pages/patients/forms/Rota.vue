@@ -112,11 +112,11 @@ import Loader from "../../loader/Loader.vue";
 import FormSkeleton from "../../loader/FormSkeleton.vue";
 import RegistryNav from "@/components/pagination/RegistryNav.vue";
 import SwitchTab from "@/components/pagination/SwitchTab.vue";
-import RotaClinical from "./rotacomponents/RotaClinical.vue";
-import RotaEpidemiologic from "./rotacomponents/RotaEpidemiologic.vue";
-import RotaImmunization from "./rotacomponents/RotaImmunization.vue";
-import RotaInvestigator from "./rotacomponents/RotaInvestigator.vue";
-import RotaOutcome from "./rotacomponents/RotaOutcome.vue";
+import RotaClinical from "./rota-components/RotaClinical.vue";
+import RotaEpidemiologic from "./rota-components/RotaEpidemiologic.vue";
+import RotaImmunization from "./rota-components/RotaImmunization.vue";
+import RotaInvestigator from "./rota-components/RotaInvestigator.vue";
+import RotaOutcome from "./rota-components/RotaOutcome.vue";
 export default defineComponent({
   components: {
     FormCard,

@@ -126,7 +126,7 @@ import { useStore } from "vuex";
 import moment from "moment";
 
 export default defineComponent({
-  name: "MeningitisClinical",
+  name: "MeningitisInvestigator",
   props: {
     saveSubmitted: {
       type: Boolean,
