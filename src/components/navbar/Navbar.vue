@@ -250,11 +250,11 @@
 <script lang="ts">
 import { defineComponent, computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
-import api from "../../api";
+import api from "@/api";
 import Cookies from "js-cookie";
 import { useRouter } from "vue-router";
-import ProfileSkeleton from "../../pages/loader/ProfileSkeleton.vue";
-import PageBlank from "../../pages/loader/PageBlank.vue";
+import ProfileSkeleton from "@/pages/loader/ProfileSkeleton.vue";
+import PageBlank from "@/pages/loader/PageBlank.vue";
 export default defineComponent({
   components: {
     ProfileSkeleton,

@@ -98,9 +98,9 @@ import {
   currentDate,
   resetIndigenous,
 } from "./registry/PatientInformation";
-import { swalConfirmation, swalMessage } from "../../composables/index";
-import FormSkeleton from "../loader/FormSkeleton.vue";
-import SkeletonPlaceholder from "../loader/SkeletonPlaceholder.vue";
+import { swalConfirmation, swalMessage } from "@/composables/index";
+import FormSkeleton from "@/pages/loader/FormSkeleton.vue";
+import SkeletonPlaceholder from "@/pages/loader/SkeletonPlaceholder.vue";
 import RegistryNav from "@/components/pagination/RegistryNav.vue";
 import SwitchTab from "@/components/pagination/SwitchTab.vue";
 import PatientInformation from "./registry-components/PatientInformation.vue";
@@ -111,7 +111,7 @@ import {
   validationStatus,
   validateChecker,
 } from "./registry/Validation";
-import Loader from "../loader/Loader.vue";
+import Loader from "@/pages/loader/Loader.vue";
 import { useToast } from "primevue/usetoast";
 
 export default defineComponent({

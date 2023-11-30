@@ -306,7 +306,7 @@
 <script lang="ts">
 import { defineComponent, computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import api from "../../api/index";
+import api from "@/api/index";
 import Cookies from "js-cookie";
 import { useStore } from "vuex";
 

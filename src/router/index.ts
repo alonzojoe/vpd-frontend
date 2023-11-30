@@ -1,30 +1,30 @@
 import { createRouter, createWebHistory, useRoute } from "vue-router";
-import RouteViewComponent from '../layouts/RouterBypass.vue'
+import RouteViewComponent from '@/layouts/RouterBypass.vue'
 import { useRouter } from "vue-router";
 import Cookies from 'js-cookie';
-import { app } from '../main'
-import { useLoading } from '../pages/loader/loaderSettings'
-import api from "../api";
-import { decryptData } from '../composables'
+import { app } from '@/main'
+import { useLoading } from '@/pages/loader/loaderSettings'
+import api from "@/api";
+import { decryptData } from '@/composables'
 const route = useRoute()
 const routes = [
     {
         path: '/',
         name: 'auth',
-        component: () => import('../pages/auth/Auth.vue'),
+        component: () => import('@/pages/auth/Auth.vue'),
         meta: { requiresGuest: true }
     },
 
     {
         path: '/main',
         name: 'main',
-        component: () => import('../layouts/AppLayout.vue'),
+        component: () => import('@/layouts/AppLayout.vue'),
         meta: { requiresAuth: true },
         children: [
             {
                 path: '',
                 name: 'dashboard',
-                component: () => import('../pages/admin/dashboard/Dashboard.vue'),
+                component: () => import('@/pages/admin/dashboard/Dashboard.vue'),
                 meta: { title: 'Dashboard', requireRole: ['Administrator', 'Regular'] }
             },
 
@@ -36,7 +36,7 @@ const routes = [
                     {
                         path: '',
                         name: 'patientlist',
-                        component: () => import('../pages/patients/Patients.vue'),
+                        component: () => import('@/pages/patients/Patients.vue'),
                         meta: { title: 'Patient Profiles' }
                     },
 
@@ -74,14 +74,14 @@ const routes = [
                     {
                         path: 'roles',
                         name: 'roles',
-                        component: () => import('../pages/admin/settings/Roles.vue'),
+                        component: () => import('@/pages/admin/settings/Roles.vue'),
                         meta: { title: 'Roles', requireRole: ['Administrator'] }
                     },
 
                     {
                         path: 'users',
                         name: 'users',
-                        component: () => import('../pages/admin/settings/Users.vue'),
+                        component: () => import('@/pages/admin/settings/Users.vue'),
                         meta: { title: 'User Management', requireRole: ['Administrator'] }
                     }
                 ]
@@ -103,13 +103,13 @@ const routes = [
                     {
                         path: '',
                         name: 'patient-registry',
-                        component: () => import('../pages/admin/registry/Registry.vue'),
+                        component: () => import('@/pages/admin/registry/Registry.vue'),
 
                     },
                     {
                         path: 'form/:type',
                         name: 'form',
-                        // component: () => import('../pages/admin/registry/FormContainer.vue'),
+                        // component: () => import('@/pages/admin/registry/FormContainer.vue'),
                         props: true
                     }
                 ]
@@ -120,26 +120,26 @@ const routes = [
     {
         path: '/pdf-viewer',
         name: 'pdf-viewer',
-        component: () => import('../pages/printable_forms/Viewer.vue')
+        component: () => import('@/pages/printable_forms/Viewer.vue')
     },
 
     {
         path: '/line-list',
         name: 'line-list',
-        component: () => import('../pages/printable_forms/PrintLineList.vue')
+        component: () => import('@/pages/printable_forms/PrintLineList.vue')
     },
 
     {
         path: '/unauthorized',
         name: 'unauthorized',
-        component: () => import('../pages/404-pages/Unauthorized.vue')
+        component: () => import('@/pages/404-pages/Unauthorized.vue')
     },
 
 
     {
         path: '/:pathMatch(.*)*',
         name: 'not-found',
-        component: () => import('../pages/404-pages/NotFound.vue')
+        component: () => import('@/pages/404-pages/NotFound.vue')
     }
 ]
 

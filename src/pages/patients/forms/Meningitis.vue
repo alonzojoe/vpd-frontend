@@ -109,14 +109,14 @@ import {
   NumericOnly,
 } from "@/composables";
 import FormCard from "@/components/cards/FormCard.vue";
-import FormPatientInfo from "../../../components/cards/FormPatientInfo.vue";
+import FormPatientInfo from "@/components/cards/FormPatientInfo.vue";
 import moment from "moment";
-import api from "../../../api/index";
+import api from "@/api/index";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { useToast } from "primevue/usetoast";
-import Loader from "../../loader/Loader.vue";
-import FormSkeleton from "../../loader/FormSkeleton.vue";
+import Loader from "@/pages/loader/Loader.vue";
+import FormSkeleton from "@/pages/loader/FormSkeleton.vue";
 import * as fnMenin from "./functions/meningitis";
 import {
   validateFields,

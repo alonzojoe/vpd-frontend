@@ -213,8 +213,8 @@ import {
 } from "vue";
 import SearchCard from "@/components/cards/SearchCard.vue";
 import Pagination from "@/components/pagination/Pagination.vue";
-import ModalForm from "./../../components/modals/ModalForm.vue";
-import ModalSemiSm from "./../../components/modals/ModalSemiSm.vue";
+import ModalForm from "@/components/modals/ModalForm.vue";
+import ModalSemiSm from "@/components/modals/ModalSemiSm.vue";
 import FormSkeleton from "@/pages/loader/FormSkeleton.vue";
 import TableSkeleton from "@/pages/loader/TableSkeleton.vue";
 import SkeletonPlaceholder from "@/pages/loader/SkeletonPlaceholder.vue";

@@ -178,10 +178,10 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted, computed, inject, watch } from "vue";
-import PageHeader from "../../../components/cards/PageHeader.vue";
-import SearchCard from "../../../components/cards/SearchCard.vue";
-import ModalSm from "../../../components/modals/ModalSM.vue";
-import Pagination from "../../../components/pagination/Pagination.vue";
+import PageHeader from "@/components/cards/PageHeader.vue";
+import SearchCard from "@/components/cards/SearchCard.vue";
+import ModalSm from "@/components/modals/ModalSM.vue";
+import Pagination from "@/components/pagination/Pagination.vue";
 import { useStore } from "vuex";
 
 export default defineComponent({

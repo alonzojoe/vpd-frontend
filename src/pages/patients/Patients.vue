@@ -392,10 +392,10 @@ import {
 import SearchCard from "@/components/cards/SearchCard.vue";
 import Pagination from "@/components/pagination/Pagination.vue";
 import ModalMd from "@/components/modals/ModalMd.vue";
-import FormSkeleton from "../loader/FormSkeleton.vue";
-import TableSkeleton from "../loader/TableSkeleton.vue";
-import SkeletonPlaceholder from "../loader/SkeletonPlaceholder.vue";
-import PaginationSkeleton from "../loader/PaginationSkeleton.vue";
+import FormSkeleton from "@/pages/loader/FormSkeleton.vue";
+import TableSkeleton from "@/pages/loader/TableSkeleton.vue";
+import SkeletonPlaceholder from "@/pages/loader/SkeletonPlaceholder.vue";
+import PaginationSkeleton from "@/pages/loader/PaginationSkeleton.vue";
 import ModalSemiSm from "@/components/modals/ModalSemiSm.vue";
 import SearchProfile from "./profiles-components/SearchProfile.vue";
 import { useStore } from "vuex";

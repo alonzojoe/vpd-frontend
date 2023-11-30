@@ -119,7 +119,7 @@ import {
   NumericOnly,
 } from "@/composables";
 import FormCard from "@/components/cards/FormCard.vue";
-import FormPatientInfo from "../../../components/cards/FormPatientInfo.vue";
+import FormPatientInfo from "@/components/cards/FormPatientInfo.vue";
 import moment from "moment";
 import api from "../../../api/index";
 import { useStore } from "vuex";
@@ -131,9 +131,9 @@ import {
   validateChecker,
 } from "./functions/measlesValidation";
 import { useToast } from "primevue/usetoast";
-import Loader from "../../loader/Loader.vue";
-import FormSkeleton from "../../loader/FormSkeleton.vue";
-import PatientInfoCard from "../../../components/cards/PatientInfoCard.vue";
+import Loader from "@/pages//loader/Loader.vue";
+import FormSkeleton from "@/pages//loader/FormSkeleton.vue";
+import PatientInfoCard from "@/components/cards/PatientInfoCard.vue";
 import RegistryNav from "@/components/pagination/RegistryNav.vue";
 import SwitchTab from "@/components/pagination/SwitchTab.vue";
 import * as fnMease from "./functions/measles";
