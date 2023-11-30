@@ -14,6 +14,16 @@
             <a
               class="page-link"
               href="#"
+              @click.prevent="goToPage(1)"
+              tabindex="-1"
+              aria-disabled="true"
+              >First</a
+            >
+          </li>
+          <li class="page-item" :class="{ disabled: data.currentPage == 1 }">
+            <a
+              class="page-link"
+              href="#"
               @click.prevent="prevPage()"
               tabindex="-1"
               aria-disabled="true"
@@ -35,6 +45,19 @@
             :class="{ disabled: data.currentPage == data.totalPages }"
           >
             <a class="page-link" href="#" @click.prevent="nextPage()">Next</a>
+          </li>
+          <li
+            class="page-item"
+            :class="{ disabled: data.currentPage == data.totalPages }"
+          >
+            <a
+              class="page-link"
+              href="#"
+              @click.prevent="goToPage(data.totalPages)"
+              tabindex="-1"
+              aria-disabled="true"
+              >Last</a
+            >
           </li>
         </ul>
       </nav>
