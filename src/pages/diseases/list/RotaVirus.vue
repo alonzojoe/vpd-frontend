@@ -2,105 +2,12 @@
   <div class="card my-0">
     <div class="card-body py-4">
       <form-skeleton :data="skeletonData" v-if="isSkeleton" />
-      <search-card title="Search Patient" v-else>
-        <template v-slot:formInput="pObject">
-          <div class="col-sm-12 col-md-3 col-lg-3 mb-2">
-            <div class="search">
-              <Label class="mb-2">Ep ID:</Label>
-              <input
-                type="text"
-                v-model="formData.ep_id"
-                @keyup.enter="searchpatient()"
-                @keypress="zzz"
-                class="form-control form-control-sm w-100 custom-font"
-              />
-            </div>
-          </div>
-          <div class="col-sm-12 col-md-3 col-lg-3 mb-2">
-            <div class="search">
-              <Label class="mb-2">Last Name</Label>
-              <input
-                type="text"
-                v-model="formData.lname"
-                @keyup.enter="searchpatient()"
-                class="form-control form-control-sm w-100 custom-font"
-              />
-            </div>
-          </div>
-          <div class="col-sm-12 col-md-3 col-lg-3 mb-2">
-            <div class="search">
-              <Label class="mb-2">First Name:</Label>
-              <input
-                type="text"
-                v-model="formData.fname"
-                @keyup.enter="searchpatient()"
-                class="form-control form-control-sm w-100 custom-font"
-              />
-            </div>
-          </div>
-          <div class="col-sm-12 col-md-3 col-lg-3 mb-2">
-            <div class="search">
-              <Label class="mb-2">Middle Name:</Label>
-              <input
-                type="text"
-                v-model="formData.mname"
-                @keyup.enter="searchpatient()"
-                class="form-control form-control-sm w-100 custom-font"
-              />
-            </div>
-          </div>
-          <div class="col-sm-12 col-md-3 col-lg-3 mb-2">
-            <div class="search">
-              <Label class="mb-2">Case ID:</Label>
-              <input
-                type="text"
-                v-model="formData.case_id"
-                @keyup.enter="searchpatient()"
-                class="form-control form-control-sm w-100 custom-font"
-              />
-            </div>
-          </div>
-          <div class="col-sm-12 col-md-3 col-lg-3 mb-2">
-            <div class="search">
-              <Label class="mb-2">Date From</Label>
-              <input
-                type="date"
-                v-model="formData.dateFrom"
-                @keyup.enter="searchpatient()"
-                class="form-control form-control-sm w-100 custom-font"
-              />
-            </div>
-          </div>
-          <div class="col-sm-12 col-md-3 col-lg-3 mb-2">
-            <div class="search">
-              <Label class="mb-2">Date To:</Label>
-              <input
-                type="date"
-                v-model="formData.dateTo"
-                @keyup.enter="searchpatient()"
-                class="form-control form-control-sm w-100 custom-font"
-              />
-            </div>
-          </div>
-          <div class="col-sm-12 col-md-3 col-lg-3 mb-2">
-            <div class="d-flex justify-content-start mt-4">
-              <button
-                class="btn btn-primary m-1"
-                @keyup.enter="searchpatient()"
-                @click.prevent="searchpatient()"
-              >
-                Search
-              </button>
-              <button
-                class="btn btn-danger m-1"
-                @click.prevent="refreshPatients()"
-              >
-                Refresh
-              </button>
-            </div>
-          </div>
-        </template>
-      </search-card>
+      <search-disease
+        v-else
+        :formData="formData"
+        @search-data="searchpatient()"
+        @refresh-data="refreshPatients()"
+      />
       <!-- <form-skeleton :data="skeletonData" /> -->
 
       <div>
@@ -287,12 +194,13 @@ import {
 } from "vue";
 import SearchCard from "@/components/cards/SearchCard.vue";
 import Pagination from "@/components/pagination/Pagination.vue";
-import ModalForm from "../../../components/modals/ModalForm.vue";
-import ModalSemiSm from "../../../components/modals/ModalSemiSm.vue";
+import ModalForm from "@/components/modals/ModalForm.vue";
+import ModalSemiSm from "@/components/modals/ModalSemiSm.vue";
 import FormSkeleton from "@/pages/loader/FormSkeleton.vue";
 import TableSkeleton from "@/pages/loader/TableSkeleton.vue";
 import SkeletonPlaceholder from "@/pages/loader/SkeletonPlaceholder.vue";
 import PaginationSkeleton from "@/pages/loader/PaginationSkeleton.vue";
+import SearchDisease from "@/pages/diseases/list/list-components/SearchDisease.vue";
 import { encryptData } from "@/composables";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -318,6 +226,7 @@ export default defineComponent({
     PaginationSkeleton,
     PrintRota,
     ModalSemiSm,
+    SearchDisease,
   },
   setup() {
     const store = useStore();

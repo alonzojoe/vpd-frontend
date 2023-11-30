@@ -1,68 +1,12 @@
 <template>
   <div class="card my-0">
     <div class="card-body py-4">
-      <search-card title="Search User">
-        <template v-slot:formInput="pObject">
-          <div class="col-sm-12 col-md-4 col-lg-3 mb-2">
-            <div class="search">
-              <Label class="mb-2">Last Name:</Label>
-              <input
-                type="text"
-                v-model="formDataSearch.lname"
-                @keyup.enter="searchUser"
-                class="form-control form-control-sm w-100 custom-font"
-              />
-            </div>
-          </div>
-          <div class="col-sm-12 col-md-4 col-lg-3 mb-2">
-            <div class="search">
-              <Label class="mb-2">First Name:</Label>
-              <input
-                type="text"
-                v-model="formDataSearch.fname"
-                @keyup.enter="searchUser"
-                class="form-control form-control-sm w-100 custom-font"
-              />
-            </div>
-          </div>
-          <div class="col-sm-12 col-md-4 col-lg-3 mb-2">
-            <div class="search">
-              <Label class="mb-2">Middle Name:</Label>
-              <input
-                type="text"
-                v-model="formDataSearch.mname"
-                @keyup.enter="searchUser"
-                class="form-control form-control-sm w-100 custom-font"
-              />
-            </div>
-          </div>
-          <div class="col-sm-12 col-md-4 col-lg-3 mb-2">
-            <div class="search">
-              <Label class="mb-2">Institution:</Label>
-              <input
-                type="text"
-                v-model="formDataSearch.hci"
-                @keyup.enter="searchUser"
-                class="form-control form-control-sm w-100 custom-font"
-              />
-            </div>
-          </div>
-          <div class="col-sm-12 col-md-4 col-lg-3 mb-2">
-            <div class="d-flex justify-content-start mt-4">
-              <button
-                class="btn btn-primary m-1"
-                @keyup.enter="searchUser"
-                @click.prevent="searchUser"
-              >
-                Search
-              </button>
-              <button class="btn btn-danger m-1" @click.prevent="refreshData">
-                Refresh
-              </button>
-            </div>
-          </div>
-        </template>
-      </search-card>
+      <search-user
+        :formDataSearch="formDataSearch"
+        @search-user="searchUser"
+        @refresh-data="refreshData"
+      />
+
       <div class="d-flex justify-content-end">
         <button
           @click.prevent="addUser"
@@ -302,6 +246,8 @@ import AccountCredentials from "./users-components/AccountCredentials.vue";
 import UserInformation from "./users-components/UserInformation.vue";
 import HciInformation from "./users-components/HciInformation.vue";
 import PhotoSignature from "./users-components/PhotoSignature.vue";
+import SearchUser from "./users-components/SearchUser.vue";
+
 import Loader from "../../loader/Loader.vue";
 
 export default defineComponent({
@@ -314,6 +260,7 @@ export default defineComponent({
     UserInformation,
     HciInformation,
     PhotoSignature,
+    SearchUser,
   },
 
   setup() {
@@ -797,14 +744,13 @@ export default defineComponent({
         !formData.value.city ||
         !formData.value.barangay
       ) {
+        flagvl.value = true;
         swalMessage(
           swal,
           "Warning",
           "Please fill up the required fields.",
           "error"
-        ).then(() => {
-          flagvl.value = true;
-        });
+        );
 
         return false;
       } else if (!emailRegex.test(formData.value.email)) {
