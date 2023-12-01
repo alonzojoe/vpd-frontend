@@ -8,17 +8,18 @@
       <div>
         Page <span>{{ data.currentPage }} of {{ data.totalPages }}</span>
       </div>
+
       <nav aria-label="...">
         <ul class="pagination">
           <li class="page-item" :class="{ disabled: data.currentPage == 1 }">
             <a
-              class="page-link"
               href="#"
               @click.prevent="goToPage(1)"
-              tabindex="-1"
-              aria-disabled="true"
-              >First</a
+              class="page-link btn mb-1 waves-effect waves-light btn-outline-primary"
+              style="border-radius: 0px"
             >
+              <span class="fa fa-angle-double-left"></span>
+            </a>
           </li>
           <li class="page-item" :class="{ disabled: data.currentPage == 1 }">
             <a
@@ -51,13 +52,13 @@
             :class="{ disabled: data.currentPage == data.totalPages }"
           >
             <a
-              class="page-link"
               href="#"
               @click.prevent="goToPage(data.totalPages)"
-              tabindex="-1"
-              aria-disabled="true"
-              >Last</a
+              class="page-link btn mb-1 waves-effect waves-light btn-outline-primary"
+              style="border-radius: 0px"
             >
+              <span class="fa fa-angle-double-right"></span>
+            </a>
           </li>
         </ul>
       </nav>
