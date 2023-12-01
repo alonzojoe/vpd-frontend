@@ -20,7 +20,8 @@ const mutations = {
             return {
                 ...p,
                 created_at: moment(p.created_at).format('lll'),
-                updated_at: moment(p.updated_at).format('lll')
+                updated_at: moment(p.updated_at).format('lll'),
+
             }
         })
     },

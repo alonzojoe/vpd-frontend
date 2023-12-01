@@ -75,7 +75,12 @@ const state = {
         meninPatients: [],
         meninTotalPatients: 0,
         meninPaginatedPatients: 0,
-        meninResponse: ''
+        meninResponse: '',
+        meninSpecimens: [
+            'Whole Blood',
+            'Serum',
+            'CSF'
+        ]
     }
 }
 
@@ -499,7 +504,8 @@ const getters = {
     getMeninPatients: state => state.data.meninPatients,
     getMeninTotal: state => state.data.meninTotalPatients,
     getMeninPaginated: state => state.data.meninPaginatedPatients,
-    getMeninResponse: state => state.data.meninResponse
+    getMeninResponse: state => state.data.meninResponse,
+    getMeninSpecimens: state => state.data.meninSpecimens
 }
 
 export default {

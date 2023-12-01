@@ -135,6 +135,10 @@
     </div>
   </div>
   <modal-md :details="modalDetails" @close-modal="modalDetails.show = false">
+    <linelist-data
+      :formHeader="selectedLn"
+      :patients="selectedLn.linelist_details"
+    />
   </modal-md>
 </template>
 
@@ -159,6 +163,7 @@ import PaginationSkeleton from "@/pages/loader/PaginationSkeleton.vue";
 import ModalMd from "@/components/modals/ModalMd.vue";
 import Loader from "@/pages/loader/Loader.vue";
 import SearchLinelist from "@/pages/linelist/linelist-components/SearchLinelist.vue";
+import LinelistData from "@/pages/linelist/linelist-components/LinelistData.vue";
 import { encryptData } from "@/composables";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -188,6 +193,7 @@ export default defineComponent({
     Loader,
     SearchLinelist,
     ModalMd,
+    LinelistData,
   },
   setup() {
     const store = useStore();
@@ -197,7 +203,9 @@ export default defineComponent({
     const linelists = computed(() => store.getters.getLnHeader);
     const totalLinelist = computed(() => store.getters.getLnTotal);
     const linelistPage = computed(() => store.getters.getLnPaginated);
-    const specimens = computed(() => store.getters.getMeaseSpecimens);
+    const measeSpecimens = computed(() => store.getters.getMeaseSpecimens);
+    const meninSpecimens = computed(() => store.getters.getMeninSpecimens);
+    const rotaSpecimens = computed(() => store.getters.getRotaSpecimens);
     const dateToday = ref(new Date());
     const formData = ref({
       code: "",

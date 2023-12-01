@@ -39,8 +39,10 @@ const state = {
         rotaPatients: [],
         rotaTotalPatients: 0,
         rotaPaginatedPatients: 0,
-
-        response: {}
+        response: {},
+        rotaSpecimens: [
+            'Stool'
+        ]
     }
 };
 
@@ -287,6 +289,7 @@ const getters = {
     getRotaPatients: state => state.data.rotaPatients,
     getRotaTotalPatients: state => state.data.rotaTotalPatients,
     getRotaPagesPatients: state => state.data.rotaPaginatedPatients,
+    getRotaSpecimens: state => state.data.rotaSpecimens
 
 }
 

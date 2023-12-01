@@ -2,7 +2,7 @@ import { inject } from 'vue'
 import CryptoJS from 'crypto-js'
 import Cookies from 'js-cookie';
 
-export function swalMessage(swal,title: String, text: String, icon: String) {
+export function swalMessage(swal, title: String, text: String, icon: String) {
     return swal({
         title: title,
         text: text,
@@ -10,7 +10,7 @@ export function swalMessage(swal,title: String, text: String, icon: String) {
     })
 }
 
-export function swalConfirmation(swal,title: String, text: String, icon: String) {
+export function swalConfirmation(swal, title: String, text: String, icon: String) {
     return swal({
         title: title,
         text: text,
@@ -28,13 +28,13 @@ export function deCrypto(stringToDecrypt) {
 
     var encrypted_json = JSON.parse(atob(stringToDecrypt));
     var decrypted = CryptoJS.AES.decrypt(encrypted_json.value, CryptoJS.enc.Base64.parse(key), {
-      iv: CryptoJS.enc.Base64.parse(encrypted_json.iv)
+        iv: CryptoJS.enc.Base64.parse(encrypted_json.iv)
     });
 
     const stringDecrypted = decrypted.toString(CryptoJS.enc.Utf8);
     // for object JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
     return stringDecrypted
-   
+
 }
 
 
@@ -97,7 +97,7 @@ export function buildQueryParams(params) {
         if (params[key]) {
             queryParams.push(`${key}=${params[key]}`);
         }
-        
+
     }
 
     return queryParams.join('&');
@@ -110,7 +110,7 @@ export const trimZeroes = (num) => {
     stringNumber = stringNumber.replace(/^0+/, '');
 
     if (stringNumber === '') {
-        return 0; 
+        return 0;
     }
 
     return parseInt(stringNumber);
@@ -151,3 +151,10 @@ export const tribes = [
     { id: "00032", name: "TUMANDOK" },
     { id: "00033", name: "OTHERS" }
 ];
+
+export const extractLnCode = (lineListCode) => {
+    const regex = /-(.*?)-/;
+    const match = lineListCode.match(regex);
+
+    return match && match[1] ? match[1] : null;
+}

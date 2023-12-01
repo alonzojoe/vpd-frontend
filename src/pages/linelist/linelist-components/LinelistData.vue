@@ -156,15 +156,7 @@
             </div>
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
-            {{
-              p.type === 1
-                ? "Rota Virus"
-                : p.type === 2
-                ? "Meningitis-Encephalitis"
-                : p.type === 3
-                ? "Measles-Rubella"
-                : "Unknown Type"
-            }}
+            {{ diseaseType(p.type) }}
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
             <a href="javascript:void(0);" @click="removePatient(p)">
@@ -187,7 +179,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, computed } from "vue";
 
 export default defineComponent({
   name: "LinelistData",
@@ -202,7 +194,22 @@ export default defineComponent({
       emit("remove-patient", p);
     };
 
-    return { removePatient };
+    const diseaseType = (type) => {
+      let patientType = "";
+      if (type == 1) {
+        patientType = "Rota Virus";
+      } else if (type == 2) {
+        patientType = "Meningitis-Encephalitis";
+      } else if (type == 3) {
+        patientType = "Measles-Rubella";
+      } else {
+        patientType = "Unknown Type";
+      }
+
+      return patientType;
+    };
+
+    return { removePatient, diseaseType };
   },
 });
 </script>
