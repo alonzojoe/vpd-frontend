@@ -253,194 +253,15 @@
     </div>
   </modal-form>
   <modal-md :details="modalLineList" @close-modal="modalLineList.show = false">
-    <div class="row m-2">
-      <div class="col-sm-12 col-md-12 col-lg-12 mb-2">
-        <div class="d-flex align-items-center justify-content-end">
-          <button class="btn btn-primary btn-sm m-1" @click="saveLinelist()">
-            Save Linelist
-          </button>
-          <button
-            class="btn btn-danger btn-sm m-1"
-            @click="modalLineList.show = false"
-          >
-            Cancel
-          </button>
-        </div>
-      </div>
-      <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
-        <div class="search">
-          <Label class="mb-2">DRU Reporting Unit</Label>
-          <input
-            type="text"
-            v-model="formHeader.dru"
-            class="form-control form-control-sm w-100 custom-font"
-          />
-        </div>
-      </div>
-      <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
-        <div class="search">
-          <Label class="mb-2">Disease Surveillance Officer</Label>
-          <input
-            type="text"
-            v-model="formHeader.dru_officer"
-            class="form-control form-control-sm w-100 custom-font"
-          />
-        </div>
-      </div>
-      <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
-        <div class="search">
-          <Label class="mb-2">Contact No</Label>
-          <input
-            type="text"
-            v-model="formHeader.contact"
-            class="form-control form-control-sm w-100 custom-font"
-          />
-        </div>
-      </div>
-      <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
-        <div class="search">
-          <Label class="mb-2">Region</Label>
-          <input
-            type="text"
-            v-model="formHeader.region"
-            class="form-control form-control-sm w-100 custom-font"
-          />
-        </div>
-      </div>
-      <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
-        <div class="search">
-          <Label class="mb-2">Province</Label>
-          <input
-            type="text"
-            v-model="formHeader.province"
-            class="form-control form-control-sm w-100 custom-font"
-          />
-        </div>
-      </div>
-      <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
-        <div class="search">
-          <Label class="mb-2">Email</Label>
-          <input
-            type="text"
-            v-model="formHeader.email"
-            class="form-control form-control-sm w-100 custom-font"
-          />
-        </div>
-      </div>
-    </div>
-    <div class="m-3 table-responsive p-0 m-0 border border-primary mb-4">
-      <table class="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th class="text-center bg-primary text-white p-0 m-0">No</th>
-            <th class="text-center bg-primary text-white p-0 m-0">Last Name</th>
-            <th class="text-center bg-primary text-white p-0 m-0">
-              First Name
-            </th>
-            <th class="text-center bg-primary text-white p-0 m-0">
-              Middle Name
-            </th>
-            <th class="text-center bg-primary text-white p-0 m-0">Age</th>
-            <th class="text-center bg-primary text-white p-0 m-0">Gender</th>
-            <th class="text-center bg-primary text-white p-0 m-0">
-              Date of Birth
-            </th>
-            <th class="text-center bg-primary text-white p-0 m-0">Specimen</th>
-            <th
-              class="text-center bg-primary text-white p-0 m-0"
-              style="width: 10%"
-            >
-              Date and Time Collection
-            </th>
-            <th
-              class="text-center bg-primary text-white p-0 m-0"
-              style="width: 10%"
-            >
-              Disease Case
-            </th>
-            <th class="text-center bg-primary text-white p-0 m-0">Remove</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(c, index) in cart" :key="index">
-            <td class="text-center align-middle fw-bold p-1 m-0">
-              {{ index + 1 }}
-            </td>
-            <td class="text-center align-middle fw-bold p-1 m-0">
-              {{ c.lname }}
-            </td>
-            <td class="text-center align-middle fw-bold p-1 m-0">
-              {{ c.fname }}
-            </td>
-            <td class="text-center align-middle fw-bold p-1 m-0">
-              {{ c.mname }}
-            </td>
-            <td class="text-center align-middle fw-bold p-1 m-0">
-              {{ c.age_year }}
-            </td>
-            <td class="text-center align-middle fw-bold p-1 m-0">
-              {{ c.gender == 1 ? "MALE" : "FEMALE" }}
-            </td>
-            <td class="text-center align-middle fw-bold p-1 m-0">
-              {{ c.birthdate }}
-            </td>
-            <td class="text-center align-middle fw-bold p-1 m-0">
-              <div
-                :class="{ 'group-invalid': flagChecker && !c.specimen_type }"
-              >
-                <select
-                  v-model="c.specimen_type"
-                  class="form-select form-control form-control-sm"
-                >
-                  <option value="">Please Select</option>
-                  <option v-for="(s, index) in specimens" :value="s">
-                    {{ s }}
-                  </option>
-                </select>
-              </div>
-            </td>
-            <td class="text-center align-middle fw-bold p-1 m-0">
-              <div
-                :class="{
-                  'group-invalid': flagChecker && !c.datetime_collection,
-                }"
-              >
-                <input
-                  type="datetime-local"
-                  v-model="c.datetime_collection"
-                  class="form-control form-control-sm custom-font"
-                />
-              </div>
-            </td>
-            <td class="text-center align-middle fw-bold p-1 m-0">
-              {{
-                c.type === 1
-                  ? "Rota Virus"
-                  : c.type === 2
-                  ? "Meningitis-Encephalitis"
-                  : c.type === 3
-                  ? "Measles-Rubella"
-                  : "Unknown Type"
-              }}
-            </td>
-            <td class="text-center align-middle fw-bold p-1 m-0">
-              <a href="javascript:void(0);" @click="removeToCart(c)">
-                <i
-                  class="fa fa-times-circle scale-icon text-danger"
-                  aria-hidden="true"
-                  style="transition: all 300ms ease"
-                  v-tooltip.right="{
-                    value: `<h6 class='text-white'>Remove Patient</h6>`,
-                    escape: true,
-                    class: 'bg-dark rounded p-1',
-                  }"
-                ></i>
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <linelist-data
+      :formHeader="formHeader"
+      :patients="cart"
+      :specimens="specimens"
+      :flag-checker="flagChecker"
+      @close-linelist="modalLineList.show = false"
+      @save-linelist="saveLinelist()"
+      @remove-patient="removeToCart($event)"
+    />
   </modal-md>
   <loader
     title="Creating Measles-Rubella Linelist..."
@@ -474,6 +295,7 @@ import PaginationSkeleton from "@/pages/loader/PaginationSkeleton.vue";
 import ModalMd from "@/components/modals/ModalMd.vue";
 import Loader from "@/pages/loader/Loader.vue";
 import SearchDisease from "@/pages/diseases/list/list-components/SearchDisease.vue";
+import LinelistData from "@/pages/linelist/linelist-components/LinelistData.vue";
 import { encryptData } from "@/composables";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -509,6 +331,7 @@ export default defineComponent({
     ModalMd,
     Loader,
     SearchDisease,
+    LinelistData,
   },
   setup() {
     const store = useStore();
@@ -711,7 +534,7 @@ export default defineComponent({
         return {
           ...c,
           datetime_collection: "",
-          specimen_type: "",
+          specimen: "",
         };
       });
     };
@@ -792,7 +615,7 @@ export default defineComponent({
     const validateLinelist = () => {
       flagChecker.value = true;
       const hasError = cart.value.some((c) => {
-        if (!c.specimen_type || !c.datetime_collection) {
+        if (!c.specimen || !c.datetime_collection) {
           swalMessage(
             swal,
             "Validation Failed",

@@ -6,7 +6,9 @@
         @search-linelist="searchLinelist()"
         @refresh-data="refreshPatients()"
       />
-
+      <pre>
+        {{ selectedLn }}
+      </pre>
       <div>
         <div class="table-responsive p-0 m-0 border border-primary">
           <table class="table table-bordered table-hover">
@@ -87,7 +89,10 @@
                   {{ l.updated_at }}
                 </td>
                 <td class="text-center align-middle fw-bold p-1 m-0">
-                  <button @click="zxc" class="btn btn-sm btn-info m-1">
+                  <button
+                    @click="updateLinelist(l)"
+                    class="btn btn-sm btn-info m-1"
+                  >
                     Update
                   </button>
                 </td>
@@ -129,6 +134,8 @@
       />
     </div>
   </div>
+  <modal-md :details="modalDetails" @close-modal="modalDetails.show = false">
+  </modal-md>
 </template>
 
 <script lang="ts">
@@ -180,6 +187,7 @@ export default defineComponent({
     ModalMd,
     Loader,
     SearchLinelist,
+    ModalMd,
   },
   setup() {
     const store = useStore();
@@ -250,6 +258,17 @@ export default defineComponent({
       searchLinelist();
     };
 
+    const modalDetails = ref({
+      show: false,
+      title: "Upate Linelist",
+    });
+
+    const selectedLn = ref({});
+    const updateLinelist = (linelist: Object) => {
+      selectedLn.value = linelist;
+      modalDetails.value.show = true;
+    };
+
     onMounted(async () => {
       setTimeout(async () => {
         await fetchLinelist(1, formData.value);
@@ -265,6 +284,10 @@ export default defineComponent({
       formData,
       refreshPatients,
       searchLinelist,
+      //update
+      modalDetails,
+      updateLinelist,
+      selectedLn,
     };
   },
 });
