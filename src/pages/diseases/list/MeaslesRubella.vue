@@ -258,6 +258,7 @@
       :patients="cart"
       :specimens="specimens"
       :flag-checker="flagChecker"
+      :createList="true"
       @close-linelist="modalLineList.show = false"
       @save-linelist="saveLinelist()"
       @remove-patient="removeToCart($event)"

@@ -1,17 +1,8 @@
 <template>
-  <div class="row m-2">
+  <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12 mb-2">
       <div class="d-flex align-items-center justify-content-between">
-        <div>
-          <div class="qr-container">
-            <qrcode-vue
-              v-if="!create"
-              :value="formHeader.linelist_code"
-              :size="70"
-            />
-            <span class="fw-bold fs-2">{{ formHeader.linelist_code }}</span>
-          </div>
-        </div>
+        <div></div>
         <div>
           <button
             class="btn btn-primary btn-sm m-1"
@@ -28,67 +19,101 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
-      <div class="search">
-        <Label class="mb-2">DRU Reporting Unit</Label>
-        <input
-          type="text"
-          v-model="formHeader.dru"
-          class="form-control form-control-sm w-100 custom-font"
-        />
+    <div class="col-sm-12 col-md-12 col-lg-1" v-if="!createList">
+      <div class="row p-0 m-0">
+        <div class="col-12">
+          <qrcode-vue
+            style="position: absolute; top: -200px"
+            class="ml-2 mt-3"
+            :value="formHeader.linelist_code"
+            :size="100"
+            ref="qrcode"
+          />
+          <div class="d-flex align-items-center text-align-center mt-2">
+            <skeleton-placeholder height="100px" width="100px" />
+            <!-- <skeleton-placeholder
+              height="100px"
+              width="100px"
+              v-if="!imageDataUrl"
+            />
+            <Image v-else :src="imageDataUrl" alt="Image" width="100" preview /> -->
+          </div>
+        </div>
       </div>
     </div>
-    <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
-      <div class="search">
-        <Label class="mb-2">Disease Surveillance Officer</Label>
-        <input
-          type="text"
-          v-model="formHeader.dru_officer"
-          class="form-control form-control-sm w-100 custom-font"
-        />
-      </div>
-    </div>
-    <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
-      <div class="search">
-        <Label class="mb-2">Contact No</Label>
-        <input
-          type="text"
-          v-model="formHeader.contact"
-          class="form-control form-control-sm w-100 custom-font"
-        />
-      </div>
-    </div>
-    <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
-      <div class="search">
-        <Label class="mb-2">Region</Label>
-        <input
-          type="text"
-          v-model="formHeader.region"
-          class="form-control form-control-sm w-100 custom-font"
-        />
-      </div>
-    </div>
-    <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
-      <div class="search">
-        <Label class="mb-2">Province</Label>
-        <input
-          type="text"
-          v-model="formHeader.province"
-          class="form-control form-control-sm w-100 custom-font"
-        />
-      </div>
-    </div>
-    <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
-      <div class="search">
-        <Label class="mb-2">Email</Label>
-        <input
-          type="text"
-          v-model="formHeader.email"
-          class="form-control form-control-sm w-100 custom-font"
-        />
+    <div
+      class="col-sm-12 col-md-12"
+      :class="!createList ? 'col-lg-11' : 'col-lg-12'"
+    >
+      <div class="row p-0 m-0">
+        <div class="col-12">
+          <div class="row m-2">
+            <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
+              <div class="search">
+                <Label class="mb-2">DRU Reporting Unit</Label>
+                <input
+                  type="text"
+                  v-model="formHeader.dru"
+                  class="form-control form-control-sm w-100 custom-font"
+                />
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
+              <div class="search">
+                <Label class="mb-2">Disease Surveillance Officer</Label>
+                <input
+                  type="text"
+                  v-model="formHeader.dru_officer"
+                  class="form-control form-control-sm w-100 custom-font"
+                />
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
+              <div class="search">
+                <Label class="mb-2">Contact No</Label>
+                <input
+                  type="text"
+                  v-model="formHeader.contact"
+                  class="form-control form-control-sm w-100 custom-font"
+                />
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
+              <div class="search">
+                <Label class="mb-2">Region</Label>
+                <input
+                  type="text"
+                  v-model="formHeader.region"
+                  class="form-control form-control-sm w-100 custom-font"
+                />
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
+              <div class="search">
+                <Label class="mb-2">Province</Label>
+                <input
+                  type="text"
+                  v-model="formHeader.province"
+                  class="form-control form-control-sm w-100 custom-font"
+                />
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
+              <div class="search">
+                <Label class="mb-2">Email</Label>
+                <input
+                  type="text"
+                  v-model="formHeader.email"
+                  class="form-control form-control-sm w-100 custom-font"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+
   <div class="m-3 table-responsive p-0 m-0 border border-primary mb-4">
     <table class="table table-bordered table-hover">
       <thead>
@@ -191,8 +216,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, ref, onMounted, watch } from "vue";
 import QrcodeVue from "qrcode.vue";
+import html2canvas from "html2canvas";
+import Image from "primevue/image";
+import SkeletonPlaceholder from "@/pages/loader/SkeletonPlaceholder.vue";
 export default defineComponent({
   name: "LinelistData",
   props: {
@@ -200,14 +228,13 @@ export default defineComponent({
     patients: Array,
     specimens: Array,
     flagChecker: Boolean,
-    create: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
+    createList: Boolean,
+    refresher: String,
   },
   components: {
     QrcodeVue,
+    Image,
+    SkeletonPlaceholder,
   },
   setup(props, { emit }) {
     const removePatient = (p) => {
@@ -229,7 +256,27 @@ export default defineComponent({
       return patientType;
     };
 
-    return { removePatient, diseaseType };
+    const qrcode = ref(null);
+    const imageDataUrl = ref(null);
+    const captureQR = () => {
+      const qrCodeElement = qrcode.value.$el;
+      html2canvas(qrCodeElement).then((canvas) => {
+        imageDataUrl.value = canvas.toDataURL();
+      });
+    };
+
+    watch(
+      () => props.refresher,
+      (newRefresher, oldRefresher) => {
+        if (newRefresher) {
+          setTimeout(() => {
+            captureQR();
+          }, 300);
+        }
+      }
+    );
+
+    return { removePatient, diseaseType, qrcode, imageDataUrl, captureQR };
   },
 });
 </script>

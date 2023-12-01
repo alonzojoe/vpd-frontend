@@ -139,6 +139,8 @@
       :formHeader="selectedLn"
       :patients="selectedLn.linelist_details"
       :specimens="selectedSpecimen"
+      :createList="false"
+      :refresher="refresher"
     />
   </modal-md>
 </template>
@@ -165,7 +167,7 @@ import ModalMd from "@/components/modals/ModalMd.vue";
 import Loader from "@/pages/loader/Loader.vue";
 import SearchLinelist from "@/pages/linelist/linelist-components/SearchLinelist.vue";
 import LinelistData from "@/pages/linelist/linelist-components/LinelistData.vue";
-import { extractLnCode } from "@/composables";
+import { extractLnCode, randomMizer } from "@/composables";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import moment from "moment";
@@ -276,7 +278,9 @@ export default defineComponent({
 
     const selectedSpecimen = ref([]);
     const selectedLn = ref({});
+    const refresher = ref(null);
     const updateLinelist = (linelist: Object) => {
+      refresher.value = randomMizer(20);
       specimenType(linelist.linelist_code);
       selectedLn.value = linelist;
       modalDetails.value.show = true;
@@ -313,6 +317,8 @@ export default defineComponent({
       updateLinelist,
       selectedLn,
       selectedSpecimen,
+      randomMizer,
+      refresher,
     };
   },
 });

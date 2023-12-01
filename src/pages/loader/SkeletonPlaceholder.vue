@@ -43,6 +43,6 @@ export default defineComponent({
   width: v-bind(width);
   border-radius: v-bind(radius);
   background-color: v-bind(bg);
-  animation: glow 2s ease-in-out infinite;
+  animation: glow 1300ms ease-in-out infinite;
 }
 </style>
