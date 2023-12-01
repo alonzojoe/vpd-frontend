@@ -30,7 +30,6 @@ export default defineComponent({
     const isChecked = ref(currentTheme == "light-theme" ? true : false);
 
     onMounted(() => {
-      console.log("page-break");
       setTimeout(() => {
         isChecked.value = props.checkType;
       }, 100);
