@@ -268,6 +268,7 @@
     :subTitle="subTitle"
     :counts="patientCount"
     :warning="true"
+    :create="true"
     v-if="savingFlag"
   />
   <!-- <pre>{{ patientData }}</pre> -->

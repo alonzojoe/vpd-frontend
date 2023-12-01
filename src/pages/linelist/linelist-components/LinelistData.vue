@@ -1,19 +1,31 @@
 <template>
   <div class="row m-2">
     <div class="col-sm-12 col-md-12 col-lg-12 mb-2">
-      <div class="d-flex align-items-center justify-content-end">
-        <button
-          class="btn btn-primary btn-sm m-1"
-          @click="$emit('save-linelist')"
-        >
-          Save Linelist
-        </button>
-        <button
-          class="btn btn-danger btn-sm m-1"
-          @click="$emit('close-linelist')"
-        >
-          Cancel
-        </button>
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <div class="qr-container">
+            <qrcode-vue
+              v-if="!create"
+              :value="formHeader.linelist_code"
+              :size="70"
+            />
+            <span class="fw-bold fs-2">{{ formHeader.linelist_code }}</span>
+          </div>
+        </div>
+        <div>
+          <button
+            class="btn btn-primary btn-sm m-1"
+            @click="$emit('save-linelist')"
+          >
+            Save Linelist
+          </button>
+          <button
+            class="btn btn-danger btn-sm m-1"
+            @click="$emit('close-linelist')"
+          >
+            Cancel
+          </button>
+        </div>
       </div>
     </div>
     <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
@@ -180,7 +192,7 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-
+import QrcodeVue from "qrcode.vue";
 export default defineComponent({
   name: "LinelistData",
   props: {
@@ -188,6 +200,14 @@ export default defineComponent({
     patients: Array,
     specimens: Array,
     flagChecker: Boolean,
+    create: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  },
+  components: {
+    QrcodeVue,
   },
   setup(props, { emit }) {
     const removePatient = (p) => {
@@ -214,4 +234,11 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.qr-container {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  flex-direction: column;
+}
+</style>

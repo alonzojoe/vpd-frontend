@@ -138,6 +138,7 @@
     <linelist-data
       :formHeader="selectedLn"
       :patients="selectedLn.linelist_details"
+      :specimens="selectedSpecimen"
     />
   </modal-md>
 </template>
@@ -164,7 +165,7 @@ import ModalMd from "@/components/modals/ModalMd.vue";
 import Loader from "@/pages/loader/Loader.vue";
 import SearchLinelist from "@/pages/linelist/linelist-components/SearchLinelist.vue";
 import LinelistData from "@/pages/linelist/linelist-components/LinelistData.vue";
-import { encryptData } from "@/composables";
+import { extractLnCode } from "@/composables";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import moment from "moment";
@@ -203,9 +204,7 @@ export default defineComponent({
     const linelists = computed(() => store.getters.getLnHeader);
     const totalLinelist = computed(() => store.getters.getLnTotal);
     const linelistPage = computed(() => store.getters.getLnPaginated);
-    const measeSpecimens = computed(() => store.getters.getMeaseSpecimens);
-    const meninSpecimens = computed(() => store.getters.getMeninSpecimens);
-    const rotaSpecimens = computed(() => store.getters.getRotaSpecimens);
+
     const dateToday = ref(new Date());
     const formData = ref({
       code: "",
@@ -271,10 +270,27 @@ export default defineComponent({
       title: "Upate Linelist",
     });
 
+    const measeSpecimens = computed(() => store.getters.getMeaseSpecimens);
+    const meninSpecimens = computed(() => store.getters.getMeninSpecimens);
+    const rotaSpecimens = computed(() => store.getters.getRotaSpecimens);
+
+    const selectedSpecimen = ref([]);
     const selectedLn = ref({});
     const updateLinelist = (linelist: Object) => {
+      specimenType(linelist.linelist_code);
       selectedLn.value = linelist;
       modalDetails.value.show = true;
+    };
+
+    const specimenType = (code) => {
+      const type = extractLnCode(code);
+      if (type == "MEA") {
+        selectedSpecimen.value = measeSpecimens.value;
+      } else if (type == "AMES") {
+        selectedSpecimen.value = meninSpecimens.value;
+      } else if (type == "ROTAVIRUS") {
+        selectedSpecimen.value = rotaSpecimens.value;
+      }
     };
 
     onMounted(async () => {
@@ -296,6 +312,7 @@ export default defineComponent({
       modalDetails,
       updateLinelist,
       selectedLn,
+      selectedSpecimen,
     };
   },
 });
