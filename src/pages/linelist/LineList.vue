@@ -141,8 +141,17 @@
       :specimens="selectedSpecimen"
       :createList="false"
       :refresher="refresher"
+      :flag-checker="flagChecker"
+      @save-linelist="saveLinelist()"
+      @remove-patient="removeDetail($event)"
     />
   </modal-md>
+  <loader
+    title="Updating Linelist..."
+    :warning="true"
+    :create="true"
+    v-if="savingFlag"
+  />
 </template>
 
 <script lang="ts">
@@ -297,6 +306,74 @@ export default defineComponent({
       }
     };
 
+    const savingFlag = ref(false);
+    const headerResponse = computed(() => store.getters.getLnhResponse);
+    const removedDetails = ref([]);
+    const removeDetail = async (patient) => {
+      if (selectedLn.value.linelist_details.length === 1) {
+        swalMessage(
+          swal,
+          "Warning",
+          "Linelist Details must have at least 1 Patient.",
+          "warning"
+        );
+        return;
+      }
+
+      const index = selectedLn.value.linelist_details.findIndex(
+        (c) => c.detail_id === patient.detail_id
+      );
+
+      if (index !== -1) {
+        selectedLn.value.linelist_details.splice(index, 1);
+        removedDetails.value.push(patient.detail_id);
+      }
+
+      console.log(removedDetails.value);
+    };
+    const flagChecker = ref(false);
+    const validateLinelist = () => {
+      flagChecker.value = true;
+      const hasError = selectedLn.value.linelist_details.some((c) => {
+        if (!c.specimen || !c.datetime_collection) {
+          swalMessage(
+            swal,
+            "Validation Failed",
+            "Please fill out required fields.",
+            "error"
+          );
+          return true;
+        }
+        return false;
+      });
+
+      return hasError;
+    };
+
+    const saveLinelist = async () => {
+      const hasError = validateLinelist();
+
+      if (hasError) {
+        return;
+      }
+      savingFlag.value = true;
+      await store.dispatch("saveLinelist", {
+        ...selectedLn.value,
+        linelist_details: selectedLn.value.linelist_details,
+        updated_by: authUser.value.id,
+        removed_details: removedDetails.value,
+      });
+      savingFlag.value = false;
+      swalMessage(
+        swal,
+        "Information",
+        `Linelist ${headerResponse.value.linelist_code} Updated Successfully`,
+        "success"
+      ).then(() => {
+        location.reload();
+      });
+    };
+
     onMounted(async () => {
       setTimeout(async () => {
         await fetchLinelist(1, formData.value);
@@ -319,6 +396,10 @@ export default defineComponent({
       selectedSpecimen,
       randomMizer,
       refresher,
+      removeDetail,
+      savingFlag,
+      saveLinelist,
+      flagChecker,
     };
   },
 });

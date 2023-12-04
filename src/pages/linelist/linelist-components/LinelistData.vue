@@ -53,6 +53,7 @@
                 <input
                   type="text"
                   v-model="formHeader.dru"
+                  disabled
                   class="form-control form-control-sm w-100 custom-font"
                 />
               </div>
@@ -63,6 +64,7 @@
                 <input
                   type="text"
                   v-model="formHeader.dru_officer"
+                  disabled
                   class="form-control form-control-sm w-100 custom-font"
                 />
               </div>
@@ -73,6 +75,7 @@
                 <input
                   type="text"
                   v-model="formHeader.contact"
+                  disabled
                   class="form-control form-control-sm w-100 custom-font"
                 />
               </div>
@@ -83,6 +86,7 @@
                 <input
                   type="text"
                   v-model="formHeader.region"
+                  disabled
                   class="form-control form-control-sm w-100 custom-font"
                 />
               </div>
@@ -93,6 +97,7 @@
                 <input
                   type="text"
                   v-model="formHeader.province"
+                  disabled
                   class="form-control form-control-sm w-100 custom-font"
                 />
               </div>
@@ -103,6 +108,7 @@
                 <input
                   type="text"
                   v-model="formHeader.email"
+                  disabled
                   class="form-control form-control-sm w-100 custom-font"
                 />
               </div>

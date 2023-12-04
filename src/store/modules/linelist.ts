@@ -80,6 +80,7 @@ const actions = {
             });
             commit('setLnResponse', response.data.data)
         } else {
+
             const response = await api.put(`/linelist/${id}`, {
                 linelist_code: formData.linelist_code,
                 dru: formData.dru,
@@ -90,6 +91,7 @@ const actions = {
                 email: formData.email,
                 linelist_details: formData.linelist_details,
                 updated_by: formData.updated_by,
+                removed_details: formData.removed_details
             })
             commit('setLnResponse', response.data.data)
         }
