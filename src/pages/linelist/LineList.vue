@@ -6,9 +6,9 @@
         @search-linelist="searchLinelist()"
         @refresh-data="refreshPatients()"
       />
-      <pre>
+      <!-- <pre>
         {{ selectedLn }}
-      </pre>
+      </pre> -->
       <div>
         <div class="table-responsive p-0 m-0 border border-primary">
           <table class="table table-bordered table-hover">

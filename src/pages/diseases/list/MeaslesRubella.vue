@@ -591,11 +591,13 @@ export default defineComponent({
     };
 
     const saveLinelistHeader = async () => {
-      await store.dispatch("saveLnHeader", {
+      await store.dispatch("saveLinelist", {
         ...formHeader.value,
+        linelist_details: cart.value,
         created_by: authUser.value.id,
         updated_by: authUser.value.id,
       });
+      savingFlag.value = false;
     };
     const headerResponse = computed(() => store.getters.getLnhResponse);
 
@@ -687,7 +689,17 @@ export default defineComponent({
         if (res.isConfirmed) {
           savingFlag.value = true;
           await saveLinelistHeader();
-          await saveLinelistDetails();
+          // await saveLinelistDetails();
+
+          swalMessage(
+            swal,
+            "Information",
+            `Linelist ${headerResponse.value.linelist_code} has been Created Successfully`,
+            "success"
+          ).then(() => {
+            resetResource();
+            router.push({ name: "linelists" });
+          });
         }
       });
     };

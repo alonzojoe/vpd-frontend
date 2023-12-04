@@ -29,14 +29,13 @@
             :size="100"
             ref="qrcode"
           />
-          <div class="d-flex align-items-center text-align-center mt-2">
-            <skeleton-placeholder height="100px" width="100px" />
-            <!-- <skeleton-placeholder
+          <div class="d-flex align-items-center text-align-center mt-4">
+            <skeleton-placeholder
               height="100px"
               width="100px"
               v-if="!imageDataUrl"
             />
-            <Image v-else :src="imageDataUrl" alt="Image" width="100" preview /> -->
+            <Image v-else :src="imageDataUrl" alt="Image" width="100" preview />
           </div>
         </div>
       </div>
