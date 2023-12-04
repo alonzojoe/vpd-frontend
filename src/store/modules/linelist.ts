@@ -97,6 +97,19 @@ const actions = {
         }
     },
 
+    async deleteLinelist({ commit }, id) {
+        const response = await api.delete(`/linelist/${id}`)
+        commit('setLnResponse', response.data.data)
+    },
+
+    async postLinelist({ commit }, formData) {
+        const response = await api.patch(`/linelist/post/${formData.id}`, {
+            status: 2,
+            updated_by: formData.updated_by,
+        })
+        commit('setLnResponse', response.data.data)
+    }
+
 
 }
 

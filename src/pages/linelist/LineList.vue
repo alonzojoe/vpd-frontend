@@ -16,6 +16,7 @@
               <tr>
                 <th class="text-center bg-primary text-white p-1 m-0">ID</th>
                 <th class="text-center bg-primary text-white p-1 m-0">View</th>
+                <th class="text-center bg-primary text-white p-1 m-0">Post</th>
                 <th class="text-center bg-primary text-white p-1 m-0">Code</th>
                 <th class="text-center bg-primary text-white p-1 m-0">DRU</th>
                 <th class="text-center bg-primary text-white p-1 m-0">
@@ -68,6 +69,21 @@
                   </a>
                 </td>
                 <td class="text-center align-middle fw-bold p-1 m-0">
+                  <button
+                    class="btn btn-dark btn-sm"
+                    @click="postLinelist(l)"
+                    :disabled="l.status !== 1"
+                  >
+                    {{
+                      l.status == 1
+                        ? "Post"
+                        : l.status == 2
+                        ? "Posted"
+                        : "Cancelled"
+                    }}
+                  </button>
+                </td>
+                <td class="text-center align-middle fw-bold p-1 m-0">
                   {{ l.linelist_code }}
                 </td>
                 <td class="text-center align-middle fw-bold p-1 m-0">
@@ -91,13 +107,18 @@
                 <td class="text-center align-middle fw-bold p-1 m-0">
                   <button
                     @click="updateLinelist(l)"
+                    :disabled="l.status !== 1"
                     class="btn btn-sm btn-info m-1"
                   >
                     Update
                   </button>
                 </td>
                 <td class="text-center align-middle fw-bold p-1 m-0">
-                  <button @click="zxc" class="btn btn-sm btn-danger m-1">
+                  <button
+                    @click="deleteLinelist(l)"
+                    :disabled="l.status !== 1"
+                    class="btn btn-sm btn-danger m-1"
+                  >
                     Delete
                   </button>
                 </td>
@@ -374,6 +395,53 @@ export default defineComponent({
       });
     };
 
+    const deleteLinelist = async (linelist) => {
+      swalConfirmation(
+        swal,
+        "Confirmation",
+        `Are you sure to delete this Line list?`,
+        "question"
+      ).then(async (res) => {
+        if (res.isConfirmed) {
+          await await store.dispatch("deleteLinelist", linelist.id);
+
+          swalMessage(
+            swal,
+            "Information",
+            `Linelist ${linelist.linelist_code} Deleted Successfully`,
+            "success"
+          ).then(() => {
+            location.reload();
+          });
+        }
+      });
+    };
+
+    const postLinelist = async (linelist) => {
+      swalConfirmation(
+        swal,
+        "Confirmation",
+        `Once you post this, it will be submitted to the Molecular Laboratory, and you won't be able to edit it. Do you wish to proceed?`,
+        "question"
+      ).then(async (res) => {
+        if (res.isConfirmed) {
+          await await store.dispatch("postLinelist", {
+            ...linelist,
+            updated_by: authUser.value.id,
+          });
+
+          swalMessage(
+            swal,
+            "Information",
+            `Linelist ${linelist.linelist_code} Posted Successfully`,
+            "success"
+          ).then(() => {
+            location.reload();
+          });
+        }
+      });
+    };
+
     onMounted(async () => {
       setTimeout(async () => {
         await fetchLinelist(1, formData.value);
@@ -400,6 +468,8 @@ export default defineComponent({
       savingFlag,
       saveLinelist,
       flagChecker,
+      deleteLinelist,
+      postLinelist,
     };
   },
 });
