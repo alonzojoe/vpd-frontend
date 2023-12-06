@@ -201,6 +201,45 @@
                         <span class="hide-menu">Line Lists</span>
                       </router-link>
                     </li>
+                    <li
+                      v-if="authUser.role == 'Administrator'"
+                      class="nav-small-cap"
+                    >
+                      <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                      <span class="hide-menu">Laboratory</span>
+                    </li>
+                    <li
+                      v-if="authUser.role == 'Administrator'"
+                      class="sidebar-item"
+                      :class="{ selected: route.name === 'lablinelist' }"
+                    >
+                      <router-link
+                        :to="{ name: 'lablinelist' }"
+                        class="sidebar-link"
+                        aria-expanded="false"
+                      >
+                        <span class="rounded-3">
+                          <i class="ti ti-list-check"></i>
+                        </span>
+                        <span class="hide-menu">Submitted Linelist</span>
+                      </router-link>
+                    </li>
+                    <!-- <li
+                      v-if="authUser.role == 'Administrator'"
+                      class="sidebar-item"
+                      :class="{ selected: route.name === 'users' }"
+                    >
+                      <router-link
+                        :to="{ name: 'users' }"
+                        class="sidebar-link"
+                        aria-expanded="false"
+                      >
+                        <span class="rounded-3">
+                          <i class="ti ti-replace-filled"></i>
+                        </span>
+                        <span class="hide-menu">Plate Setup Worksheet</span>
+                      </router-link>
+                    </li> -->
 
                     <li
                       v-if="authUser.role == 'Administrator'"

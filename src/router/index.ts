@@ -65,6 +65,19 @@ const routes = [
                 meta: { title: `Patient List`, requireRole: ['Administrator', 'Regular', 'Nurse'] },
                 props: true
             },
+            {
+                path: 'laboratory',
+                component: RouteViewComponent,
+                meta: { title: 'Laboartory', requireRole: ['Administrator'] },
+                children: [
+                    {
+                        path: '',
+                        name: 'lablinelist',
+                        component: () => import('@/laboratory/SubmittedLinelist.vue'),
+                        meta: { title: 'Laboratory Linelist', requireRole: ['Administrator'] }
+                    },
+                ]
+            },
 
             {
                 path: 'settings',

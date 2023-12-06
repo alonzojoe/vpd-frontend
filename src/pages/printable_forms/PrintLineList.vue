@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <!-- <div>
     <h2>TEST LINELIST JSPDF</h2>
     <button @click="generatePDF">Generate PDF</button>
-    <!-- <pre>{{ tableData }}</pre> -->
+
 
     <h5>CSV to JSON</h5>
     <input type="file" @change="handleFileUpload" />
@@ -182,6 +182,30 @@
         </template>
       </Dock>
     </div>
+  </div> -->
+
+  <div class="row">
+    <div class="col-12">
+      <table class="table table-bordered">
+        <tr v-for="(row, rowIndex) in tableData" :key="rowIndex">
+          <td
+            v-for="(cell, cellIndex) in row"
+            :key="cellIndex"
+            :rowspan="cell.rowspan"
+            :colspan="cell.colspan"
+          >
+            <input
+              type="text"
+              v-model="cell.value"
+              :draggable="isDraggable(rowIndex, cellIndex)"
+              @dragstart="handleDragStart(rowIndex, cellIndex)"
+              @dragover="handleDragOver(rowIndex, cellIndex)"
+              @drop="handleDrop(rowIndex, cellIndex)"
+            />
+          </td>
+        </tr>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -200,7 +224,7 @@ export default defineComponent({
     Dock,
   },
   setup() {
-    const tableData = ref([
+    const tableDatas = ref([
       {
         no: 1,
         accessionNo: "ACC001",
@@ -2362,9 +2386,268 @@ export default defineComponent({
       },
     ]);
 
+    const tableData = ref([
+      [
+        { value: "A1", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+      ],
+      [
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+      ],
+      [
+        { value: "B1", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+      ],
+      [
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+      ],
+      [
+        { value: "C1", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+      ],
+      [
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+      ],
+      [
+        { value: "D1", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+      ],
+      [
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+      ],
+      [
+        { value: "E1", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+      ],
+      [
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+      ],
+      [
+        { value: "F1", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+      ],
+      [
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+      ],
+      [
+        { value: "G1", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+      ],
+      [
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+      ],
+      [
+        { value: "H1", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+      ],
+      [
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+        { value: "", rowspan: 2 },
+      ],
+    ]);
+
+    let dragData = null;
+
+    const isDraggable = (rowIndex, cellIndex) => {
+      return tableData.value[rowIndex][cellIndex].value !== "";
+    };
+
+    const handleDragStart = (rowIndex, cellIndex) => {
+      dragData = { rowIndex, cellIndex };
+    };
+
+    const handleDragOver = (rowIndex, cellIndex) => {
+      if (dragData) {
+        const [startRow, startCell] = [dragData.rowIndex, dragData.cellIndex];
+        const endRow = rowIndex;
+        const endCell = cellIndex;
+
+        // Swap the values in the tableData array
+        const temp = tableData.value[startRow][startCell].value;
+        tableData.value[startRow][startCell].value =
+          tableData.value[endRow][endCell].value;
+        tableData.value[endRow][endCell].value = temp;
+
+        // Reset dragData
+        dragData = null;
+      }
+    };
+
+    const handleDrop = (rowIndex, cellIndex) => {
+      // Prevent the default drop behavior
+      event.preventDefault();
+    };
+
     return {
       generatePDF,
-      tableData,
+      tableDatas,
 
       csvData,
       jsonArray,
@@ -2375,6 +2658,11 @@ export default defineComponent({
       items,
       position,
       positions,
+      tableData,
+      isDraggable,
+      handleDragStart,
+      handleDragOver,
+      handleDrop,
     };
   },
 });
@@ -2390,7 +2678,15 @@ export default defineComponent({
   background-size: cover;
   z-index: 1;
 }
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  cursor: pointer;
+}
 
+td:hover {
+  background-color: #f5f5f5;
+}
 .dock-demo > .p-dock {
   z-index: 1000;
 }
