@@ -233,9 +233,9 @@ export default defineComponent({
     const router = useRouter();
     const swal = inject("$swal");
     const authUser = computed(() => store.getters.getAuthenticatedUser);
-    const linelists = computed(() => store.getters.getLnHeader);
-    const totalLinelist = computed(() => store.getters.getLnTotal);
-    const linelistPage = computed(() => store.getters.getLnPaginated);
+    const linelists = computed(() => store.getters.getLinelists);
+    const totalLinelist = computed(() => store.getters.getTotalLinelists);
+    const linelistPage = computed(() => store.getters.getPaginatedLinelists);
 
     const dateToday = ref(new Date());
     const formData = ref({
@@ -272,9 +272,9 @@ export default defineComponent({
     const fetchLinelist = async (page: number, form: any) => {
       const mime =
         authUser.value.role == "Administrator" ? null : authUser.value.id;
-      await store.commit("setLnHeaderEmpty");
+      await store.commit("setLinelistsEmpty");
       isLoading.value = true;
-      await store.dispatch("fetchLinelist", {
+      await store.dispatch("fetchSubmittedLinelist", {
         page: page,
         ...form,
         mime: mime,

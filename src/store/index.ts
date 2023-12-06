@@ -9,6 +9,7 @@ import Meningitis from './modules/meningitis'
 import Measles from './modules/measles'
 import Dashboard from './modules/dashboard'
 import Linelist from './modules/linelist'
+import Laboartory from './modules/laboratory'
 
 const store = createStore({
     modules: {
@@ -21,7 +22,8 @@ const store = createStore({
         Meningitis,
         Measles,
         Dashboard,
-        Linelist
+        Linelist,
+        Laboartory 
     }
 })
 
