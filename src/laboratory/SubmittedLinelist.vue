@@ -14,9 +14,6 @@
           <table class="table table-bordered table-hover">
             <thead>
               <tr>
-                <th class="text-center bg-primary text-white p-1 m-0">ID</th>
-                <th class="text-center bg-primary text-white p-1 m-0">View</th>
-                <th class="text-center bg-primary text-white p-1 m-0">Post</th>
                 <th class="text-center bg-primary text-white p-1 m-0">Code</th>
                 <th class="text-center bg-primary text-white p-1 m-0">DRU</th>
                 <th class="text-center bg-primary text-white p-1 m-0">
@@ -38,51 +35,11 @@
                 >
                   Update
                 </th>
-                <th
-                  class="text-center bg-primary text-white p-1 m-0"
-                  style="width: 5%"
-                >
-                  Delete
-                </th>
               </tr>
             </thead>
 
             <tbody>
               <tr v-for="l in linelists" :key="l.id">
-                <td class="text-center align-middle fw-bold p-1 m-0">
-                  {{ l.id }}
-                </td>
-                <td class="text-center align-middle fw-bold p-1 m-0">
-                  <a href="javascript:void(0);" @click="zxc">
-                    <!-- <i class="scale-icon ti ti-file-invoice fs-6"></i> -->
-                    <img
-                      class="scale-icon"
-                      src="./../../assets/images/icons/print.png"
-                      height="30"
-                      width="30"
-                      v-tooltip.right="{
-                        value: `<h6 class='text-white'>Print Form</h6>`,
-                        escape: true,
-                        class: 'bg-dark rounded p-1',
-                      }"
-                    />
-                  </a>
-                </td>
-                <td class="text-center align-middle fw-bold p-1 m-0">
-                  <button
-                    class="btn btn-dark btn-sm"
-                    @click="postLinelist(l)"
-                    :disabled="l.status !== 1"
-                  >
-                    {{
-                      l.status == 1
-                        ? "Post"
-                        : l.status == 2
-                        ? "Posted"
-                        : "Cancelled"
-                    }}
-                  </button>
-                </td>
                 <td class="text-center align-middle fw-bold p-1 m-0">
                   {{ l.linelist_code }}
                 </td>
@@ -107,19 +64,9 @@
                 <td class="text-center align-middle fw-bold p-1 m-0">
                   <button
                     @click="updateLinelist(l)"
-                    :disabled="l.status !== 1"
                     class="btn btn-sm btn-info m-1"
                   >
                     Update
-                  </button>
-                </td>
-                <td class="text-center align-middle fw-bold p-1 m-0">
-                  <button
-                    @click="deleteLinelist(l)"
-                    :disabled="l.status !== 1"
-                    class="btn btn-sm btn-danger m-1"
-                  >
-                    Delete
                   </button>
                 </td>
               </tr>
@@ -132,7 +79,7 @@
                 </td>
               </tr>
               <tr v-if="isLoading">
-                <td colspan="11">
+                <td colspan="8">
                   <div class="d-flex align-items-center justify-content-center">
                     <div
                       class="spinner-border spinner-border-sm text-dark"
@@ -155,18 +102,13 @@
       />
     </div>
   </div>
-  <modal-md :details="modalDetails" @close-modal="modalDetails.show = false">
-    <linelist-data
+  <modal-lg :details="modalDetails" @close-modal="modalDetails.show = false">
+    <linelist-details
       :formHeader="selectedLn"
-      :patients="selectedLn.linelist_details"
-      :specimens="selectedSpecimen"
-      :createList="false"
-      :refresher="refresher"
-      :flag-checker="flagChecker"
       @save-linelist="saveLinelist()"
       @remove-patient="removeDetail($event)"
     />
-  </modal-md>
+  </modal-lg>
   <loader
     title="Updating Linelist..."
     :warning="true"
@@ -189,6 +131,7 @@ import SearchCard from "@/components/cards/SearchCard.vue";
 import Pagination from "@/components/pagination/Pagination.vue";
 import ModalForm from "@/components/modals/ModalForm.vue";
 import ModalSemiSm from "@/components/modals/ModalSemiSm.vue";
+import ModalLg from "@/components/modals/ModalLg.vue";
 import FormSkeleton from "@/pages/loader/FormSkeleton.vue";
 import TableSkeleton from "@/pages/loader/TableSkeleton.vue";
 import SkeletonPlaceholder from "@/pages/loader/SkeletonPlaceholder.vue";
@@ -196,7 +139,7 @@ import PaginationSkeleton from "@/pages/loader/PaginationSkeleton.vue";
 import ModalMd from "@/components/modals/ModalMd.vue";
 import Loader from "@/pages/loader/Loader.vue";
 import SearchLinelist from "@/pages/linelist/linelist-components/SearchLinelist.vue";
-import LinelistData from "@/pages/linelist/linelist-components/LinelistData.vue";
+import LinelistDetails from "@/laboratory/lab-components/LinelistDetails.vue";
 import { extractLnCode, randomMizer } from "@/composables";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -226,7 +169,8 @@ export default defineComponent({
     Loader,
     SearchLinelist,
     ModalMd,
-    LinelistData,
+    ModalLg,
+    LinelistDetails,
   },
   setup() {
     const store = useStore();
@@ -309,10 +253,11 @@ export default defineComponent({
     const selectedSpecimen = ref([]);
     const selectedLn = ref({});
     const refresher = ref(null);
-    const updateLinelist = (linelist: Object) => {
+    const updateLinelist = async (linelist: Object) => {
       refresher.value = randomMizer(20);
-      specimenType(linelist.linelist_code);
+      // specimenType(linelist.linelist_code);
       selectedLn.value = linelist;
+      await store.dispatch("fetchLinelistDetails", linelist.id);
       modalDetails.value.show = true;
     };
 

@@ -6,7 +6,7 @@ import moment from 'moment';
 const state = {
     data: {
         linelists: [],
-        linelistsDetails: [],
+        linelistDetails: [],
         totalLinelists: 0,
         paginatedLinelists: 0,
     }
@@ -30,6 +30,7 @@ const mutations = {
 
     setLinelistsDetails: (state, payload) => {
         state.data.linelistDetails = payload
+
     },
 
     setLinelistsDetailsEmpty: (state,) => {
@@ -53,6 +54,14 @@ const actions = {
             commit('setLinelists', response.data.data)
             commit('setTotalLinelists', response.data.total)
             commit('setPaginatedLinelists', response.data.total_pages)
+        }
+    },
+
+    async fetchLinelistDetails({ commit }, headerId) {
+        const response = await api.get(`/laboratory/detail/${headerId}`)
+        if (response.data.data) {
+            commit('setLinelistsDetails', response.data.data)
+
         }
     },
 
