@@ -1,8 +1,7 @@
 <template>
-  <!-- <div>
+  <div>
     <h2>TEST LINELIST JSPDF</h2>
     <button @click="generatePDF">Generate PDF</button>
-
 
     <h5>CSV to JSON</h5>
     <input type="file" @change="handleFileUpload" />
@@ -12,7 +11,7 @@
     <h5></h5>
   </div>
 
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-12">
       <div class="card w-100">
         <div class="card-body">
@@ -184,7 +183,7 @@
     </div>
   </div> -->
 
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-12">
       <table class="table table-bordered">
         <tr v-for="(row, rowIndex) in tableData" :key="rowIndex">
@@ -206,7 +205,7 @@
         </tr>
       </table>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script lang="ts">
@@ -2024,7 +2023,7 @@ export default defineComponent({
       let tableRows = []; // Change from const to let
 
       // Add table rows
-      tableData.value.forEach((dataRow) => {
+      tableDatas.value.forEach((dataRow) => {
         const rowData = Object.values(dataRow);
         tableRows.push(rowData);
       });
@@ -2112,8 +2111,11 @@ export default defineComponent({
       console.log(pdfUrl);
       window.open(`/pdf-viewer?pdfUrl=${encodeURIComponent(pdfUrl)}`, "_blank");
     };
-    const generatePDF = () => {
-      const doc = new jsPDF();
+    const generatePDF3 = () => {
+      const doc = new jsPDF({
+        orientation: "landscape", // Set the orientation to landscape
+        format: "a4", // Set the page size to A4
+      });
       doc.setProperties({
         title: `Line List November 15, 2023`,
       });
@@ -2129,11 +2131,18 @@ export default defineComponent({
       let tableRows = [];
 
       // Add table rows
-      tableData.value.forEach((dataRow) => {
-        const rowData = Object.values(dataRow);
+
+      tableDatas.value.forEach((dataRow) => {
+        const rowData = [
+          dataRow.no,
+          dataRow.accessionNo,
+          dataRow.name,
+          dataRow.biologicalMaterial,
+          dataRow.storedBy,
+          dataRow.remarks,
+        ];
         tableRows.push(rowData);
       });
-
       // Function to add page count to the footer
       const addPageCount = () => {
         const pageCount = doc.internal.getNumberOfPages();
@@ -2268,6 +2277,261 @@ export default defineComponent({
           }
         },
       });
+      // Increment total pages for the initial page
+      totalPages++;
+
+      // Save the PDF with a specific name
+      const pdfBlob = doc.output("blob");
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+      console.log(pdfUrl);
+      window.open(`/pdf-viewer?pdfUrl=${encodeURIComponent(pdfUrl)}`, "_blank");
+    };
+
+    const generatePDF4 = () => {
+      const doc = new jsPDF({
+        orientation: "landscape", // Set the orientation to landscape
+        format: "a4", // Set the page size to A4
+      });
+      doc.setProperties({
+        title: `Line List November 15, 2023`,
+      });
+
+      const tableColumn = [
+        "no",
+        "accessionNo",
+        "name",
+        "biologicalMaterial",
+        "storedBy",
+        "remarks",
+      ];
+      let tableRows = [];
+
+      // Add table rows
+
+      tableDatas.value.forEach((dataRow) => {
+        const rowData = [
+          dataRow.no,
+          dataRow.accessionNo,
+          dataRow.name,
+          dataRow.biologicalMaterial,
+          dataRow.storedBy,
+          dataRow.remarks,
+        ];
+        tableRows.push(rowData);
+      });
+      // Function to add page count to the footer
+      const addPageCount = () => {
+        const pageCount = doc.internal.getNumberOfPages();
+        doc.setFontSize(7);
+        doc.text(
+          `Page ${pageCount}`,
+          doc.internal.pageSize.width - 10,
+          doc.internal.pageSize.height - 10
+        );
+      };
+
+      let totalPages = 0;
+      let startY = 40;
+
+      // Logo dimensions
+      const logoWidth = 20;
+      const logoHeight = 20;
+
+      doc.autoTable({
+        head: [tableColumn],
+        body: tableRows,
+        theme: "grid",
+        startY: startY,
+        didDrawPage: () => {
+          addPageCount();
+
+          // Left Logo
+          doc.addImage(
+            "src/pages/printable_forms/image/doh.png",
+            "PNG",
+            10,
+            10,
+            logoWidth,
+            logoHeight
+          );
+
+          // Right Logo
+          const rightLogoX = doc.internal.pageSize.width - logoWidth - 10;
+          doc.addImage(
+            "src/pages/printable_forms/image/jbl.png",
+            "PNG",
+            rightLogoX,
+            10,
+            logoWidth,
+            logoHeight
+          );
+
+          // Title
+          const titleText =
+            "JOSE B. LINGAD MEMORIAL GENERAL HOSPITAL \n Dolores, City of San Fernando Pampanga \n Linelist Report \n From November 16, 2023 to November 17, 2023";
+
+          doc.setFontSize(12);
+          doc.setTextColor("#00000");
+          doc.setFont("bold");
+
+          // Calculate the height of the multi-line text
+          const titleTextHeight = doc.getTextDimensions(titleText).h;
+
+          // Calculate the y-coordinate for centering the text vertically
+          const centerY = 10 + Math.max(logoHeight, titleTextHeight) / 2;
+
+          doc.text(titleText, doc.internal.pageSize.width / 2, centerY, {
+            align: "center",
+          });
+
+          // Adjust startY for the next page
+          if (totalPages > 0) {
+            startY = 10; // Adjust this value based on your desired margin between pages
+          }
+        },
+        styles: { fontSize: 8 },
+        headStyles: { fillColor: "#5D87FF" },
+        didParseCell: (data) => {
+          // Increase totalPages on each new page
+          if (data.row.index === 0) {
+            totalPages++;
+          }
+        },
+      });
+      // Increment total pages for the initial page
+      totalPages++;
+
+      // Save the PDF with a specific name
+      const pdfBlob = doc.output("blob");
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+      console.log(pdfUrl);
+      window.open(`/pdf-viewer?pdfUrl=${encodeURIComponent(pdfUrl)}`, "_blank");
+    };
+
+    const generatePDF = () => {
+      const doc = new jsPDF({
+        orientation: "landscape", // Set the orientation to landscape
+        format: "a4", // Set the page size to A4
+      });
+      doc.setProperties({
+        title: `Line List November 15, 2023`,
+      });
+
+      const tableColumn = [
+        "no",
+        "accessionNo",
+        "name",
+        "biologicalMaterial",
+        "storedBy",
+        "remarks",
+      ];
+      let tableRows = [];
+
+      // Add table rows
+
+      tableDatas.value.forEach((dataRow) => {
+        const rowData = [
+          dataRow.no,
+          dataRow.accessionNo,
+          dataRow.name,
+          dataRow.biologicalMaterial,
+          dataRow.storedBy,
+          dataRow.remarks,
+        ];
+        tableRows.push(rowData);
+      });
+      // Function to add page count to the footer
+      const addPageCount = () => {
+        const pageCount = doc.internal.getNumberOfPages();
+        const currentPage = doc.internal.getCurrentPageInfo().pageNumber;
+
+        doc.setFontSize(7);
+        doc.text(
+          `Page ${currentPage}`,
+          // `Page ${currentPage} of ${pageCount}`,
+          doc.internal.pageSize.width - 30,
+          doc.internal.pageSize.height - 10
+        );
+      };
+
+      let totalPages = 0;
+      let startY = 40;
+
+      // Logo dimensions
+      const logoWidth = 20;
+      const logoHeight = 20;
+
+      doc.autoTable({
+        head: [tableColumn],
+        body: tableRows,
+        theme: "grid",
+        startY: startY,
+        didDrawPage: (data) => {
+          addPageCount();
+
+          // Only add header on the first page
+          if (data.pageNumber === 1) {
+            // Left Logo
+            doc.addImage(
+              "src/pages/printable_forms/image/doh.png",
+              "PNG",
+              10,
+              10,
+              logoWidth,
+              logoHeight
+            );
+
+            // Right Logo
+            const rightLogoX = doc.internal.pageSize.width - logoWidth - 10;
+            doc.addImage(
+              "src/pages/printable_forms/image/jbl.png",
+              "PNG",
+              rightLogoX,
+              10,
+              logoWidth,
+              logoHeight
+            );
+
+            // Title
+            const titleText =
+              "JOSE B. LINGAD MEMORIAL GENERAL HOSPITAL \n Dolores, City of San Fernando Pampanga \n Linelist Report \n From November 16, 2023 to November 17, 2023";
+
+            doc.setFontSize(12);
+            doc.setTextColor("#00000");
+            doc.setFont("bold");
+
+            // Calculate the height of the multi-line text
+            const titleTextHeight = doc.getTextDimensions(titleText).h;
+
+            // Calculate the y-coordinate for centering the text vertically
+            const centerY = 10 + Math.max(logoHeight, titleTextHeight) / 2;
+
+            doc.text(titleText, doc.internal.pageSize.width / 2, centerY, {
+              align: "center",
+            });
+
+            // Adjust startY for the next page
+            startY = 10; // Adjust this value based on your desired margin between pages
+          }
+        },
+        styles: {
+          fontSize: 8,
+          cellPadding: 2,
+          valign: "middle", // Center vertically
+          halign: "center", // Center horizontally
+        },
+        headStyles: { fillColor: "#5D87FF" },
+        columnStyles: {
+          4: { halign: "left" }, // 4 is the index of the "storedBy" column (0-based index)
+        },
+        didParseCell: (data) => {
+          // Increase totalPages on each new page
+          if (data.row.index === 0) {
+            totalPages++;
+          }
+        },
+      });
+
       // Increment total pages for the initial page
       totalPages++;
 

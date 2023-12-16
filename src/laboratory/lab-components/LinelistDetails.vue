@@ -124,6 +124,12 @@
             rowspan="2"
             class="text-center bg-primary align-middle text-white p-0 m-0"
           >
+            Option
+          </th>
+          <th
+            rowspan="2"
+            class="text-center bg-primary align-middle text-white p-0 m-0"
+          >
             Date Received
           </th>
           <th
@@ -179,6 +185,12 @@
       <tbody>
         <tr v-for="(l, index) in linelistDetails" :key="index">
           <td class="text-center align-middle fw-bold p-1 m-0">
+            <div class="d-flex gap-1">
+              <button class="btn btn-success btn-sm">Accept</button>
+              <button class="btn btn-danger btn-sm">Decline</button>
+            </div>
+          </td>
+          <td class="text-center align-middle fw-bold p-1 m-0">
             {{ l.date_received }}
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
@@ -195,7 +207,7 @@
             <input
               type="text"
               class="form-control form-control-sm fw-semibold"
-              v-model="l.mr_working"
+              v-model="l.specimen_quality"
             />
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">

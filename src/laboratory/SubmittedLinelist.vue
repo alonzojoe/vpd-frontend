@@ -105,6 +105,7 @@
   <modal-lg :details="modalDetails" @close-modal="modalDetails.show = false">
     <linelist-details
       :formHeader="selectedLn"
+      :refresher="refresher"
       @save-linelist="saveLinelist()"
       @remove-patient="removeDetail($event)"
     />
