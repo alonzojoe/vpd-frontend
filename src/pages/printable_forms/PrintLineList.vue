@@ -2504,7 +2504,7 @@ export default defineComponent({
             const titleTextHeight = doc.getTextDimensions(titleText).h;
 
             // Calculate the y-coordinate for centering the text vertically
-            const centerY = 10 + Math.max(logoHeight, titleTextHeight) / 2;
+            const centerY = 10 + Math.max(logoHeight, titleTextHeight) / 2.5;
 
             doc.text(titleText, doc.internal.pageSize.width / 2, centerY, {
               align: "center",
