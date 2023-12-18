@@ -29,7 +29,12 @@ const mutations = {
     },
 
     setLinelistsDetails: (state, payload) => {
-        state.data.linelistDetails = payload
+        state.data.linelistDetails = payload.map((l) => {
+            return {
+                ...l,
+                date_received: !l.date_received ? '' : moment(l.date_received).format('ll')
+            }
+        })
 
     },
 
@@ -73,6 +78,13 @@ const actions = {
     async rejectSpecimen({ commit }, payload) {
         await api.patch(`/linelist/reject/${payload.detail_id}`, {
             reject_reason: payload.reason
+        });
+    },
+
+    async generateAccessionNo({ commit }, payload) {
+        await api.patch(`/linelist/accession/${payload.detail_id}`, {
+            medtech_id: payload.medtech,
+            type: payload.disease_type
         });
     }
 

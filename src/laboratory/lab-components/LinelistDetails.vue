@@ -228,8 +228,15 @@
             {{ l.lname }}, {{ l.fname }} {{ l.mname }}
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
-            <span v-if="l.accession_no">l.accession_no</span>
-            <button class="btn btn-dark btn-sm" v-else>Generate</button>
+            <span v-if="l.accession_no">{{ l.accession_no }}</span>
+            <button
+              class="btn btn-dark btn-sm"
+              v-else
+              :disabled="l.specimen_status != 1"
+              @click="generateAccession(l)"
+            >
+              Generate
+            </button>
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
             {{ formHeader.dru }}
@@ -239,6 +246,7 @@
               type="text"
               class="form-control form-control-sm fw-semibold"
               v-model="l.specimen_quality"
+              :disabled="l.specimen_status != 1"
             />
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
@@ -246,6 +254,7 @@
               type="text"
               class="form-control form-control-sm fw-semibold"
               v-model="l.mr_working"
+              :disabled="l.specimen_status != 1"
             />
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
@@ -253,6 +262,7 @@
               type="text"
               class="form-control form-control-sm fw-semibold"
               v-model="l.mr_backup"
+              :disabled="l.specimen_status != 1"
             />
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
@@ -260,6 +270,7 @@
               type="text"
               class="form-control form-control-sm fw-semibold"
               v-model="l.mr_npsops"
+              :disabled="l.specimen_status != 1"
             />
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
@@ -267,6 +278,7 @@
               class="form-control form-control-sm fw-semibold"
               rows="2"
               v-model="l.remarks"
+              :disabled="l.specimen_status != 1"
             ></textarea>
           </td>
         </tr>
@@ -286,7 +298,6 @@
       </tbody>
     </table>
   </div>
-  <button @click="refreshData()">Refresher</button>
 </template>
 
 <script lang="ts">
@@ -353,6 +364,33 @@ export default defineComponent({
       await store.dispatch("fetchLinelistDetails", props.headerId);
       emit("update-loader", false);
     };
+    // generateAccessionNo
+    const authUser = computed(() => store.getters.getAuthenticatedUser);
+    const generateAccession = async (details) => {
+      const patient = `${details.lname}, ${details.fname} ${details.mname}`;
+      const type = details.type === 1 ? "RV" : details.type === 2 ? "JV" : "MR";
+      swalConfirmation(
+        swal,
+        "Confirmation",
+        `Are you sure to generate accession no.?`,
+        "question"
+      ).then(async (res) => {
+        if (res.isConfirmed) {
+          await store.dispatch("generateAccessionNo", {
+            ...details,
+            medtech: authUser.value.id,
+            disease_type: type,
+          });
+          refreshData();
+          toast.add({
+            severity: "success",
+            summary: `Patient ${patient}`,
+            detail: `Accession No. Generated Successfully`,
+            life: 3000,
+          });
+        }
+      });
+    };
 
     const updateSpecimen = async (details, type) => {
       const patient = `${details.lname}, ${details.fname} ${details.mname}`;
@@ -388,14 +426,16 @@ export default defineComponent({
                 });
               },
               allowOutsideClick: () => swal.isLoading(),
-            }).then(() => {
-              refreshData();
-              toast.add({
-                severity: type == 1 ? "success" : "error",
-                summary: `Patient ${patient}`,
-                detail: `Specimen ${message} Successfully`,
-                life: 3000,
-              });
+            }).then((result) => {
+              if (result.isConfirmed) {
+                refreshData();
+                toast.add({
+                  severity: type == 1 ? "success" : "error",
+                  summary: `Patient ${patient}`,
+                  detail: `Specimen ${message} Successfully`,
+                  life: 3000,
+                });
+              }
             });
           }
         }
@@ -422,6 +462,7 @@ export default defineComponent({
       linelistDetails,
       refreshData,
       updateSpecimen,
+      generateAccession,
     };
   },
 });
