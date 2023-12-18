@@ -1,4 +1,5 @@
 <template>
+  <Toast />
   <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12 mb-2">
       <div class="d-flex align-items-center justify-content-between">
@@ -124,7 +125,7 @@
             rowspan="2"
             class="text-center bg-primary align-middle text-white p-0 m-0"
           >
-            Option
+            Specimen Status
           </th>
           <th
             rowspan="2"
@@ -185,9 +186,39 @@
       <tbody>
         <tr v-for="(l, index) in linelistDetails" :key="index">
           <td class="text-center align-middle fw-bold p-1 m-0">
-            <div class="d-flex gap-1">
-              <button class="btn btn-success btn-sm">Accept</button>
-              <button class="btn btn-danger btn-sm">Decline</button>
+            <div class="d-flex gap-1" v-if="l.specimen_status == 0">
+              <button
+                class="btn btn-success btn-sm"
+                @click="updateSpecimen(l, 1)"
+              >
+                Accept
+              </button>
+              <button
+                class="btn btn-danger btn-sm"
+                @click="updateSpecimen(l, 2)"
+              >
+                Reject
+              </button>
+            </div>
+            <div v-else>
+              <span class="mb-1 badge bg-success" v-if="l.specimen_status == 1"
+                >Accepted</span
+              >
+              <span
+                v-if="l.specimen_status == 2"
+                class="badge bg-danger d-flex align-items-center gap-2 justify-content-between"
+                >Rejected
+                <span
+                  class="badge rounded-pill bg-dark fs-1"
+                  style="cursor: pointer"
+                  v-tooltip.right="{
+                    value: `<h6 class='text-white fs-1'>${l.reject_reason}</h6>`,
+                    escape: true,
+                    class: 'bg-dark rounded p-1',
+                  }"
+                  >Reason</span
+                ></span
+              >
             </div>
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
@@ -239,18 +270,34 @@
             ></textarea>
           </td>
         </tr>
+        <tr v-if="isLoading">
+          <td colspan="10">
+            <div class="d-flex align-items-center justify-content-center">
+              <div
+                class="spinner-border spinner-border-sm text-dark"
+                role="status"
+              ></div>
+              <span class="text-dark ml-4"
+                >&nbsp;&nbsp;&nbsp;Loading Please Wait...</span
+              >
+            </div>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
+  <button @click="refreshData()">Refresher</button>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, onMounted, watch } from "vue";
+import { defineComponent, computed, ref, onMounted, watch, inject } from "vue";
 import QrcodeVue from "qrcode.vue";
 import html2canvas from "html2canvas";
 import Image from "primevue/image";
 import SkeletonPlaceholder from "@/pages/loader/SkeletonPlaceholder.vue";
 import { useStore } from "vuex";
+import { swalConfirmation, swalMessage } from "@/composables";
+import { useToast } from "primevue/usetoast";
 export default defineComponent({
   name: "LinelistDetails",
   props: {
@@ -260,6 +307,8 @@ export default defineComponent({
     flagChecker: Boolean,
     createList: Boolean,
     refresher: String,
+    isLoading: Boolean,
+    headerId: Number,
   },
   components: {
     QrcodeVue,
@@ -270,7 +319,9 @@ export default defineComponent({
     const removePatient = (p) => {
       emit("remove-patient", p);
     };
+    const toast = useToast();
     const store = useStore();
+    const swal = inject("$swal");
     const diseaseType = (type) => {
       let patientType = "";
       if (type == 1) {
@@ -296,6 +347,60 @@ export default defineComponent({
     };
 
     const linelistDetails = computed(() => store.getters.getLinelistsDetails);
+    const refreshData = async () => {
+      await store.commit("setLinelistsDetailsEmpty");
+      emit("update-loader", true);
+      await store.dispatch("fetchLinelistDetails", props.headerId);
+      emit("update-loader", false);
+    };
+
+    const updateSpecimen = async (details, type) => {
+      const patient = `${details.lname}, ${details.fname} ${details.mname}`;
+      const question = type == 1 ? "accept" : "reject";
+      const message = type == 1 ? "Accepted" : "Rejected";
+      swalConfirmation(
+        swal,
+        "Confirmation",
+        `Are you sure to ${question} ${patient} specimen?`,
+        "question"
+      ).then(async (res) => {
+        if (res.isConfirmed) {
+          if (type == 1) {
+            await store.dispatch("acceptSpecimen", details);
+            refreshData();
+            toast.add({
+              severity: type == 1 ? "success" : "error",
+              summary: `Patient ${patient}`,
+              detail: `Specimen ${message} Successfully`,
+              life: 3000,
+            });
+          } else {
+            swal({
+              title: "Specimen Rejection Reason:",
+              input: "text",
+              showCancelButton: true,
+              confirmButtonText: "Submit",
+              showLoaderOnConfirm: true,
+              preConfirm: async (reason) => {
+                await store.dispatch("rejectSpecimen", {
+                  reason: reason,
+                  ...details,
+                });
+              },
+              allowOutsideClick: () => swal.isLoading(),
+            }).then(() => {
+              refreshData();
+              toast.add({
+                severity: type == 1 ? "success" : "error",
+                summary: `Patient ${patient}`,
+                detail: `Specimen ${message} Successfully`,
+                life: 3000,
+              });
+            });
+          }
+        }
+      });
+    };
 
     watch(
       () => props.refresher,
@@ -315,6 +420,8 @@ export default defineComponent({
       imageDataUrl,
       captureQR,
       linelistDetails,
+      refreshData,
+      updateSpecimen,
     };
   },
 });

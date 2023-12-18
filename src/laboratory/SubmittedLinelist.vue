@@ -106,6 +106,9 @@
     <linelist-details
       :formHeader="selectedLn"
       :refresher="refresher"
+      :isLoading="loadingData"
+      :headerId="headerId"
+      @update-loader="updateLoader($event)"
       @save-linelist="saveLinelist()"
       @remove-patient="removeDetail($event)"
     />
@@ -254,12 +257,21 @@ export default defineComponent({
     const selectedSpecimen = ref([]);
     const selectedLn = ref({});
     const refresher = ref(null);
+    const loadingData = ref(false);
+    const headerId = ref(0);
     const updateLinelist = async (linelist: Object) => {
       refresher.value = randomMizer(20);
       // specimenType(linelist.linelist_code);
       selectedLn.value = linelist;
-      await store.dispatch("fetchLinelistDetails", linelist.id);
+      headerId.value = linelist.id;
       modalDetails.value.show = true;
+      loadingData.value = true;
+      await store.dispatch("fetchLinelistDetails", linelist.id);
+      loadingData.value = false;
+    };
+
+    const updateLoader = (bool) => {
+      loadingData.value = bool;
     };
 
     const specimenType = (code) => {
@@ -416,6 +428,9 @@ export default defineComponent({
       flagChecker,
       deleteLinelist,
       postLinelist,
+      loadingData,
+      headerId,
+      updateLoader,
     };
   },
 });

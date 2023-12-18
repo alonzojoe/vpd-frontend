@@ -65,6 +65,16 @@ const actions = {
         }
     },
 
+    async acceptSpecimen({ commit }, payload) {
+        console.log('pay', payload)
+        await api.patch(`/linelist/accept/${payload.detail_id}`);
+    },
+
+    async rejectSpecimen({ commit }, payload) {
+        await api.patch(`/linelist/reject/${payload.detail_id}`, {
+            reject_reason: payload.reason
+        });
+    }
 
 
 }
