@@ -93,7 +93,21 @@ const state = {
             'OPS',
             'NPS',
             'NPS/OPS'
-        ]
+        ],
+        measeLabProfile: [
+            {
+                mease_id: 0,
+                specimen_datetime: "",
+                specimen_type: "",
+                specimen_sent: "",
+                date_sent: "",
+                date_received: "",
+                test_conducted: "",
+                laboratory_result: "",
+                organism_detected: "",
+                interpretation: ""
+            }
+        ],
     }
 }
 
@@ -330,6 +344,36 @@ const mutations = {
 
     resetOutcomeDied: (state) => {
         state.data.measles.date_died = ''
+    },
+
+    addLaboratory: (state, payload) => {
+        const defaultObj = {
+            mease_id: payload.id,
+            specimen_datetime: "",
+            specimen_type: "",
+            specimen_sent: "",
+            date_sent: "",
+            date_received: "",
+            test_conducted: "",
+            laboratory_result: "",
+            organism_detected: "",
+            interpretation: ""
+        }
+        state.data.measeLabProfile.push(defaultObj);
+    },
+
+    updateLabProfile: (state, payload) => {
+
+        state.data.measeLabProfile = state.data.measeLabProfile.map((m) => {
+            return {
+                ...m,
+                mease_id: payload.id
+            }
+        })
+    },
+
+    removeLabProfile: (state, payload) => {
+        state.data.measeLabProfile.splice(payload, 1)
     }
 
 }
@@ -520,7 +564,8 @@ const getters = {
     getMeaseTotal: state => state.data.measeTotalPatients,
     getMeasePaginated: state => state.data.measePaginatedPatients,
     getMeaseResponse: state => state.data.measeResponse,
-    getMeaseSpecimens: state => state.data.measeSpecimens
+    getMeaseSpecimens: state => state.data.measeSpecimens,
+    getMeaseLabProfile: state => state.data.measeLabProfile
 }
 
 export default {

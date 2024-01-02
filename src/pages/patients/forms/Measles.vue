@@ -87,6 +87,19 @@
           </div>
         </div>
       </div>
+      <div class="tab-Item" v-if="selectedTab == 4">
+        <div class="row">
+          <div class="col-sm-12 col-md-12 col-lg-12 mb-2">
+            <laboratory-profile
+              :patient="patient"
+              :formData="formData"
+              :saveSubmitted="saveSubmitted"
+              :validationStatus="validationStatus"
+            >
+            </laboratory-profile>
+          </div>
+        </div>
+      </div>
       <switch-tab
         :details="switchTabDetails"
         @switch-tab="switchSelect"
@@ -145,6 +158,7 @@ import MeaslesOccurance from "./measles-components/MeaslesOccurance.vue";
 import MeaslesClassification from "./measles-components/MeaslesClassification.vue";
 import MeaslesInfection from "./measles-components/MeaslesInfection.vue";
 import MeaslesOutcome from "./measles-components/MeaslesOutcome.vue";
+import LaboratoryProfile from "./global-components/LaboratoryProfile.vue";
 export default defineComponent({
   components: {
     FormCard,
@@ -161,6 +175,7 @@ export default defineComponent({
     MeaslesClassification,
     MeaslesInfection,
     MeaslesOutcome,
+    LaboratoryProfile,
   },
   setup() {
     const store = useStore();
@@ -191,6 +206,7 @@ export default defineComponent({
       { id: 1, name: "Clinical Information" },
       { id: 2, name: "Vaccination Information & Exposure History" },
       { id: 3, name: "Exposure Occurence & Other Information" },
+      { id: 4, name: "Laboratory Profile" },
     ]);
 
     const selectedTab = ref(1);
@@ -208,7 +224,7 @@ export default defineComponent({
 
     const switchTabDetails = ref({
       currentTab: 1,
-      maxTab: 3,
+      maxTab: 4,
       title: "",
     });
 
