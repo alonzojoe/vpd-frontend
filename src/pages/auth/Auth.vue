@@ -334,7 +334,7 @@ export default defineComponent({
               password
             ).toString();
             console.log(encryptedData);
-            Cookies.set("auth_token", token, { expires: 4 / 24 });
+            Cookies.set("auth_token", token, { expires: 365 });
             localStorage.setItem("ajioasdmianc8a79sdy0", token);
             localStorage.setItem("userData", encryptedData);
             api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
