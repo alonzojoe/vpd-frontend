@@ -96,6 +96,7 @@ const state = {
         ],
         measeLabProfile: [
             {
+                id: 0,
                 mease_id: 0,
                 specimen_datetime: "",
                 specimen_type: "",
