@@ -80,6 +80,14 @@ const state = {
             'Whole Blood',
             'Serum',
             'CSF'
+        ],
+        meninTests: [
+            'Cytology and Chemistry',
+            'Enzyme-linked Immunoassay (ELISA)',
+            'Gram Stain',
+            'Microbiology',
+            'Microscopic Agglutination Test',
+            'Virus Isolation'
         ]
     }
 }
@@ -505,7 +513,8 @@ const getters = {
     getMeninTotal: state => state.data.meninTotalPatients,
     getMeninPaginated: state => state.data.meninPaginatedPatients,
     getMeninResponse: state => state.data.meninResponse,
-    getMeninSpecimens: state => state.data.meninSpecimens
+    getMeninSpecimens: state => state.data.meninSpecimens,
+    getMeninTests: state => state.data.meninTests
 }
 
 export default {

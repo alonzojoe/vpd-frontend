@@ -96,6 +96,8 @@
               :saveSubmitted="saveSubmitted"
               :validationStatus="validationStatus"
               :specimens="specimens"
+              :type="diseaseDetails.type"
+              :tests="conductedTests"
             >
             </laboratory-profile>
           </div>
@@ -187,6 +189,7 @@ export default defineComponent({
     const formData = ref({});
     const authUser = computed(() => store.getters.getAuthenticatedUser);
     const specimens = computed(() => store.getters.getMeaseSpecimens);
+    const conductedTests = computed(() => store.getters.getMeaseTests);
     const fetchPatientInfo = async () => {
       skeletonLoading();
       const response = await api.get(`/patients/${patient.value.patientId}`);
@@ -279,8 +282,13 @@ export default defineComponent({
       await store.dispatch("saveDiseaseHistory", formRequest);
     };
 
+    const labProfile = computed(() => store.getters.getMeaseLabProfile);
+
     const saveMeasles = async (formRequest) => {
-      await store.dispatch("saveMeasles", formRequest);
+      await store.dispatch("saveMeasles", {
+        ...formRequest,
+        laboratory_profiles: labProfile.value,
+      });
     };
 
     const savingFlag = ref(false);
@@ -427,6 +435,7 @@ export default defineComponent({
       skelClinical,
       authUser,
       specimens,
+      conductedTests,
     };
   },
 });

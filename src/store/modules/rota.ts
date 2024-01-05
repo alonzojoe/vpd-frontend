@@ -42,6 +42,12 @@ const state = {
         response: {},
         rotaSpecimens: [
             'Stool'
+        ],
+        rotaTests: [
+            'Culture and Sensitivity',
+            'Enzyme-linked Immunoassay (ELISA)',
+            'Polymerase Chain Reaction',
+            'Virus Isolation'
         ]
     }
 };
@@ -289,7 +295,8 @@ const getters = {
     getRotaPatients: state => state.data.rotaPatients,
     getRotaTotalPatients: state => state.data.rotaTotalPatients,
     getRotaPagesPatients: state => state.data.rotaPaginatedPatients,
-    getRotaSpecimens: state => state.data.rotaSpecimens
+    getRotaSpecimens: state => state.data.rotaSpecimens,
+    getRotaTests: state => state.data.rotaTests
 
 }
 

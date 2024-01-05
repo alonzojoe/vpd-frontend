@@ -94,20 +94,28 @@ const state = {
             'NPS',
             'NPS/OPS'
         ],
+        measlesTests: [
+            'Enzyme-linked Immunoassay (ELISA)',
+            'IgM Antibody Test',
+            'IgM and IgG Antibody Test',
+            'Polymerase Chain Reaction',
+            'Virus Isolation'
+        ],
         measeLabProfile: [
-            {
-                id: 0,
-                disease_id: 0,
-                datetime_collection: "",
-                specimen_type: "",
-                specimen_sent: "",
-                date_sent: "",
-                date_received: "",
-                test_conducted: "",
-                lab_result: "",
-                organism_detected: "",
-                interpretation: ""
-            }
+            // {
+            //     id: 0,
+            //     disease_id: 0,
+            //     disease_type: "",
+            //     datetime_collection: "",
+            //     specimen_type: "",
+            //     specimen_sent: "",
+            //     date_sent: "",
+            //     date_received: "",
+            //     test_conducted: "",
+            //     lab_result: "",
+            //     organism_detected: "",
+            //     interpretation: ""
+            // }
         ],
     }
 }
@@ -348,9 +356,11 @@ const mutations = {
     },
 
     addLaboratory: (state, payload) => {
-        const defaultObj = {
+        console.log('payload mutation', payload)
+        const newSpecimen = {
             id: 0,
             disease_id: payload.id,
+            disease_type: "",
             datetime_collection: "",
             specimen_type: "",
             specimen_sent: "",
@@ -361,7 +371,7 @@ const mutations = {
             organism_detected: "",
             interpretation: ""
         }
-        state.data.measeLabProfile.push(defaultObj);
+        state.data.measeLabProfile.push(newSpecimen);
     },
 
     updateLabProfile: (state, payload) => {
@@ -369,7 +379,8 @@ const mutations = {
         state.data.measeLabProfile = state.data.measeLabProfile.map((m) => {
             return {
                 ...m,
-                disease_id: payload.id
+                disease_id: payload.id,
+                disease_type: payload.disease_type
             }
         })
     },
@@ -474,7 +485,8 @@ const actions = {
                 outcome: formData.outcome,
                 date_died: formData.date_died,
                 final_diagnosis: formData.final_diagnosis,
-                user_id: formData.user_id
+                user_id: formData.user_id,
+                laboratory_profiles: formData.laboratory_profiles
             })
 
             commit('setMeaseResponse', response.data.data)
@@ -551,7 +563,8 @@ const actions = {
                 outcome: formData.outcome,
                 date_died: formData.date_died,
                 final_diagnosis: formData.final_diagnosis,
-                user_id: formData.user_id
+                user_id: formData.user_id,
+                laboratory_profiles: formData.laboratory_profiles
             })
             commit('setMeaseResponse', response.data.data)
         }
@@ -567,7 +580,9 @@ const getters = {
     getMeasePaginated: state => state.data.measePaginatedPatients,
     getMeaseResponse: state => state.data.measeResponse,
     getMeaseSpecimens: state => state.data.measeSpecimens,
-    getMeaseLabProfile: state => state.data.measeLabProfile
+    getMeaseTests: state => state.data.measlesTests,
+    getMeaseLabProfile: state => state.data.measeLabProfile,
+
 }
 
 export default {

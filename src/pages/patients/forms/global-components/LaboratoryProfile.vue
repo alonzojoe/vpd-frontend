@@ -11,13 +11,13 @@
     :key="index"
   >
     <template v-slot:formInput>
-      <button
+      <!-- <button
         @click="removeLab(index)"
         class="btn btn-danger btn-sm reset-btn"
         v-if="index != 0"
       >
         Remove
-      </button>
+      </button> -->
       <div>
         <div class="row">
           <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
@@ -39,7 +39,7 @@
                 v-model="l.specimen_type"
               >
                 <option value="">Please Select</option>
-                <option v-for="(s, index) in specimens" :key="index">
+                <option v-for="(s, index) in specimens" :key="index" :value="s">
                   {{ s }}
                 </option>
               </select>
@@ -66,6 +66,7 @@
                 v-model="l.date_sent"
                 :max="currentDate"
                 class="form-control form-control-sm w-100 custom-font"
+                :disabled="l.specimen_sent != 'Y'"
               />
             </div>
           </div>
@@ -77,6 +78,7 @@
                 v-model="l.date_received"
                 :max="currentDate"
                 class="form-control form-control-sm w-100 custom-font"
+                :disabled="l.specimen_sent != 'Y'"
               />
             </div>
           </div>
@@ -88,6 +90,9 @@
                 v-model="l.test_conducted"
               >
                 <option value="">Please Select</option>
+                <option v-for="(t, index) in tests" :key="index" :value="t">
+                  {{ t }}
+                </option>
               </select>
             </div>
           </div>
@@ -99,6 +104,10 @@
                 v-model="l.lab_result"
               >
                 <option value="">Please Select</option>
+                <option value="EQUIVOCAL">EQUIVOCAL</option>
+                <option value="NEGATIVE">NEGATIVE</option>
+                <option value="PENDING">PENDING</option>
+                <option value="POSITIVE">POSITIVE</option>
               </select>
             </div>
           </div>
@@ -109,6 +118,7 @@
                 type="text"
                 v-model="l.organism_detected"
                 class="form-control form-control-sm w-100 custom-font"
+                :disabled="l.lab_result != 'POSITIVE'"
               />
             </div>
           </div>
@@ -152,11 +162,13 @@ export default defineComponent({
       type: Object,
     },
     specimens: Array,
+    type: String,
+    tests: Array,
   },
   components: {
     FormCard,
   },
-  setup() {
+  setup(props) {
     const swal = inject("$swal");
     const store = useStore();
     const labProfile = computed(() => store.getters.getMeaseLabProfile);
@@ -169,8 +181,14 @@ export default defineComponent({
       // }else{
       //     swalMessage(swal, 'Warning', 'Maximum of 2 Sp')
       // }
-      await store.commit("addLaboratory", formMease.value);
-      store.commit("updateLabProfile", formMease.value);
+      await store.commit("addLaboratory", {
+        ...formMease.value,
+        disease_type: props.type,
+      });
+      store.commit("updateLabProfile", {
+        ...formMease.value,
+        disease_type: props.type,
+      });
     };
 
     const removeLab = async (index) => {
