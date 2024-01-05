@@ -25,7 +25,7 @@
               <Label class="mb-2">Date Specimen Collected</Label>
               <input
                 type="datetime-local"
-                v-model="l.specimen_datetime"
+                v-model="l.datetime_collection"
                 :max="currentDate"
                 class="form-control form-control-sm w-100 custom-font"
               />
@@ -39,6 +39,9 @@
                 v-model="l.specimen_type"
               >
                 <option value="">Please Select</option>
+                <option v-for="(s, index) in specimens" :key="index">
+                  {{ s }}
+                </option>
               </select>
             </div>
           </div>
@@ -93,7 +96,7 @@
               <Label class="mb-2">Laboratory Test Result</Label>
               <select
                 class="form-select form-control form-control-sm"
-                v-model="l.laboratory_result"
+                v-model="l.lab_result"
               >
                 <option value="">Please Select</option>
               </select>
@@ -148,6 +151,7 @@ export default defineComponent({
     validationStatus: {
       type: Object,
     },
+    specimens: Array,
   },
   components: {
     FormCard,

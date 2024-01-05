@@ -97,14 +97,14 @@ const state = {
         measeLabProfile: [
             {
                 id: 0,
-                mease_id: 0,
-                specimen_datetime: "",
+                disease_id: 0,
+                datetime_collection: "",
                 specimen_type: "",
                 specimen_sent: "",
                 date_sent: "",
                 date_received: "",
                 test_conducted: "",
-                laboratory_result: "",
+                lab_result: "",
                 organism_detected: "",
                 interpretation: ""
             }
@@ -349,14 +349,15 @@ const mutations = {
 
     addLaboratory: (state, payload) => {
         const defaultObj = {
-            mease_id: payload.id,
-            specimen_datetime: "",
+            id: 0,
+            disease_id: payload.id,
+            datetime_collection: "",
             specimen_type: "",
             specimen_sent: "",
             date_sent: "",
             date_received: "",
             test_conducted: "",
-            laboratory_result: "",
+            lab_result: "",
             organism_detected: "",
             interpretation: ""
         }
@@ -368,7 +369,7 @@ const mutations = {
         state.data.measeLabProfile = state.data.measeLabProfile.map((m) => {
             return {
                 ...m,
-                mease_id: payload.id
+                disease_id: payload.id
             }
         })
     },

@@ -19,7 +19,7 @@ const state = {
 
 
 const mutations = {
-    setDiseaseHistory:(state, payload) => {
+    setDiseaseHistory: (state, payload) => {
         console.log('payload disdease', payload)
         state.data.diseaseHistory = {
             id: payload.id,
@@ -32,7 +32,7 @@ const mutations = {
         }
     },
 
-    setDiseaseHistoryEmpty:(state, payload) => {
+    setDiseaseHistoryEmpty: (state, payload) => {
         console.log('payload disdease', payload)
         state.data.diseaseHistory = {
             id: 0,
@@ -45,29 +45,29 @@ const mutations = {
         }
     },
 
-    setResponse:(state, payload) => {
+    setResponse: (state, payload) => {
         state.data.response = payload
     }
 };
 
 
-const actions  = {
-    async fetchDiseaseHistory({commit}, payload) {
+const actions = {
+    async fetchDiseaseHistory({ commit }, payload) {
         const response = await api.get(`/disease/${payload}`)
         console.log('response disease', response.data.data)
         commit('setDiseaseHistory', response.data.data)
-        
+
 
     },
 
-    async saveDiseaseHistory({commit}, formData) {
+    async saveDiseaseHistory({ commit }, formData) {
         // debugger;
         let id = state.data.diseaseHistory.id
 
         const year = moment(Date.now()).format('YYYY')
         const currdate = moment(Date.now()).format('MMDDYY')
         const gender = formData.gender == 1 ? 'M' : 'F'
-        
+
         const case_no = `${year}-${currdate}${formData.fname}${formData.age_year}${formData.lname}${gender}`
 
         if (id == 0) {
@@ -78,10 +78,10 @@ const actions  = {
                 case_id: case_no,
                 ep_id: formData.ep_id,
                 type: formData.type,
-            user_id: formData.user_id,
+                user_id: formData.user_id,
             })
             commit('setResponse', response.data.data)
-        }else{
+        } else {
             const response = await api.put(`/disease/${id}`, {
                 patientInfo_id: formData.patientInfo_id,
                 disease_date: state.data.diseaseHistory.disease_date,
@@ -93,15 +93,15 @@ const actions  = {
             })
             commit('setResponse', response.data.data)
 
-          
+
         }
     }
 
 }
 
 const getters = {
-    getDiseaseHistory:state => state.data.diseaseHistory,
-    getDiseaseResponse:state => state.data.response
+    getDiseaseHistory: state => state.data.diseaseHistory,
+    getDiseaseResponse: state => state.data.response
 }
 
 

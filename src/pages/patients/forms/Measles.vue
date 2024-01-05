@@ -95,6 +95,7 @@
               :formData="formData"
               :saveSubmitted="saveSubmitted"
               :validationStatus="validationStatus"
+              :specimens="specimens"
             >
             </laboratory-profile>
           </div>
@@ -185,6 +186,7 @@ export default defineComponent({
     const patient = ref(decryptData(localStorage.getItem("patient")));
     const formData = ref({});
     const authUser = computed(() => store.getters.getAuthenticatedUser);
+    const specimens = computed(() => store.getters.getMeaseSpecimens);
     const fetchPatientInfo = async () => {
       skeletonLoading();
       const response = await api.get(`/patients/${patient.value.patientId}`);
@@ -424,6 +426,7 @@ export default defineComponent({
       skelPatientInfo,
       skelClinical,
       authUser,
+      specimens,
     };
   },
 });
