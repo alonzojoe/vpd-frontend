@@ -201,9 +201,11 @@ export default defineComponent({
       if (patient.value.registry == false) {
         store.dispatch("fetchDiseaseHistory", patient.value.diseaseId);
         store.dispatch("fetchMease", patient.value.measlesId);
+        store.dispatch("fethLaboratoryProfile", patient.value.measlesId);
       } else {
         store.commit("setDiseaseHistoryEmpty");
         store.commit("setMeaseEmpty");
+        store.commit("resetLabProfile");
       }
     };
 

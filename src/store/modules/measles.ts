@@ -385,8 +385,16 @@ const mutations = {
         })
     },
 
+    setLaboratoryProfile: (state, payload) => {
+        state.data.measeLabProfile = payload
+    },
+
     removeLabProfile: (state, payload) => {
         state.data.measeLabProfile.splice(payload, 1)
+    },
+
+    resetLabProfile: (state) => {
+        state.data.measeLabProfile = []
     }
 
 }
@@ -569,6 +577,11 @@ const actions = {
             commit('setMeaseResponse', response.data.data)
         }
 
+    },
+
+    async fethLaboratoryProfile({ commit }, payload) {
+        const response = await api.get(`laboratory/profile/${payload}`)
+        commit('setLaboratoryProfile', response.data.data)
     }
 
 }
