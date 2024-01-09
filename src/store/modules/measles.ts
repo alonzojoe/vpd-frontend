@@ -579,8 +579,8 @@ const actions = {
 
     },
 
-    async fethLaboratoryProfile({ commit }, payload) {
-        const response = await api.get(`laboratory/profile/${payload}`)
+    async fetchLaboratoryProfile({ commit }, payload) {
+        const response = await api.get(`laboratory/profile/${payload.disease_id}/?type=${payload.type}`)
         commit('setLaboratoryProfile', response.data.data)
     }
 

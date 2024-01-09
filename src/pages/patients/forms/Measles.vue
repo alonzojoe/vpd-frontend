@@ -199,9 +199,13 @@ export default defineComponent({
       )}`;
       diseaseDetails.value.case_id = `${caseDate}-`;
       if (patient.value.registry == false) {
-        store.dispatch("fetchDiseaseHistory", patient.value.diseaseId);
+        await store.dispatch("fetchDiseaseHistory", patient.value.diseaseId);
         store.dispatch("fetchMease", patient.value.measlesId);
-        store.dispatch("fethLaboratoryProfile", patient.value.measlesId);
+        console.log("type", formDiseaseHistory.value);
+        store.dispatch("fetchLaboratoryProfile", {
+          disease_id: patient.value.measlesId,
+          type: formDiseaseHistory.value.type,
+        });
       } else {
         store.commit("setDiseaseHistoryEmpty");
         store.commit("setMeaseEmpty");
