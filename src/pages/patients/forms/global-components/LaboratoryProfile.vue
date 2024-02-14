@@ -45,7 +45,7 @@
               </select>
             </div>
           </div>
-          <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
+          <div class="col-sm-12 col-md-6 col-lg-4 mb-2 d-none">
             <div class="search">
               <Label class="mb-2">Specimen Sent to RITM / SNL? </Label>
               <select
@@ -58,7 +58,7 @@
               </select>
             </div>
           </div>
-          <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
+          <div class="col-sm-12 col-md-6 col-lg-4 mb-2 d-none">
             <div class="search">
               <Label class="mb-2">Date Sent to RITM/SNL</Label>
               <input
@@ -70,7 +70,7 @@
               />
             </div>
           </div>
-          <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
+          <div class="col-sm-12 col-md-6 col-lg-4 mb-2 d-none">
             <div class="search">
               <Label class="mb-2">Date Received to RITM/SNL</Label>
               <input
@@ -88,6 +88,7 @@
               <select
                 class="form-select form-control form-control-sm"
                 v-model="l.test_conducted"
+                disabled
               >
                 <option value="">Please Select</option>
                 <option v-for="(t, index) in tests" :key="index" :value="t">
@@ -102,6 +103,7 @@
               <select
                 class="form-select form-control form-control-sm"
                 v-model="l.lab_result"
+                disabled
               >
                 <option value="">Please Select</option>
                 <option value="EQUIVOCAL">EQUIVOCAL</option>
@@ -129,6 +131,7 @@
                 type="text"
                 v-model="l.interpretation"
                 class="form-control form-control-sm w-100 custom-font"
+                disabled
               />
             </div>
           </div>
@@ -175,12 +178,16 @@ export default defineComponent({
     const formMease = computed(() => store.getters.getMease);
     const currentDate = moment(Date.now()).format("yyyy-MM-DD");
 
-    const addProfile = async () => {
-      // if (labProfile.value.length > 2) {
+    const validateData = () => {
+      return labProfile.value.some((profile) => {
+        return (
+          profile.datetime_collection.trim() == "" ||
+          profile.specimen_type.trim() == ""
+        );
+      });
+    };
 
-      // }else{
-      //     swalMessage(swal, 'Warning', 'Maximum of 2 Sp')
-      // }
+    const pushNewData = async () => {
       await store.commit("addLaboratory", {
         ...formMease.value,
         disease_type: props.type,
@@ -189,6 +196,27 @@ export default defineComponent({
         ...formMease.value,
         disease_type: props.type,
       });
+    };
+
+    const addProfile = async () => {
+      console.log(validateData());
+      // if (labProfile.value.length > 2) {
+
+      // }else{
+      //     swalMessage(swal, 'Warning', 'Maximum of 2 Sp')
+      // }
+      // if (condition) {
+      // }
+
+      if (labProfile.value.length === 0) {
+        await pushNewData();
+      } else if (!validateData() && labProfile.value.length < 2) {
+        await pushNewData();
+      } else if (labProfile.value.length === 2) {
+        alert("Maximum of 2 specimen is allowed");
+      } else {
+        alert("pleas fill before adding new");
+      }
     };
 
     const removeLab = async (index) => {
