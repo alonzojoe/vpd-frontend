@@ -144,12 +144,21 @@ export const validateFields = async (toast, formData, watch) => {
         delete validationStatus.value.date_died
     }
 
+    const labs = { payload: 'lab', message: 'Laboratory Profile Specimen', tab: 4 }
+
+
+    if (formData.labs.length === 0) {
+        requiredFields.push(labs)
+        validationStatus.value.labs = true
+    } else {
+        delete validationStatus.value.labs
+    }
 
     validateChecker(formData)
 
     const result = ref({
         errors: 0,
-        tab: 3
+        tab: 4
     })
 
     requiredFields.every((r) => {

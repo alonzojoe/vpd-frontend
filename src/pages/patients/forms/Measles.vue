@@ -343,7 +343,11 @@ export default defineComponent({
       saveSubmitted.value = true;
       const errors = await validateFields(
         toast,
-        { ...formMease.value, gender: formData.value.gender },
+        {
+          ...formMease.value,
+          gender: formData.value.gender,
+          labs: labProfile.value,
+        },
         0
       );
       selectTab(errors.value.tab);
@@ -372,7 +376,11 @@ export default defineComponent({
         if (saveSubmitted.value == true) {
           validateFields(
             toast,
-            { ...formMease.value, gender: formData.value.gender },
+            {
+              ...formMease.value,
+              gender: formData.value.gender,
+              labs: labProfile.value,
+            },
             1
           );
         }

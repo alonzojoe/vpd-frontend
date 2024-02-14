@@ -670,4 +670,8 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.card {
+  margin-right: 0 !important;
+}
+</style>
