@@ -21,8 +21,14 @@
       <div>
         <div class="row">
           <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
-            <div class="search">
-              <Label class="mb-2">Date Specimen Collected</Label>
+            <div
+              class="search"
+              :class="{ 'group-invalid': addFlag && !l.datetime_collection }"
+            >
+              <Label class="mb-2"
+                >Date Specimen Collected
+                <span class="text-danger">*</span></Label
+              >
               <input
                 type="datetime-local"
                 v-model="l.datetime_collection"
@@ -32,8 +38,13 @@
             </div>
           </div>
           <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
-            <div class="search">
-              <Label class="mb-2">Specimen Type </Label>
+            <div
+              class="search"
+              :class="{ 'group-invalid': addFlag && !l.specimen_type }"
+            >
+              <Label class="mb-2"
+                >Specimen Type <span class="text-danger">*</span></Label
+              >
               <select
                 class="form-select form-control form-control-sm"
                 v-model="l.specimen_type"
@@ -155,6 +166,7 @@ import FormCard from "@/components/cards/FormCard.vue";
 import * as fnMease from "../functions/measles";
 import { useStore } from "vuex";
 import moment from "moment";
+import { useToast } from "primevue/usetoast";
 export default defineComponent({
   name: "LaboratoryProfile",
   props: {
@@ -172,6 +184,7 @@ export default defineComponent({
     FormCard,
   },
   setup(props) {
+    const toast = useToast();
     const swal = inject("$swal");
     const store = useStore();
     const labProfile = computed(() => store.getters.getMeaseLabProfile);
@@ -198,24 +211,27 @@ export default defineComponent({
       });
     };
 
+    const addFlag = ref(false);
     const addProfile = async () => {
-      console.log(validateData());
-      // if (labProfile.value.length > 2) {
-
-      // }else{
-      //     swalMessage(swal, 'Warning', 'Maximum of 2 Sp')
-      // }
-      // if (condition) {
-      // }
-
+      addFlag.value = true;
       if (labProfile.value.length === 0) {
         await pushNewData();
       } else if (!validateData() && labProfile.value.length < 2) {
         await pushNewData();
+      } else if (validateData()) {
+        toast.add({
+          severity: "error",
+          summary: "Field Required:",
+          detail: "Please fill in all fields before adding a new specimen.",
+          life: 3000,
+        });
       } else if (labProfile.value.length === 2) {
-        alert("Maximum of 2 specimen is allowed");
-      } else {
-        alert("pleas fill before adding new");
+        toast.add({
+          severity: "error",
+          summary: "Validation Required:",
+          detail: "A maximum of 2 specimens is allowed.",
+          life: 3000,
+        });
       }
     };
 
@@ -231,6 +247,7 @@ export default defineComponent({
       currentDate,
       addProfile,
       removeLab,
+      addFlag,
     };
   },
 });
