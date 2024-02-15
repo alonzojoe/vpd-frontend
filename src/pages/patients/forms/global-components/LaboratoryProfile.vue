@@ -23,7 +23,9 @@
           <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
             <div
               class="search"
-              :class="{ 'group-invalid': addFlag && !l.datetime_collection }"
+              :class="{
+                'group-invalid': saveSubmitted && !l.datetime_collection,
+              }"
             >
               <Label class="mb-2"
                 >Date Specimen Collected
@@ -40,7 +42,7 @@
           <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
             <div
               class="search"
-              :class="{ 'group-invalid': addFlag && !l.specimen_type }"
+              :class="{ 'group-invalid': saveSubmitted && !l.specimen_type }"
             >
               <Label class="mb-2"
                 >Specimen Type <span class="text-danger">*</span></Label
@@ -199,6 +201,13 @@ export default defineComponent({
         );
       });
     };
+
+    watch(
+      () => props.saveSubmitted,
+      (newValue) => {
+        addFlag.value = newValue;
+      }
+    );
 
     const pushNewData = async () => {
       await store.commit("addLaboratory", {

@@ -290,6 +290,15 @@ export default defineComponent({
 
     const labProfile = computed(() => store.getters.getMeaseLabProfile);
 
+    const validateData = () => {
+      return labProfile.value.some((profile) => {
+        return (
+          profile.datetime_collection.trim() == "" ||
+          profile.specimen_type.trim() == ""
+        );
+      });
+    };
+
     const saveMeasles = async (formRequest) => {
       await store.dispatch("saveMeasles", {
         ...formRequest,
@@ -347,6 +356,7 @@ export default defineComponent({
           ...formMease.value,
           gender: formData.value.gender,
           labs: labProfile.value,
+          labArray: validateData(),
         },
         0
       );
@@ -380,6 +390,7 @@ export default defineComponent({
               ...formMease.value,
               gender: formData.value.gender,
               labs: labProfile.value,
+              labArray: validateData(),
             },
             1
           );

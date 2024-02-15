@@ -154,6 +154,8 @@ export const validateFields = async (toast, formData, watch) => {
         delete validationStatus.value.labs
     }
 
+    console.log('labArray', formData.labArray)
+
     validateChecker(formData)
 
     const result = ref({
@@ -166,6 +168,10 @@ export const validateFields = async (toast, formData, watch) => {
             result.value.errors++;
             result.value.tab = r.tab
             if (watch != 1) {
+                if (formData.labArray === true) {
+                    toast.add({ severity: 'error', summary: 'Field Required:', detail: `Specimen Details`, life: 3000 })
+                    return;
+                }
                 toast.add({ severity: 'error', summary: 'Field Required:', detail: `${r.message}`, life: 3000 })
             }
             return false
@@ -173,6 +179,11 @@ export const validateFields = async (toast, formData, watch) => {
 
         return true
     })
+
+    if (formData.labArray === true) {
+        result.value.errors++;
+        result.value.tab = 4
+    }
 
 
     return result;
