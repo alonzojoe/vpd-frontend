@@ -386,7 +386,22 @@ const mutations = {
     },
 
     setLaboratoryProfile: (state, payload) => {
-        state.data.measeLabProfile = payload
+        state.data.measeLabProfile = payload.map((item) => {
+            return {
+                ...item,
+                disease_id: item.id,
+                disease_type: item.disease_type || '',
+                datetime_collection: item.datetime_collection || '',
+                specimen_type: item.specimen_type || '',
+                specimen_sent: item.specimen_sent || '',
+                date_sent: item.date_sent || '',
+                date_received: item.date_received || '',
+                test_conducted: item.test_conducted || '',
+                lab_result: item.lab_result || '',
+                organism_detected: item.organism_detected || '',
+                interpretation: item.interpretation || ''
+            }
+        })
     },
 
     removeLabProfile: (state, payload) => {
@@ -582,6 +597,12 @@ const actions = {
     async fetchLaboratoryProfile({ commit }, payload) {
         const response = await api.get(`laboratory/profile/${payload.disease_id}/?type=${payload.type}`)
         commit('setLaboratoryProfile', response.data.data)
+    },
+
+    async deleteLaboratoryProfile({commit}, payload) {
+        const response = await api.post('laboratory/profile/delete', {
+            forDeletion: payload
+        })
     }
 
 }

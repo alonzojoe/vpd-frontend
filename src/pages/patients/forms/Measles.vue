@@ -90,6 +90,8 @@
       <div class="tab-Item" v-if="selectedTab == 4">
         <div class="row">
           <div class="col-sm-12 col-md-12 col-lg-12 mb-2">
+            {{ forDeletion }}
+            {{ patient }}
             <laboratory-profile
               :patient="patient"
               :formData="formData"
@@ -98,6 +100,7 @@
               :specimens="specimens"
               :type="diseaseDetails.type"
               :tests="conductedTests"
+              @for-deletion="pushDeletion($event)"
             >
             </laboratory-profile>
           </div>
@@ -333,6 +336,8 @@ export default defineComponent({
             user_id: authUser.value.id,
           });
 
+          await onDeleteProfiles();
+
           savingFlag.value = false;
           let message = !patient.value.registry ? "Updated" : "Saved";
           swalMessage(
@@ -347,8 +352,25 @@ export default defineComponent({
       });
     };
 
+    const forDeletion = ref([]);
+    const pushDeletion = (profiles) => {
+      forDeletion.value = profiles;
+    };
+
+    const onDeleteProfiles = async () => {
+      if (patient.value.registry == false && forDeletion.value.length > 0) {
+        await store.dispatch("deleteLaboratoryProfile", forDeletion.value);
+      }
+    };
+
     const saveSubmitted = ref(false);
+    const newLaboratoryUpdate = ref([]);
     const saveData = async () => {
+      newLaboratoryUpdate.value = labProfile.value.filter(
+        (lab) => lab.id === 0
+      );
+
+      console.log("test new", newLaboratoryUpdate.value);
       saveSubmitted.value = true;
       const errors = await validateFields(
         toast,
@@ -361,7 +383,6 @@ export default defineComponent({
         0
       );
       selectTab(errors.value.tab);
-
       if (errors.value.errors == 0) {
         await savingConfirmation();
       }
@@ -453,6 +474,8 @@ export default defineComponent({
       saveData,
       saveSubmitted,
       savingFlag,
+      pushDeletion,
+      forDeletion,
 
       // skeleton Loader
       isLoading,

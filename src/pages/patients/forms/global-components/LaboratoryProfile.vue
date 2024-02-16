@@ -11,13 +11,13 @@
     :key="index"
   >
     <template v-slot:formInput>
-      <!-- <button
-        @click="removeLab(index)"
+      <button
+        @click="removeLab(index, l)"
         class="btn btn-danger btn-sm reset-btn"
         v-if="index != 0"
       >
-        Remove
-      </button> -->
+        Delete
+      </button>
       <div>
         <div class="row">
           <div class="col-sm-12 col-md-6 col-lg-4 mb-2">
@@ -152,7 +152,10 @@
       </div>
     </template>
   </form-card>
-  {{ labProfile }}
+  <pre>{{ forDeletion }}</pre>
+  <pre>
+    {{ labProfile }}
+  </pre>
 </template>
 
 <script lang="ts">
@@ -185,7 +188,7 @@ export default defineComponent({
   components: {
     FormCard,
   },
-  setup(props) {
+  setup(props, { emit }) {
     const toast = useToast();
     const swal = inject("$swal");
     const store = useStore();
@@ -244,7 +247,11 @@ export default defineComponent({
       }
     };
 
-    const removeLab = async (index) => {
+    const forDeletion = ref([]);
+
+    const removeLab = async (index, lab) => {
+      forDeletion.value.push(lab.id);
+      emit("for-deletion", forDeletion.value);
       await store.commit("removeLabProfile", index);
     };
 
@@ -257,6 +264,7 @@ export default defineComponent({
       addProfile,
       removeLab,
       addFlag,
+      forDeletion,
     };
   },
 });
