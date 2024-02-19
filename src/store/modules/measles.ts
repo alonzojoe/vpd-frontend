@@ -599,6 +599,12 @@ const actions = {
         commit('setLaboratoryProfile', response.data.data)
     },
 
+    async storeAdditionalLab({commit}, payload) {
+        const response = await api.post('laboratory/profile/additional', {
+            forAddition: payload
+        })
+    },
+
     async deleteLaboratoryProfile({commit}, payload) {
         const response = await api.post('laboratory/profile/delete', {
             forDeletion: payload

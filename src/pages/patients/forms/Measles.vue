@@ -336,7 +336,7 @@ export default defineComponent({
             user_id: authUser.value.id,
           });
 
-          await onDeleteProfiles();
+          await updateLabProfile();
 
           savingFlag.value = false;
           let message = !patient.value.registry ? "Updated" : "Saved";
@@ -366,9 +366,13 @@ export default defineComponent({
       forDeletion.value = profiles;
     };
 
-    const onDeleteProfiles = async () => {
+    const updateLabProfile = async () => {
       if (patient.value.registry == false && forDeletion.value.length > 0) {
         await store.dispatch("deleteLaboratoryProfile", forDeletion.value);
+      }
+
+      if (patient.value.registry == false && forAddition.value.length > 0) {
+        await store.dispatch("storeAdditionalLab", forAddition.value);
       }
     };
 
