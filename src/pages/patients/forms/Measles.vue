@@ -90,7 +90,7 @@
       <div class="tab-Item" v-if="selectedTab == 4">
         <div class="row">
           <div class="col-sm-12 col-md-12 col-lg-12 mb-2">
-            {{ forDeletion }}
+            {{ forAddition }}
             {{ patient }}
             <laboratory-profile
               :patient="patient"
@@ -352,6 +352,15 @@ export default defineComponent({
       });
     };
 
+    const forAddition = ref([]);
+    watch(
+      labProfile,
+      () => {
+        forAddition.value = labProfile.value.filter((lab) => lab.id === 0);
+      },
+      { deep: true }
+    );
+
     const forDeletion = ref([]);
     const pushDeletion = (profiles) => {
       forDeletion.value = profiles;
@@ -484,6 +493,7 @@ export default defineComponent({
       authUser,
       specimens,
       conductedTests,
+      forAddition,
     };
   },
 });
