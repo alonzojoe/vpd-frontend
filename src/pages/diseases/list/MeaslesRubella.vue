@@ -531,6 +531,7 @@ export default defineComponent({
 
     const cart = ref([]);
     const addToCart = (patient) => {
+      console.log("patient", patient);
       cart.value.push(patient);
       cart.value = cart.value.map((c) => {
         return {
