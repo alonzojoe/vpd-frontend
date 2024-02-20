@@ -331,6 +331,7 @@ export default defineComponent({
     const headerResponse = computed(() => store.getters.getLnhResponse);
     const removedDetails = ref([]);
     const removeDetail = async (patient) => {
+      console.log(patient);
       if (selectedLn.value.linelist_details.length === 1) {
         swalMessage(
           swal,
@@ -341,16 +342,23 @@ export default defineComponent({
         return;
       }
 
-      const index = selectedLn.value.linelist_details.findIndex(
-        (c) => c.detail_id === patient.detail_id
-      );
+      selectedLn.value.linelist_details =
+        selectedLn.value.linelist_details.filter(
+          (s) => s.disease_history_id !== patient.disease_history_id
+        );
 
-      if (index !== -1) {
-        selectedLn.value.linelist_details.splice(index, 1);
-        removedDetails.value.push(patient.detail_id);
-      }
+      removedDetails.value.push(patient.disease_history_id);
 
-      console.log(removedDetails.value);
+      // const index = selectedLn.value.linelist_details.findIndex(
+      //   (c) => c.detail_id === patient.detail_id
+      // );
+
+      // if (index !== -1) {
+      //   selectedLn.value.linelist_details.splice(index, 1);
+      //   removedDetails.value.push(patient.detail_id);
+      // }
+
+      // console.log(removedDetails.value);
     };
     const flagChecker = ref(false);
     const validateLinelist = () => {
@@ -372,11 +380,11 @@ export default defineComponent({
     };
 
     const saveLinelist = async () => {
-      const hasError = validateLinelist();
+      // const hasError = validateLinelist();
 
-      if (hasError) {
-        return;
-      }
+      // if (hasError) {
+      //   return;
+      // }
       savingFlag.value = true;
       await store.dispatch("saveLinelist", {
         ...selectedLn.value,
