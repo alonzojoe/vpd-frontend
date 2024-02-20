@@ -570,13 +570,18 @@ export default defineComponent({
     };
 
     const removeToCart = (patient) => {
-      const index = cart.value.findIndex(
-        (c) => c.disease_history_id === patient.disease_history_id
-      );
+      console.log(patient);
+      // const index = cart.value.findIndex(
+      //   (c) => c.disease_history_id === patient.disease_history_id
+      // );
 
-      if (index !== -1) {
-        cart.value.splice(index, 1);
-      }
+      // if (index !== -1) {
+      //   cart.value.splice(index, 1);
+      // }
+
+      cart.value = cart.value.filter(
+        (c) => c.disease_history_id !== patient.disease_history_id
+      );
     };
 
     const toggleList = ref(false);
