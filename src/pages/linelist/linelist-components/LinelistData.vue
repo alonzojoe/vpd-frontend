@@ -172,17 +172,15 @@
             {{ p.birthdate }}
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
-            <div :class="{ 'group-invalid': flagChecker && !p.specimen }">
-              <select
-                v-model="p.specimen"
-                class="form-select form-control form-control-sm"
-              >
-                <option value="">Please Select</option>
-                <option v-for="(s, index) in specimens" :value="s">
-                  {{ s }}
-                </option>
-              </select>
-            </div>
+            <select
+              v-model="p.specimen_type"
+              class="form-select form-control form-control-sm"
+            >
+              <option value="">Please Select</option>
+              <option v-for="(s, index) in specimens" :value="s">
+                {{ s }}
+              </option>
+            </select>
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
             <div

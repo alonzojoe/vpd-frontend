@@ -544,14 +544,29 @@ export default defineComponent({
     const addToCart = (patient) => {
       console.log("patient", patient.laboratory_profiles);
 
-      cart.value.push(patient);
-      cart.value = cart.value.map((c) => {
+      const cartValues = patient.laboratory_profiles.map((item) => {
         return {
-          ...c,
-          datetime_collection: "",
-          specimen: "",
+          ...item,
+          laboratory_profile_id: item.id,
+          disease_history_id: patient.disease_history_id,
+          lname: patient.lname,
+          fname: patient.fname,
+          mname: patient.mname,
+          age_year: patient.age_year,
+          gender: patient.gender,
+          birthdate: patient.birthdate,
+          type: patient.type,
         };
       });
+
+      cart.value.push(...cartValues);
+      // cart.value = cart.value.map((c) => {
+      //   return {
+      //     ...c,
+      //     datetime_collection: "",
+      //     specimen: "",
+      //   };
+      // });
     };
 
     const removeToCart = (patient) => {
