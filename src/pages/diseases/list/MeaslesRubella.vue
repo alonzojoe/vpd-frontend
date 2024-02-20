@@ -114,9 +114,19 @@
                       }"
                     ></i>
                   </a>
-                  <a href="javascript:void(0);" @click="addToCart(p)" v-else>
+                  <a
+                    href="javascript:void(0);"
+                    @click="addToCart(p)"
+                    :class="{ 'pe-none': p.laboratory_profiles.length === 0 }"
+                    v-else
+                  >
                     <i
-                      class="fa fa-plus-circle scale-icon text-success"
+                      class="fa scale-icon text-success"
+                      :class="
+                        p.laboratory_profiles.length === 0
+                          ? 'text-danger fa-ban'
+                          : 'text-success fa-plus-circle '
+                      "
                       aria-hidden="true"
                       style="transition: all 300ms ease"
                       v-tooltip.right="{
@@ -189,6 +199,7 @@
                   No records found.
                 </td>
               </tr>
+              <pre>{{ cart }}</pre>
               <tr v-if="isLoading">
                 <td colspan="11">
                   <div class="d-flex align-items-center justify-content-center">
@@ -531,7 +542,8 @@ export default defineComponent({
 
     const cart = ref([]);
     const addToCart = (patient) => {
-      console.log("patient", patient);
+      console.log("patient", patient.laboratory_profiles);
+
       cart.value.push(patient);
       cart.value = cart.value.map((c) => {
         return {
