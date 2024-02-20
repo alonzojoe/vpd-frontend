@@ -174,7 +174,7 @@
           <td class="text-center align-middle fw-bold p-1 m-0">
             <select
               v-model="p.specimen_type"
-              class="form-select form-control form-control-sm"
+              class="form-select form-control form-control-sm pe-none"
             >
               <option value="">Please Select</option>
               <option v-for="(s, index) in specimens" :value="s">
@@ -191,7 +191,7 @@
               <input
                 type="datetime-local"
                 v-model="p.datetime_collection"
-                class="form-control form-control-sm custom-font"
+                class="form-control form-control-sm custom-font pe-none"
               />
             </div>
           </td>

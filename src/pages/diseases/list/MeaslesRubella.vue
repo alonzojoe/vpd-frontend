@@ -707,11 +707,11 @@ export default defineComponent({
         return;
       }
 
-      const hasError = validateLinelist();
+      // const hasError = validateLinelist();
 
-      if (hasError) {
-        return;
-      }
+      // if (hasError) {
+      //   return;
+      // }
 
       swalConfirmation(
         swal,
