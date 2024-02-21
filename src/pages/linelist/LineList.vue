@@ -153,6 +153,7 @@
         :data="paginationData"
         @update:currentPage="updateCurrentPage"
       />
+      <pre>{{ selectedLn.linelist_details }}</pre>
     </div>
   </div>
   <modal-md :details="modalDetails" @close-modal="modalDetails.show = false">
@@ -332,7 +333,23 @@ export default defineComponent({
     const removedDetails = ref([]);
     const removeDetail = async (patient) => {
       console.log(patient);
-      if (selectedLn.value.linelist_details.length === 1) {
+      const mergedDetails = selectedLn.value.linelist_details.reduce(
+        (result, patient) => {
+          const existingPatient = result.find(
+            (r) => r.disease_history_id === patient.disease_history_id
+          );
+
+          if (existingPatient) {
+            existingPatient.id = patient.id;
+          } else {
+            result.push({ disease_history_id: patient.disease_history_id });
+          }
+          return result;
+        },
+        []
+      );
+      console.log("mergedDetails", mergedDetails);
+      if (mergedDetails.length === 1) {
         swalMessage(
           swal,
           "Warning",
