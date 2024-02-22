@@ -329,29 +329,29 @@ export default defineComponent({
 
       return hasError;
     };
-
+    const linelistDetails = computed(() => store.getters.getLinelistsDetails);
     const saveLinelist = async () => {
-      const hasError = validateLinelist();
+      // const hasError = validateLinelist();
 
-      if (hasError) {
-        return;
-      }
+      // if (hasError) {
+      //   return;
+      // }
+
       savingFlag.value = true;
-      await store.dispatch("saveLinelist", {
-        ...selectedLn.value,
-        linelist_details: selectedLn.value.linelist_details,
-        updated_by: authUser.value.id,
-        removed_details: removedDetails.value,
-      });
+      await store.dispatch("updateMeaslesDetails", linelistDetails.value);
       savingFlag.value = false;
       swalMessage(
         swal,
         "Information",
-        `Linelist ${headerResponse.value.linelist_code} Updated Successfully`,
+        "Linelist Updated Successfully",
         "success"
       ).then(() => {
-        location.reload();
+        console.log("tes");
+        window.location.reload();
+        // location.reload();
       });
+
+      // Reload the page immediately
     };
 
     const deleteLinelist = async (linelist) => {
@@ -370,7 +370,8 @@ export default defineComponent({
             `Linelist ${linelist.linelist_code} Deleted Successfully`,
             "success"
           ).then(() => {
-            location.reload();
+            // router.go();
+            window.location.href = "/laboratory";
           });
         }
       });

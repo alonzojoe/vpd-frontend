@@ -263,7 +263,6 @@
             >
               Generate
             </button>
-            <pre>{{ l }}</pre>
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
             {{ l.date_received }}
@@ -272,7 +271,7 @@
             {{ l.lname }}, {{ l.fname }} {{ l.mname }}
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
-            <select
+            <!-- <select
               v-model="l.specimen_type"
               class="form-select form-control form-control-sm pe-none"
             >
@@ -280,7 +279,8 @@
               <option v-for="(s, index) in specimens" :value="s">
                 {{ s }}
               </option>
-            </select>
+            </select> -->
+            {{ l.specimen_type }}
           </td>
 
           <td class="text-center align-middle fw-bold p-1 m-0">

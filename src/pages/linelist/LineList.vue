@@ -153,7 +153,6 @@
         :data="paginationData"
         @update:currentPage="updateCurrentPage"
       />
-      <pre>{{ selectedLn.linelist_details }}</pre>
     </div>
   </div>
   <modal-md :details="modalDetails" @close-modal="modalDetails.show = false">

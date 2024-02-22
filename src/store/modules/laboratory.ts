@@ -92,6 +92,14 @@ const actions = {
             medtech_id: payload.medtech,
             type: payload.disease_type
         });
+    },
+
+    async updateMeaslesDetails({ commit }, payload) {
+
+        const header = payload[0].linelist_header_id
+        await api.patch(`/laboratory/measles/detail/${header}`, {
+            linelist_details: payload
+        })
     }
 
 
