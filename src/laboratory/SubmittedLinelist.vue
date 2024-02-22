@@ -371,7 +371,7 @@ export default defineComponent({
             "success"
           ).then(() => {
             // router.go();
-            window.location.href = "/laboratory";
+          location.href = "/laboratory";
           });
         }
       });
