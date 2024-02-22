@@ -108,6 +108,7 @@
       :refresher="refresher"
       :isLoading="loadingData"
       :headerId="headerId"
+      :specimens="selectedSpecimen"
       @update-loader="updateLoader($event)"
       @save-linelist="saveLinelist()"
       @remove-patient="removeDetail($event)"
@@ -261,7 +262,7 @@ export default defineComponent({
     const headerId = ref(0);
     const updateLinelist = async (linelist: Object) => {
       refresher.value = randomMizer(20);
-      // specimenType(linelist.linelist_code);
+      specimenType(linelist.linelist_code);
       selectedLn.value = linelist;
       headerId.value = linelist.id;
       modalDetails.value.show = true;

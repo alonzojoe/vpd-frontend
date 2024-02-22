@@ -126,15 +126,23 @@
             class="text-center bg-primary align-middle text-white p-0 m-0"
           >
             Specimen Status
-            <div class="d-flex my-2 align-items-center justify-content-center">
+            <div
+              class="d-flex my-2 align-items-center justify-content-center"
+              v-if="batchSelection.length > 1"
+            >
               <button
-                v-if="batchSelection.length > 1"
                 class="btn btn-success btn-sm"
                 @click="batchAccept(batchSelection)"
               >
                 Batch Accept
               </button>
             </div>
+          </th>
+          <th
+            rowspan="2"
+            class="text-center bg-primary align-middle text-white p-0 m-0"
+          >
+            Accession Number
           </th>
           <th
             rowspan="2"
@@ -152,7 +160,13 @@
             rowspan="2"
             class="text-center bg-primary align-middle text-white p-0 m-0"
           >
-            Accession Number
+            Specimen
+          </th>
+          <th
+            rowspan="2"
+            class="text-center bg-primary align-middle text-white p-0 m-0"
+          >
+            Date & Time Collection
           </th>
           <th
             rowspan="2"
@@ -240,12 +254,6 @@
             </div>
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
-            {{ l.date_received }}
-          </td>
-          <td class="text-center align-middle fw-bold p-1 m-0">
-            {{ l.lname }}, {{ l.fname }} {{ l.mname }}
-          </td>
-          <td class="text-center align-middle fw-bold p-1 m-0">
             <span v-if="l.accession_no">{{ l.accession_no }}</span>
             <button
               class="btn btn-dark btn-sm"
@@ -255,6 +263,32 @@
             >
               Generate
             </button>
+            <pre>{{ l }}</pre>
+          </td>
+          <td class="text-center align-middle fw-bold p-1 m-0">
+            {{ l.date_received }}
+          </td>
+          <td class="text-center align-middle fw-bold p-1 m-0">
+            {{ l.lname }}, {{ l.fname }} {{ l.mname }}
+          </td>
+          <td class="text-center align-middle fw-bold p-1 m-0">
+            <select
+              v-model="l.specimen_type"
+              class="form-select form-control form-control-sm pe-none"
+            >
+              <option value="">Please Select</option>
+              <option v-for="(s, index) in specimens" :value="s">
+                {{ s }}
+              </option>
+            </select>
+          </td>
+
+          <td class="text-center align-middle fw-bold p-1 m-0">
+            <input
+              type="datetime-local"
+              v-model="l.datetime_collection"
+              class="form-control form-control-sm custom-font pe-none"
+            />
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
             {{ formHeader.dru }}
