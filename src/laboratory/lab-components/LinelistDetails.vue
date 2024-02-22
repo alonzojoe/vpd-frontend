@@ -128,9 +128,9 @@
             Specimen Status
             <div class="d-flex my-2 align-items-center justify-content-center">
               <button
-                v-if="batchAccept.length > 1"
+                v-if="batchSelection.length > 1"
                 class="btn btn-success btn-sm"
-                @click="zxc"
+                @click="batchAccept(batchSelection)"
               >
                 Batch Accept
               </button>
@@ -202,8 +202,8 @@
               <input
                 class="form-check-input secondary"
                 type="checkbox"
-                :value="l"
-                v-model="batchAccept"
+                :value="l.detail_id"
+                v-model="batchSelection"
               />
               <button
                 class="btn btn-success btn-sm"
@@ -316,7 +316,7 @@
       </tbody>
     </table>
 
-    {{ batchAccept }}
+    {{ batchSelection }}
   </div>
 </template>
 
@@ -412,6 +412,27 @@ export default defineComponent({
       });
     };
 
+    const batchAccept = async (payload) => {
+      console.log(payload);
+
+      swalConfirmation(
+        swal,
+        "Confirmation",
+        `Are you sure you want to accept this batch of specimens?`,
+        "question"
+      ).then(async (res) => {
+        await store.dispatch("batchAccept", payload);
+        refreshData();
+        toast.add({
+          severity: "success",
+          summary: `Message`,
+          detail: `"Specimens Accepted Successfully.`,
+          life: 3000,
+        });
+        batchSelection.value = [];
+      });
+    };
+
     const updateSpecimen = async (details, type) => {
       const patient = `${details.lname}, ${details.fname} ${details.mname}`;
       const question = type == 1 ? "accept" : "reject";
@@ -473,7 +494,7 @@ export default defineComponent({
       }
     );
 
-    const batchAccept = ref([]);
+    const batchSelection = ref([]);
 
     return {
       removePatient,
@@ -485,6 +506,7 @@ export default defineComponent({
       refreshData,
       updateSpecimen,
       generateAccession,
+      batchSelection,
       batchAccept,
     };
   },
