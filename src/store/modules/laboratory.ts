@@ -75,6 +75,12 @@ const actions = {
         await api.patch(`/linelist/accept/${payload.detail_id}`);
     },
 
+    async batchAcceppt({ commit }, payload) {
+        await api.patch(`/linelist/batch-accept`, {
+            detailIds: payload.detail_id,
+        })
+    },
+
     async rejectSpecimen({ commit }, payload) {
         await api.patch(`/linelist/reject/${payload.detail_id}`, {
             reject_reason: payload.reason

@@ -126,6 +126,15 @@
             class="text-center bg-primary align-middle text-white p-0 m-0"
           >
             Specimen Status
+            <div class="d-flex my-2 align-items-center justify-content-center">
+              <button
+                v-if="batchAccept.length > 1"
+                class="btn btn-success btn-sm"
+                @click="zxc"
+              >
+                Batch Accept
+              </button>
+            </div>
           </th>
           <th
             rowspan="2"
@@ -186,7 +195,16 @@
       <tbody>
         <tr v-for="(l, index) in linelistDetails" :key="index">
           <td class="text-center align-middle fw-bold p-1 m-0">
-            <div class="d-flex gap-1" v-if="l.specimen_status == 0">
+            <div
+              class="d-flex align-items-center gap-1"
+              v-if="l.specimen_status == 0"
+            >
+              <input
+                class="form-check-input secondary"
+                type="checkbox"
+                :value="l"
+                v-model="batchAccept"
+              />
               <button
                 class="btn btn-success btn-sm"
                 @click="updateSpecimen(l, 1)"
@@ -297,6 +315,8 @@
         </tr>
       </tbody>
     </table>
+
+    {{ batchAccept }}
   </div>
 </template>
 
@@ -453,6 +473,8 @@ export default defineComponent({
       }
     );
 
+    const batchAccept = ref([]);
+
     return {
       removePatient,
       diseaseType,
@@ -463,6 +485,7 @@ export default defineComponent({
       refreshData,
       updateSpecimen,
       generateAccession,
+      batchAccept,
     };
   },
 });
