@@ -298,7 +298,7 @@
               type="text"
               class="form-control form-control-sm fw-semibold"
               v-model="l.specimen_quality"
-              :disabled="l.specimen_status != 1"
+              :disabled="l.specimen_status != 1 || !l.accession_no"
             />
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
@@ -306,7 +306,7 @@
               type="text"
               class="form-control form-control-sm fw-semibold"
               v-model="l.mr_working"
-              :disabled="l.specimen_status != 1"
+              :disabled="l.specimen_status != 1 || !l.accession_no"
             />
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
@@ -314,7 +314,7 @@
               type="text"
               class="form-control form-control-sm fw-semibold"
               v-model="l.mr_backup"
-              :disabled="l.specimen_status != 1"
+              :disabled="l.specimen_status != 1 || !l.accession_no"
             />
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
@@ -322,7 +322,7 @@
               type="text"
               class="form-control form-control-sm fw-semibold"
               v-model="l.mr_npsops"
-              :disabled="l.specimen_status != 1"
+              :disabled="l.specimen_status != 1 || !l.accession_no"
             />
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
@@ -330,7 +330,7 @@
               class="form-control form-control-sm fw-semibold"
               rows="2"
               v-model="l.remarks"
-              :disabled="l.specimen_status != 1"
+              :disabled="l.specimen_status != 1 || !l.accession_no"
             ></textarea>
           </td>
         </tr>
