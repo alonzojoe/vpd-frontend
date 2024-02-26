@@ -142,8 +142,8 @@
       :poolCart="poolCart"
       @update-loader="updateLoader($event)"
       @save-linelist="saveLinelist()"
-      @remove-patient="removeDetail($event)"
       @add-to-pool="addToPool($event)"
+      @remove-to-pool="removeToPool($event)"
     />
   </modal-lg>
   <loader
@@ -441,6 +441,12 @@ export default defineComponent({
       poolCart.value.push(detail);
     };
 
+    const removeToPool = (detail) => {
+      poolCart.value = poolCart.value.filter(
+        (pool) => pool.detail_id !== detail.detail_id
+      );
+    };
+
     const cancelPool = () => {
       enableCreate.value = false;
       poolCart.value = [];
@@ -481,6 +487,7 @@ export default defineComponent({
       enableCreate,
       cancelPool,
       addToPool,
+      removeToPool,
     };
   },
 });
