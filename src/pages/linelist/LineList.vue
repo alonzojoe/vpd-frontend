@@ -197,6 +197,7 @@ import ModalMd from "@/components/modals/ModalMd.vue";
 import Loader from "@/pages/loader/Loader.vue";
 import SearchLinelist from "@/pages/linelist/linelist-components/SearchLinelist.vue";
 import LinelistData from "@/pages/linelist/linelist-components/LinelistData.vue";
+import PoolLinelist from "@/pages"
 import { extractLnCode, randomMizer } from "@/composables";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";

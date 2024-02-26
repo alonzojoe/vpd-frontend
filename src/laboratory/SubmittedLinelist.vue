@@ -18,7 +18,7 @@
           Create Pool
         </button>
 
-        <div class="d-flex gap-2" v-else>
+        <div class="d-flex gap-3" v-else>
           <button
             class="btn btn-success btn-sm position-relative"
             :disabled="!poolCart.length"
@@ -69,7 +69,9 @@
             <tbody>
               <tr v-for="l in linelists" :key="l.id">
                 <td class="text-center align-middle fw-bold p-1 m-0">
-                  {{ l.linelist_code }}
+                  <a href="javascript:void(0);" @click="updateLinelist(l)">{{
+                    l.linelist_code
+                  }}</a>
                 </td>
                 <td class="text-center align-middle fw-bold p-1 m-0">
                   {{ l.dru }}
@@ -146,6 +148,9 @@
       @remove-to-pool="removeToPool($event)"
     />
   </modal-lg>
+  <modal-lg :details="modalPool" @close-modal="modalPool.show = false">
+    <pool-details />
+  </modal-lg>
   <loader
     title="Updating Linelist..."
     :warning="true"
@@ -177,6 +182,7 @@ import ModalMd from "@/components/modals/ModalMd.vue";
 import Loader from "@/pages/loader/Loader.vue";
 import SearchLinelist from "@/pages/linelist/linelist-components/SearchLinelist.vue";
 import LinelistDetails from "@/laboratory/lab-components/LinelistDetails.vue";
+import PoolDetails from "@/laboratory/lab-components/PoolDetails.vue";
 import { extractLnCode, randomMizer } from "@/composables";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -208,6 +214,7 @@ export default defineComponent({
     ModalMd,
     ModalLg,
     LinelistDetails,
+    PoolDetails,
   },
   setup() {
     const store = useStore();
@@ -447,6 +454,11 @@ export default defineComponent({
       );
     };
 
+    const modalPool = ref({
+      show: true,
+      title: "Finalized Pool Creation",
+    });
+
     const cancelPool = () => {
       enableCreate.value = false;
       poolCart.value = [];
@@ -488,6 +500,7 @@ export default defineComponent({
       cancelPool,
       addToPool,
       removeToPool,
+      modalPool,
     };
   },
 });
