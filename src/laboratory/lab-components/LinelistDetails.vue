@@ -124,6 +124,13 @@
           <th
             rowspan="2"
             class="text-center bg-primary align-middle text-white p-0 m-0"
+            v-if="enableCreate"
+          >
+            Select
+          </th>
+          <th
+            rowspan="2"
+            class="text-center bg-primary align-middle text-white p-0 m-0"
           >
             Specimen Status
             <div
@@ -208,6 +215,43 @@
 
       <tbody>
         <tr v-for="(l, index) in linelistDetails" :key="index">
+          <td
+            class="text-center align-middle fw-bold p-1 m-0"
+            v-if="enableCreate"
+          >
+            <a
+              href="javascript:void(0);"
+              @click="$emit('remove-to-pool', l)"
+              v-if="poolCart.some((pool) => pool.detail_id === l.detail_id)"
+            >
+              <i
+                class="fa fa-minus-circle scale-icon text-warning"
+                aria-hidden="true"
+                style="transition: all 300ms ease"
+                v-tooltip.right="{
+                  value: `<h6 class='text-white'>Remove to pool</h6>`,
+                  escape: true,
+                  class: 'bg-dark rounded p-1',
+                }"
+              ></i
+            ></a>
+            <a
+              href="javascript:void(0);"
+              @click="$emit('add-to-pool', l)"
+              v-else
+            >
+              <i
+                class="fa scale-icon text-success fa-plus-circle"
+                aria-hidden="true"
+                style="transition: all 300ms ease"
+                v-tooltip.right="{
+                  value: `<h6 class='text-white'>Add to pool</h6>`,
+                  escape: true,
+                  class: 'bg-dark rounded p-1',
+                }"
+              ></i
+            ></a>
+          </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
             <div
               class="d-flex align-items-center gap-1"
@@ -335,7 +379,7 @@
           </td>
         </tr>
         <tr v-if="isLoading">
-          <td colspan="10">
+          <td :colspan="enableCreate ? 11 : 10">
             <div class="d-flex align-items-center justify-content-center">
               <div
                 class="spinner-border spinner-border-sm text-dark"
@@ -374,6 +418,8 @@ export default defineComponent({
     refresher: String,
     isLoading: Boolean,
     headerId: Number,
+    poolCart: Array,
+    enableCreate: Boolean,
   },
   components: {
     QrcodeVue,

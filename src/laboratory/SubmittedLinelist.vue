@@ -9,6 +9,34 @@
       <!-- <pre>
           {{ selectedLn }}
         </pre> -->
+      <div class="d-flex align-items-center justify-content-start gap-2 my-2">
+        <button
+          class="btn btn-primary btn-sm"
+          @click="enableCreate = true"
+          v-if="!enableCreate"
+        >
+          Create Pool
+        </button>
+
+        <div class="d-flex gap-2" v-else>
+          <button
+            class="btn btn-success btn-sm position-relative"
+            :disabled="!poolCart.length"
+            @click="zxc"
+          >
+            Finalized Pool
+            <span
+              v-if="poolCart.length"
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+            >
+              {{ poolCart.length }}
+            </span>
+          </button>
+          <button class="btn btn-danger btn-sm" @click="cancelPool()">
+            Cancel
+          </button>
+        </div>
+      </div>
       <div>
         <div class="table-responsive p-0 m-0 border border-primary">
           <table class="table table-bordered table-hover">
@@ -101,6 +129,7 @@
         @update:currentPage="updateCurrentPage"
       />
     </div>
+    {{ poolCart }}
   </div>
   <modal-lg :details="modalDetails" @close-modal="modalDetails.show = false">
     <linelist-details
@@ -109,9 +138,12 @@
       :isLoading="loadingData"
       :headerId="headerId"
       :specimens="selectedSpecimen"
+      :enableCreate="enableCreate"
+      :poolCart="poolCart"
       @update-loader="updateLoader($event)"
       @save-linelist="saveLinelist()"
       @remove-patient="removeDetail($event)"
+      @add-to-pool="addToPool($event)"
     />
   </modal-lg>
   <loader
@@ -371,7 +403,7 @@ export default defineComponent({
             "success"
           ).then(() => {
             // router.go();
-          location.href = "/laboratory";
+            location.href = "/laboratory";
           });
         }
       });
@@ -400,6 +432,18 @@ export default defineComponent({
           });
         }
       });
+    };
+
+    const enableCreate = ref(false);
+    const poolCart = ref([]);
+
+    const addToPool = (detail) => {
+      poolCart.value.push(detail);
+    };
+
+    const cancelPool = () => {
+      enableCreate.value = false;
+      poolCart.value = [];
     };
 
     onMounted(async () => {
@@ -433,6 +477,10 @@ export default defineComponent({
       loadingData,
       headerId,
       updateLoader,
+      poolCart,
+      enableCreate,
+      cancelPool,
+      addToPool,
     };
   },
 });
