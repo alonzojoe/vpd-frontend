@@ -10,6 +10,7 @@ import Measles from './modules/measles'
 import Dashboard from './modules/dashboard'
 import Linelist from './modules/linelist'
 import Laboartory from './modules/laboratory'
+import Pool from './modules/pool'
 
 const store = createStore({
     modules: {
@@ -23,7 +24,8 @@ const store = createStore({
         Measles,
         Dashboard,
         Linelist,
-        Laboartory 
+        Laboartory,
+        Pool
     }
 })
 
