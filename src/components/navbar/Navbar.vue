@@ -79,7 +79,7 @@
                 <i
                   class="ti dark-color"
                   :class="
-                    theme == 'light-theme' ? 'ti-moon-filled' : 'ti-sun-filled'
+                    theme == 'light-theme' ? 'ti-sun-filled' : 'ti-moon-filled'
                   "
                 ></i>
               </a>

@@ -451,13 +451,14 @@ export default defineComponent({
       title: "Create New User",
     });
 
-    const addUser = () => {
+    const addUser = async () => {
       resetFlag();
       resetFormData();
       resetImage();
       resetSign();
       signToBase64();
       imageToBase64();
+      await store.dispatch("fetchRegions");
       modalDetails.value.show = true;
       modalDetails.value.title = "Create New User";
     };

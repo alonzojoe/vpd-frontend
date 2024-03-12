@@ -199,7 +199,7 @@
                   No records found.
                 </td>
               </tr>
-              <pre>{{ cart }}</pre>
+              <!-- <pre>{{ cart }}</pre> -->
               <tr v-if="isLoading">
                 <td colspan="11">
                   <div class="d-flex align-items-center justify-content-center">
@@ -226,7 +226,7 @@
       </div>
     </div>
   </div>
-  <pre>{{ cart }}</pre>
+  <!-- <pre>{{ cart }}</pre> -->
   <modal-form :details="modalDetails" @close-modal="modalDetails.show = false">
     <div class="row p-2 m-0">
       <div class="col-12">
