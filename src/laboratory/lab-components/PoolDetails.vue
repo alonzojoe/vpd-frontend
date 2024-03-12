@@ -122,6 +122,39 @@
       </div>
     </div>
   </div>
+
+  <div class="m-3 table-responsive p-0 m-0 border border-primary mb-4">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th class="text-center bg-primary align-middle text-white p-0 m-0">
+            Accession No
+          </th>
+          <th class="text-center bg-primary align-middle text-white p-0 m-0">
+            Patient Name
+          </th>
+          <th class="text-center bg-primary align-middle text-white p-0 m-0">
+            Specimen
+          </th>
+          <th class="text-center bg-primary align-middle text-white p-0 m-0">
+            Date and Time Collection
+          </th>
+          <th class="text-center bg-primary align-middle text-white p-0 m-0">
+            Value
+          </th>
+          <th class="text-center bg-primary align-middle text-white p-0 m-0">
+            OD
+          </th>
+          <th class="text-center bg-primary align-middle text-white p-0 m-0">
+            Ratio
+          </th>
+          <th class="text-center bg-primary align-middle text-white p-0 m-0">
+            Interpretation
+          </th>
+        </tr>
+      </thead>
+    </table>
+  </div>
 </template>
 
 <script setup lang="ts">
