@@ -22,7 +22,7 @@
           <button
             class="btn btn-success btn-sm position-relative"
             :disabled="!poolCart.length"
-            @click="zxc"
+            @click="modalPool.show = true"
           >
             Finalized Pool
             <span
@@ -456,7 +456,7 @@ export default defineComponent({
     };
 
     const modalPool = ref({
-      show: true,
+      show: false,
       title: "Finalized Pool Creation",
     });
 

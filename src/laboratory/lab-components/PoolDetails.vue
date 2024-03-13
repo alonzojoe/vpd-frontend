@@ -6,7 +6,7 @@
         <div></div>
         <div>
           <button class="btn btn-primary btn-sm m-1" @click="zxc">
-            Save Linelist
+            Create Pool
           </button>
           <button class="btn btn-danger btn-sm m-1" @click="zxc">Cancel</button>
         </div>
@@ -153,12 +153,41 @@
           </th>
         </tr>
       </thead>
+      <tbody>
+        <tr v-for="(p, index) in poolDetails" :key="index">
+          <td class="text-center align-middle fw-bold p-1 m-0">
+            {{ p.accession_no }}
+          </td>
+          <td class="text-center align-middle fw-bold p-1 m-0">
+            {{ p.lname }}, {{ p.fname }} {{ p.mname }} {{ p.suffix }}
+          </td>
+          <td class="text-center align-middle fw-bold p-1 m-0">
+            {{ p.specimen_type }}
+          </td>
+          <td class="text-center align-middle fw-bold p-1 m-0">
+            {{ formatter(p.datetime_collection) }}
+          </td>
+          <td class="text-center align-middle fw-bold p-1 m-0"></td>
+          <td class="text-center align-middle fw-bold p-1 m-0"></td>
+          <td class="text-center align-middle fw-bold p-1 m-0"></td>
+          <td class="text-center align-middle fw-bold p-1 m-0"></td>
+        </tr>
+      </tbody>
     </table>
   </div>
+  <pre>{{ poolDetails }}</pre>
 </template>
 
 <script setup lang="ts">
-import { defineComponent, computed, ref, onMounted, watch, inject } from "vue";
+import {
+  defineComponent,
+  computed,
+  ref,
+  Ref,
+  onMounted,
+  watch,
+  inject,
+} from "vue";
 import QrcodeVue from "qrcode.vue";
 import html2canvas from "html2canvas";
 import Image from "primevue/image";
@@ -166,6 +195,18 @@ import SkeletonPlaceholder from "@/pages/loader/SkeletonPlaceholder.vue";
 import { useStore } from "vuex";
 import { swalConfirmation, swalMessage } from "@/composables";
 import { useToast } from "primevue/usetoast";
+import moment from "moment";
+import { PoolDetail } from "./types/types";
+
+const store = useStore();
+const poolDetails: Ref<PoolDetail[]> = computed(
+  () => store.getters.getPoolCart
+);
+
+const formatter = (datetime: string): string => {
+  return moment(datetime).format("lll");
+};
+
 </script>
 
 <style scoped></style>
