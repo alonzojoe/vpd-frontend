@@ -8,6 +8,7 @@ const state: RootState = {
         poolHeaders: [],
         poolDetails: [],
         poolHeader: {
+            id: 0,
             protocol_no: "",
             date_performed: "",
             method: "",
@@ -51,7 +52,8 @@ const actions = {
 const getters = {
     getPoolCart: (state: RootState) => state.data.poolCart,
     getPoolHeaders: (state: RootState) => state.data.poolHeaders,
-    getPoolDetails: (state: RootState) => state.data.poolDetails
+    getPoolDetails: (state: RootState) => state.data.poolDetails,
+    getPoolHeader: (state: RootState) => state.data.poolHeader
 }
 
 export default {

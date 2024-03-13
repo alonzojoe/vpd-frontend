@@ -12,6 +12,7 @@
         </div>
       </div>
     </div>
+    <pre>{{ poolHeader }}</pre>
 
     <div class="col-sm-12 col-md-12 col-lg-12">
       <div class="row p-0 m-0 mx-3">
@@ -20,7 +21,7 @@
             <Label class="mb-2">Protocol Number</Label>
             <input
               type="text"
-              v-model="zxc"
+              v-model="poolHeader.protocol_no"
               class="form-control form-control-sm w-100 custom-font"
             />
           </div>
@@ -34,7 +35,7 @@
             <Label class="mb-2">Date Performed</Label>
             <input
               type="date"
-              v-model="zxc"
+              v-model="poolHeader.date_performed"
               class="form-control form-control-sm w-100 custom-font"
             />
           </div>
@@ -44,7 +45,7 @@
             <Label class="mb-2">Name of Kit</Label>
             <input
               type="text"
-              v-model="zxc"
+              v-model="poolHeader.kit_name"
               class="form-control form-control-sm w-100 custom-font"
             />
           </div>
@@ -54,7 +55,7 @@
             <Label class="mb-2">Room Temperature</Label>
             <input
               type="text"
-              v-model="zxc"
+              v-model="poolHeader.room_temp"
               class="form-control form-control-sm w-100 custom-font"
             />
           </div>
@@ -64,7 +65,7 @@
             <Label class="mb-2">Method</Label>
             <input
               type="text"
-              v-model="zxc"
+              v-model="poolHeader.method"
               class="form-control form-control-sm w-100 custom-font"
             />
           </div>
@@ -74,7 +75,7 @@
             <Label class="mb-2">Lot Number</Label>
             <input
               type="text"
-              v-model="zcx"
+              v-model="poolHeader.lot_no"
               class="form-control form-control-sm w-100 custom-font"
             />
           </div>
@@ -84,7 +85,7 @@
             <Label class="mb-2">Start</Label>
             <input
               type="text"
-              v-model="zxc"
+              v-model="poolHeader.start"
               class="form-control form-control-sm w-100 custom-font"
             />
           </div>
@@ -94,7 +95,7 @@
             <Label class="mb-2">Name of Test</Label>
             <input
               type="text"
-              v-model="zxc"
+              v-model="poolHeader.test_name"
               class="form-control form-control-sm w-100 custom-font"
             />
           </div>
@@ -104,7 +105,7 @@
             <Label class="mb-2">Expiry Date</Label>
             <input
               type="date"
-              v-model="zcx"
+              v-model="poolHeader.date_expiry"
               class="form-control form-control-sm w-100 custom-font"
             />
           </div>
@@ -114,7 +115,7 @@
             <Label class="mb-2">End</Label>
             <input
               type="text"
-              v-model="zxc"
+              v-model="poolHeader.end"
               class="form-control form-control-sm w-100 custom-font"
             />
           </div>
@@ -198,8 +199,10 @@ import { useToast } from "primevue/usetoast";
 import moment from "moment";
 import { PoolDetail } from "./types/types";
 
-
 const store = useStore();
+
+const poolHeader = computed(() => store.getters.getPoolHeader);
+
 const poolDetails: Ref<PoolDetail[]> = computed(
   () => store.getters.getPoolCart
 );
@@ -207,7 +210,6 @@ const poolDetails: Ref<PoolDetail[]> = computed(
 const formatter = (datetime: string): string => {
   return moment(datetime).format("lll");
 };
-
 </script>
 
 <style scoped></style>
