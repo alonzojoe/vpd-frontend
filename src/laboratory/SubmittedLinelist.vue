@@ -442,16 +442,17 @@ export default defineComponent({
     };
 
     const enableCreate = ref(false);
-    const poolCart = ref([]);
+    const poolCart = computed(() => store.getters.getPoolCart);
 
     const addToPool = (detail) => {
-      poolCart.value.push(detail);
+      store.commit("addToPoolCart", detail);
     };
 
     const removeToPool = (detail) => {
-      poolCart.value = poolCart.value.filter(
-        (pool) => pool.detail_id !== detail.detail_id
-      );
+      // poolCart.value = poolCart.value.filter(
+      //   (pool) => pool.detail_id !== detail.detail_id
+      // );
+      store.commit("removeToPoolCart", detail);
     };
 
     const modalPool = ref({
@@ -461,7 +462,7 @@ export default defineComponent({
 
     const cancelPool = () => {
       enableCreate.value = false;
-      poolCart.value = [];
+      store.commit("resetPoolCart");
     };
 
     onMounted(async () => {
