@@ -152,6 +152,9 @@
           <th class="text-center bg-primary align-middle text-white p-0 m-0">
             Interpretation
           </th>
+          <th class="text-center bg-primary align-middle text-white p-0 m-0">
+            Remove
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -172,6 +175,20 @@
           <td class="text-center align-middle fw-bold p-1 m-0"></td>
           <td class="text-center align-middle fw-bold p-1 m-0"></td>
           <td class="text-center align-middle fw-bold p-1 m-0"></td>
+          <td class="text-center align-middle fw-bold p-1 m-0">
+            <a href="javascript:void(0);" @click="removeItem(p)">
+              <i
+                class="fa fa-times-circle scale-icon text-danger"
+                aria-hidden="true"
+                style="transition: all 300ms ease"
+                v-tooltip.right="{
+                  value: `<h6 class='text-white'>Remove Patient</h6>`,
+                  escape: true,
+                  class: 'bg-dark rounded p-1',
+                }"
+              ></i>
+            </a>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -200,7 +217,7 @@ import moment from "moment";
 import { PoolDetail } from "./types/types";
 
 const store = useStore();
-
+const swal = inject("$swal");
 const poolHeader = computed(() => store.getters.getPoolHeader);
 
 const poolDetails: Ref<PoolDetail[]> = computed(
@@ -211,7 +228,21 @@ const formatter = (datetime: string): string => {
   return moment(datetime).format("lll");
 };
 
+const removeItem = (detail) => {
+  store.commit("removeToPoolCart", detail);
+};
+
 const savePool = async () => {
+  if (!poolDetails.value.length) {
+    swalMessage(
+      swal,
+      "Warning",
+      "Please Add Patient/s Before Saving",
+      "warning"
+    );
+    return;
+  }
+
   await store.dispatch("savePool", {
     ...poolHeader.value,
     pool_details: poolDetails.value,

@@ -53,7 +53,7 @@ const actions = {
             id: payload.id,
             protocol_no: payload.protocol_no,
             date_performed: payload.date_performed,
-            method: payload.payload,
+            method: payload.method,
             test_name: payload.test_name,
             kit_name: payload.kit_name,
             lot_no: payload.lot_no,
