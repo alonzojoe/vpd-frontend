@@ -46,7 +46,27 @@ const mutations = {
 }
 
 const actions = {
-
+    async savePool({ commit }, payload) {
+        console.log(payload.poolDetails)
+        // return
+        const response = await api.post('pool/create', {
+            id: payload.id,
+            protocol_no: payload.protocol_no,
+            date_performed: payload.date_performed,
+            method: payload.payload,
+            test_name: payload.test_name,
+            kit_name: payload.kit_name,
+            lot_no: payload.lot_no,
+            date_expiry: payload.date_expiry,
+            room_temp: payload.room_temp,
+            start: payload.start,
+            end: payload.end,
+            performed_by: payload.performed_by,
+            validate_by: payload.validate_by,
+            pathologist: payload.pathologist,
+            pool_details: payload.pool_details
+        })
+    },
 }
 
 const getters = {

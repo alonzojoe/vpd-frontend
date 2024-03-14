@@ -5,7 +5,7 @@
       <div class="d-flex align-items-center justify-content-between">
         <div></div>
         <div>
-          <button class="btn btn-primary btn-sm m-1" @click="zxc">
+          <button class="btn btn-primary btn-sm m-1" @click="savePool()">
             Create Pool
           </button>
           <button class="btn btn-danger btn-sm m-1" @click="zxc">Cancel</button>
@@ -209,6 +209,13 @@ const poolDetails: Ref<PoolDetail[]> = computed(
 
 const formatter = (datetime: string): string => {
   return moment(datetime).format("lll");
+};
+
+const savePool = async () => {
+  await store.dispatch("savePool", {
+    ...poolHeader.value,
+    pool_details: poolDetails.value,
+  });
 };
 </script>
 
