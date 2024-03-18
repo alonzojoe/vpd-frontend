@@ -1,13 +1,19 @@
 interface Field {
     payload: string;
-    messsage: string;
+    message: string;
+    tab: number;
 }
 
 interface FormData {
-    [key: string]: string
+    [key: string]: string;
 }
 
-export class GlovalValidator {
+interface Result {
+    errors: number;
+    tab: number;
+}
+
+export class GlobalValidator {
     private validationStatus: { [key: string]: boolean };
     private requiredFields: Field[];
 
@@ -31,17 +37,24 @@ export class GlovalValidator {
         }
     }
 
-    validateFields(formData: FormData): number {
-        let errors = 0;
+    validateFields(toast: any, formData: FormData, watched: number, maxTabs: number): { errors: number, tab: number } {
+        let result: Result = {
+            errors: 0,
+            tab: maxTabs
+        };
 
         this.requiredFields.every((r) => {
             if (formData[r.payload].trim().length === 0) {
-                errors++;
+                result.errors++;
+                result.tab = r.tab;
+                if (watched !== 1) {
+                    toast.toast.add({ severity: 'error', summary: 'Field Required:', detail: `${r.message}`, life: 3000 });
+                }
                 return false;
             }
             return true;
         });
 
-        return errors;
+        return result;
     }
 }

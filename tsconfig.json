@@ -27,6 +27,6 @@
   "types": [
     "vue-sweetalert2"
   ],
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/assets/js/dashboard.js", "src/assets/js/app.min.js", "src/class/GlovalValidator.ts"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/assets/js/dashboard.js", "src/assets/js/app.min.js", "src/class/GlobalValidator.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
