@@ -43,11 +43,15 @@
         <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
           <div class="search">
             <Label class="mb-2">Name of Kit</Label>
-            <input
-              type="text"
+            <select
+              class="form-select form-control form-control-sm"
               v-model="poolHeader.kit_name"
-              class="form-control form-control-sm w-100 custom-font"
-            />
+            >
+              <option value="">Please Select</option>
+              <option value="1" v-for="(m, index) in methods" :key="index">
+                {{ m }}
+              </option>
+            </select>
           </div>
         </div>
         <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
@@ -63,11 +67,15 @@
         <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
           <div class="search">
             <Label class="mb-2">Method</Label>
-            <input
-              type="text"
+            <select
+              class="form-select form-control form-control-sm"
               v-model="poolHeader.method"
-              class="form-control form-control-sm w-100 custom-font"
-            />
+            >
+              <option value="">Please Select</option>
+              <option value="1" v-for="(k, index) in kits" :key="index">
+                {{ k }}
+              </option>
+            </select>
           </div>
         </div>
         <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
@@ -222,6 +230,26 @@ const poolHeader = computed(() => store.getters.getPoolHeader);
 
 const poolDetails: Ref<PoolDetail[]> = computed(
   () => store.getters.getPoolCart
+);
+
+const methods = ref([]);
+const kits = ref([]);
+const detectOptions = (type) => {
+  if (type === 3) {
+    methods.value = store.getters.getMeaslesMethod;
+    kits.value = store.getters.getMeaslesKit;
+  }
+};
+
+watch(
+  () => {
+    poolDetails.value;
+    if (poolDetails.value.length > 0) {
+      const detectType = poolDetails.value[0].type;
+      detectOptions(detectType);
+    }
+  },
+  { deep: true }
 );
 
 const formatter = (datetime: string): string => {

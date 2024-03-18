@@ -23,7 +23,15 @@ const state: RootState = {
             validate_by: "",
             pathologist: "",
 
-        }
+        },
+        poolMethodMeasles: [
+            'Anti-Measles IgM ELISA',
+            'Anti-Rubella IgM ELISA'
+        ],
+        poolKitMeasles: [
+            'Euroimmun Measles IgM ELISA',
+            'Euroimmun Rubella IgM ELISA'
+        ]
     }
 }
 
@@ -73,7 +81,9 @@ const getters = {
     getPoolCart: (state: RootState) => state.data.poolCart,
     getPoolHeaders: (state: RootState) => state.data.poolHeaders,
     getPoolDetails: (state: RootState) => state.data.poolDetails,
-    getPoolHeader: (state: RootState) => state.data.poolHeader
+    getPoolHeader: (state: RootState) => state.data.poolHeader,
+    getMeaslesMethod: (state: RootState) => state.data.poolMethodMeasles,
+    getMeaslesKit: (state: RootState) => state.data.poolKitMeasles
 }
 
 export default {

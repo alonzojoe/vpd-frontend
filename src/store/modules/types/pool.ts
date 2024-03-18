@@ -8,6 +8,8 @@ export interface RootState {
         poolCart: any[],
         poolHeaders: any[],
         poolDetails: any[],
-        poolHeader: any
+        poolHeader: any,
+        poolMethodMeasles: any[],
+        poolKitMeasles: any[]
     }
 }
