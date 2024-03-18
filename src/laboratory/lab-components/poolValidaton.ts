@@ -30,7 +30,13 @@ export const validateChecker = async (formData: any) => {
 
 export const validateFields = async (formData) => {
     const requiredFields = [
-        {},
+        { payload: 'kit_name', message: "Name of Kit" },
+        { payload: 'room_temp', message: "Room Temperature" },
+        { payload: 'method', message: "Method" },
+        { payload: 'method', message: "Lot Number" },
+        { payload: 'method', message: "Expiry Date" },
+        { payload: 'start', message: "Start" },
+        { payload: 'end', message: "End" },
     ]
 
     validateChecker(formData)

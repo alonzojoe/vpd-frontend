@@ -10,7 +10,7 @@ const state: RootState = {
         poolHeader: {
             id: 0,
             protocol_no: "",
-            date_performed: "",
+            date_performed: moment().format('YYYY-MM-DD'),
             method: "",
             test_name: "",
             kit_name: "",
