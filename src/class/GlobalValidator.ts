@@ -48,7 +48,7 @@ export class GlobalValidator {
                 result.errors++;
                 result.tab = r.tab;
                 if (watched !== 1) {
-                    toast.toast.add({ severity: 'error', summary: 'Field Required:', detail: `${r.message}`, life: 3000 });
+                    toast.add({ severity: 'error', summary: 'Field Required:', detail: `${r.message}`, life: 3000 });
                 }
                 return false;
             }
