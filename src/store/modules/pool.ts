@@ -25,12 +25,15 @@ const state: RootState = {
 
         },
         poolMethodMeasles: [
-            'Anti-Measles IgM ELISA',
-            'Anti-Rubella IgM ELISA'
+            'Enzyme Immunoassay'
         ],
         poolKitMeasles: [
             'Euroimmun Measles IgM ELISA',
             'Euroimmun Rubella IgM ELISA'
+        ],
+        poolTestMeasles: [
+            'Anti-Measles IgM ELISA',
+            'Anti-Rubella IgM ELISA'
         ]
     }
 }
@@ -83,7 +86,8 @@ const getters = {
     getPoolDetails: (state: RootState) => state.data.poolDetails,
     getPoolHeader: (state: RootState) => state.data.poolHeader,
     getMeaslesMethod: (state: RootState) => state.data.poolMethodMeasles,
-    getMeaslesKit: (state: RootState) => state.data.poolKitMeasles
+    getMeaslesKit: (state: RootState) => state.data.poolKitMeasles,
+    getMeaslesTest: (state: RootState) => state.data.poolTestMeasles
 }
 
 export default {

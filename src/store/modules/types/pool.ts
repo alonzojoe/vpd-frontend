@@ -10,6 +10,7 @@ export interface RootState {
         poolDetails: any[],
         poolHeader: any,
         poolMethodMeasles: any[],
-        poolKitMeasles: any[]
+        poolKitMeasles: any[],
+        poolTestMeasles: any[]
     }
 }

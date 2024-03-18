@@ -19,11 +19,14 @@
         <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
           <div class="search">
             <Label class="mb-2">Protocol Number</Label>
-            <input
-              type="text"
+            <select
+              class="form-select form-control form-control-sm"
               v-model="poolHeader.protocol_no"
-              class="form-control form-control-sm w-100 custom-font"
-            />
+            >
+              <option value="">Please Select</option>
+              <option value="poolMS">Measles</option>
+              <option value="poolRB">Rubella</option>
+            </select>
           </div>
         </div>
       </div>
@@ -48,7 +51,12 @@
               v-model="poolHeader.kit_name"
             >
               <option value="">Please Select</option>
-              <option value="1" v-for="(m, index) in methods" :key="index">
+              <option
+                :value="m"
+                v-for="(m, index) in methods"
+                :key="index"
+                :selected="index == 0"
+              >
                 {{ m }}
               </option>
             </select>
@@ -56,9 +64,9 @@
         </div>
         <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
           <div class="search">
-            <Label class="mb-2">Room Temperature</Label>
+            <Label class="mb-2">Room Temperature (°C)</Label>
             <input
-              type="text"
+              type="number"
               v-model="poolHeader.room_temp"
               class="form-control form-control-sm w-100 custom-font"
             />
@@ -72,7 +80,7 @@
               v-model="poolHeader.method"
             >
               <option value="">Please Select</option>
-              <option value="1" v-for="(k, index) in kits" :key="index">
+              <option :value="k" v-for="(k, index) in kits" :key="index">
                 {{ k }}
               </option>
             </select>
@@ -101,11 +109,15 @@
         <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
           <div class="search">
             <Label class="mb-2">Name of Test</Label>
-            <input
-              type="text"
+            <select
+              class="form-select form-control form-control-sm"
               v-model="poolHeader.test_name"
-              class="form-control form-control-sm w-100 custom-font"
-            />
+            >
+              <option value="">Please Select</option>
+              <option :value="t" v-for="(t, index) in tests" :key="index">
+                {{ t }}
+              </option>
+            </select>
           </div>
         </div>
         <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
@@ -234,10 +246,12 @@ const poolDetails: Ref<PoolDetail[]> = computed(
 
 const methods = ref([]);
 const kits = ref([]);
+const tests = ref([]);
 const detectOptions = (type) => {
   if (type === 3) {
     methods.value = store.getters.getMeaslesMethod;
     kits.value = store.getters.getMeaslesKit;
+    tests.value = store.getters.getMeaslesTest;
   }
 };
 
