@@ -24,8 +24,8 @@
               v-model="poolHeader.protocol_no"
             >
               <option value="">Please Select</option>
-              <option value="poolMS">Measles</option>
-              <option value="poolRB">Rubella</option>
+              <option value="poolMS">Measles [MS]</option>
+              <option value="poolRB">Rubella [RB]</option>
             </select>
           </div>
         </div>

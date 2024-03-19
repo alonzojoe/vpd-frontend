@@ -5,7 +5,7 @@ interface Field {
 }
 
 interface FormData {
-    [key: string]: string;
+    [key: string]: any;
 }
 
 interface Result {
