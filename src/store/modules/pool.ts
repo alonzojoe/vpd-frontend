@@ -77,6 +77,9 @@ const actions = {
             pathologist: payload.pathologist,
             pool_details: payload.pool_details
         })
+
+        console.log('response', response.data)
+        return response.data;
     },
 }
 

@@ -12,12 +12,18 @@
         </div>
       </div>
     </div>
+    <pre>{{ validationStatus }}</pre>
     <pre>{{ poolHeader }}</pre>
 
     <div class="col-sm-12 col-md-12 col-lg-12">
       <div class="row p-0 m-0 mx-3">
         <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
-          <div class="search">
+          <div
+            class="search"
+            :class="{
+              'group-invalid': saveSubmitted && !validationStatus.protocol_no,
+            }"
+          >
             <Label class="mb-2">Protocol Number</Label>
             <select
               class="form-select form-control form-control-sm"
@@ -34,7 +40,13 @@
     <div class="col-sm-12 col-md-12 col-lg-12">
       <div class="row p-0 m-0 mx-3">
         <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
-          <div class="search">
+          <div
+            class="search"
+            :class="{
+              'group-invalid':
+                saveSubmitted && !validationStatus.date_performed,
+            }"
+          >
             <Label class="mb-2">Date Performed</Label>
             <input
               type="date"
@@ -44,7 +56,12 @@
           </div>
         </div>
         <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
-          <div class="search">
+          <div
+            class="search"
+            :class="{
+              'group-invalid': saveSubmitted && !validationStatus.kit_name,
+            }"
+          >
             <Label class="mb-2">Name of Kit</Label>
             <select
               class="form-select form-control form-control-sm"
@@ -63,7 +80,12 @@
           </div>
         </div>
         <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
-          <div class="search">
+          <div
+            class="search"
+            :class="{
+              'group-invalid': saveSubmitted && !validationStatus.room_temp,
+            }"
+          >
             <Label class="mb-2">Room Temperature (°C)</Label>
             <input
               type="number"
@@ -73,7 +95,12 @@
           </div>
         </div>
         <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
-          <div class="search">
+          <div
+            class="search"
+            :class="{
+              'group-invalid': saveSubmitted && !validationStatus.method,
+            }"
+          >
             <Label class="mb-2">Method</Label>
             <select
               class="form-select form-control form-control-sm"
@@ -87,7 +114,12 @@
           </div>
         </div>
         <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
-          <div class="search">
+          <div
+            class="search"
+            :class="{
+              'group-invalid': saveSubmitted && !validationStatus.lot_no,
+            }"
+          >
             <Label class="mb-2">Lot Number</Label>
             <input
               type="text"
@@ -97,7 +129,12 @@
           </div>
         </div>
         <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
-          <div class="search">
+          <div
+            class="search"
+            :class="{
+              'group-invalid': saveSubmitted && !validationStatus.start,
+            }"
+          >
             <Label class="mb-2">Start</Label>
             <input
               type="text"
@@ -107,7 +144,12 @@
           </div>
         </div>
         <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
-          <div class="search">
+          <div
+            class="search"
+            :class="{
+              'group-invalid': saveSubmitted && !validationStatus.test_name,
+            }"
+          >
             <Label class="mb-2">Name of Test</Label>
             <select
               class="form-select form-control form-control-sm"
@@ -121,7 +163,12 @@
           </div>
         </div>
         <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
-          <div class="search">
+          <div
+            class="search"
+            :class="{
+              'group-invalid': saveSubmitted && !validationStatus.date_expiry,
+            }"
+          >
             <Label class="mb-2">Expiry Date</Label>
             <input
               type="date"
@@ -131,7 +178,12 @@
           </div>
         </div>
         <div class="col-sm-12 col-md-3 col-lg-4 mb-2">
-          <div class="search">
+          <div
+            class="search"
+            :class="{
+              'group-invalid': saveSubmitted && !validationStatus.end,
+            }"
+          >
             <Label class="mb-2">End</Label>
             <input
               type="text"
@@ -235,6 +287,7 @@ import { swalConfirmation, swalMessage } from "@/composables";
 import { useToast } from "primevue/usetoast";
 import moment from "moment";
 import { PoolDetail } from "./types/types";
+import { validationStatus, validateFields } from "./poolValidaton";
 
 const store = useStore();
 const swal = inject("$swal");
@@ -274,7 +327,8 @@ const removeItem = (detail) => {
   store.commit("removeToPoolCart", detail);
 };
 
-const savePool = async () => {
+const savingFlag = ref(false);
+const savePoolConfirmation = () => {
   if (!poolDetails.value.length) {
     swalMessage(
       swal,
@@ -285,11 +339,55 @@ const savePool = async () => {
     return;
   }
 
-  await store.dispatch("savePool", {
-    ...poolHeader.value,
-    pool_details: poolDetails.value,
+  swalConfirmation(
+    swal,
+    "Confirmation",
+    `Are you sure to create new Pool`,
+    "question"
+  ).then(async (res) => {
+    savingFlag.value = true;
+    if (res.isConfirmed) {
+      const response = await store.dispatch("savePool", {
+        ...poolHeader.value,
+        pool_details: poolDetails.value,
+      });
+      swalMessage(
+        swal,
+        `Information`,
+        `Pool ${response.data.header.protocol_no} Created Successfully!`,
+        "success"
+      ).then(() => {
+        console.log("api response", response.data.header.protocol_no);
+        // router.push({ name: "patients", params: { type: "measles" } });
+      });
+    }
   });
 };
+
+const saveSubmitted = ref(false);
+const savePool = async () => {
+  saveSubmitted.value = true;
+  const errors = await validateFields(poolHeader.value);
+  if (errors === 0) {
+    await savePoolConfirmation();
+  }
+  console.log("errors", errors);
+};
+
+watch(
+  () => {
+    poolHeader.value;
+    if (saveSubmitted.value === true) {
+      validateFields(poolHeader.value);
+    }
+  },
+  { deep: true }
+);
+
+onMounted(() => {
+  saveSubmitted.value = false;
+  savingFlag.value = false;
+});
 </script>
 
 <style scoped></style>

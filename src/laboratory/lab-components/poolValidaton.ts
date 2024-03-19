@@ -2,7 +2,6 @@ import { ref } from 'vue'
 
 
 export const validationStatus = ref({
-    id: true,
     protocol_no: true,
     date_performed: true,
     method: true,
@@ -30,11 +29,14 @@ export const validateChecker = async (formData: any) => {
 
 export const validateFields = async (formData) => {
     const requiredFields = [
-        { payload: 'kit_name', message: "Name of Kit" },
-        { payload: 'room_temp', message: "Room Temperature" },
+        { payload: 'protocol_no', message: "Protocol No" },
+        { payload: 'date_performed', message: "Room Temperature" },
         { payload: 'method', message: "Method" },
-        { payload: 'method', message: "Lot Number" },
-        { payload: 'method', message: "Expiry Date" },
+        { payload: 'test_name', message: "Test Name" },
+        { payload: 'kit_name', message: "Kit Name" },
+        { payload: 'lot_no', message: 'Lot No.' },
+        { payload: 'date_expiry', message: 'Expiry Date' },
+        { payload: 'room_temp', message: 'Room Temperature' },
         { payload: 'start', message: "Start" },
         { payload: 'end', message: "End" },
     ]
