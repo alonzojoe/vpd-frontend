@@ -92,6 +92,25 @@ const Routes = {
             meta: { title: 'Patient Line List', requireRole: ['Administrator', 'Regular'] }
         },
 
+        {
+            path: 'pool',
+            component: RouteViewComponent,
+            children: [
+                {
+                    path: '',
+                    name: 'pool',
+                    component: () => import('@/pages/pool/Pools.vue'),
+
+                },
+                {
+                    path: 'worksheet/:id',
+                    name: 'worksheet',
+                    component: () => import('@/pages/pool/Pools.vue'),
+
+                },
+            ]
+        },
+
 
         {
             path: 'registry',

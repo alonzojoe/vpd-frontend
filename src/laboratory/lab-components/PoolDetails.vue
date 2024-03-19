@@ -5,15 +5,25 @@
       <div class="d-flex align-items-center justify-content-between">
         <div></div>
         <div>
-          <button class="btn btn-primary btn-sm m-1" @click="savePool()">
-            Create Pool
+          <button
+            :disabled="savingFlag"
+            class="btn btn-primary btn-sm m-1"
+            @click="savePool()"
+          >
+            {{ savingFlag ? "Creating Pool..." : "Create Pool" }}
+
+            <div
+              class="spinner-border spinner-border-sm text-white"
+              role="status"
+              v-if="savingFlag"
+            ></div>
           </button>
           <button class="btn btn-danger btn-sm m-1" @click="zxc">Cancel</button>
         </div>
       </div>
     </div>
-    <pre>{{ validationStatus }}</pre>
-    <pre>{{ poolHeader }}</pre>
+    <!-- <pre>{{ validationStatus }}</pre>
+    <pre>{{ poolHeader }}</pre> -->
 
     <div class="col-sm-12 col-md-12 col-lg-12">
       <div class="row p-0 m-0 mx-3">
@@ -345,12 +355,13 @@ const savePoolConfirmation = () => {
     `Are you sure to create new Pool`,
     "question"
   ).then(async (res) => {
-    savingFlag.value = true;
     if (res.isConfirmed) {
+      savingFlag.value = true;
       const response = await store.dispatch("savePool", {
         ...poolHeader.value,
         pool_details: poolDetails.value,
       });
+      savingFlag.value = false;
       swalMessage(
         swal,
         `Information`,
