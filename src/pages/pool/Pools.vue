@@ -8,8 +8,8 @@
               <Label class="mb-2">Protocol No:</Label>
               <input
                 type="text"
-                v-model="zxc"
-                @keyup.enter="zxc"
+                v-model="formData.protocolno"
+                @keyup.enter="searchData()"
                 class="form-control form-control-sm w-100 custom-font"
               />
             </div>
@@ -19,8 +19,8 @@
               <Label class="mb-2">Method:</Label>
               <input
                 type="text"
-                v-model="zxc"
-                @keyup.enter="zxc"
+                v-model="formData.method"
+                @keyup.enter="searchData()"
                 class="form-control form-control-sm w-100 custom-font"
               />
             </div>
@@ -30,8 +30,8 @@
               <Label class="mb-2">Test Name:</Label>
               <input
                 type="text"
-                v-model="zxc"
-                @keyup.enter="zxc"
+                v-model="formData.testname"
+                @keyup.enter="searchData()"
                 class="form-control form-control-sm w-100 custom-font"
               />
             </div>
@@ -40,16 +40,19 @@
             <div class="d-flex justify-content-start mt-4">
               <button
                 class="btn btn-primary m-1"
-                @keyup.enter="zxc"
-                @click.prevent="zxc"
+                @keyup.enter="searchData()"
+                @click.prevent="searchData()"
               >
                 Search
               </button>
-              <button @click="zxc" class="btn btn-danger m-1">Refresh</button>
+              <button @click="refreshData()" class="btn btn-danger m-1">
+                Refresh
+              </button>
             </div>
           </div>
         </template>
       </search-card>
+      <pre>{{ pools }}</pre>
       <div>
         <div class="table-responsive p-0 m-0 border border-primary">
           <table class="table table-bordered table-hover">
@@ -72,6 +75,9 @@
                 </th>
                 <th class="text-center bg-primary text-white p-1 m-0">
                   Room Temperature
+                </th>
+                <th class="text-center bg-primary text-white p-1 m-0">
+                  Action
                 </th>
               </tr>
             </thead>
@@ -221,7 +227,64 @@ import {
 } from "@/composables";
 import PrintMeasles from "@/pages/printable_forms/PrintMeasles.vue";
 
-onMounted(async () => {});
+const store = useStore();
+const formData = ref({
+  protocolno: "",
+  method: "",
+  testname: "",
+});
+
+const isLoading = ref(false);
+const pools = computed(() => store.getters.getPools);
+const totalPools = computed(() => store.getters.getTotalPools);
+const pagesPools = computed(() => store.getters.getPoolsPages);
+
+const paginationData = ref({
+  totalRecords: totalPools.value,
+  totalPages: pagesPools.value,
+  perPage: 10,
+  currentPage: 1,
+});
+
+const resetFormDataSearch = () => {
+  Object.keys(formData.value).forEach((key) => {
+    formData.value[key] = "";
+  });
+};
+
+watch([totalPools, pagesPools], ([total, pages]) => {
+  paginationData.value.totalRecords = total;
+  paginationData.value.totalPages = pages;
+});
+
+const fetchData = async (page, formData) => {
+  isLoading.value = true;
+  await store.commit("setPoolList", []);
+  await store.dispatch("fetchPools", { page: page, ...formData });
+  isLoading.value = false;
+};
+
+const updateCurrentPage = (newPage: number) => {
+  paginationData.value.currentPage = newPage;
+  fetchData(newPage, formData.value);
+};
+
+const searchData = async () => {
+  isLoading.value = true;
+  await store.commit("setPoolList", []);
+  paginationData.value.currentPage = 1;
+  await fetchData(1, formData.value);
+  isLoading.value = false;
+};
+
+const refreshData = () => {
+  resetFormDataSearch();
+  searchData();
+};
+
+onMounted(async () => {
+  await fetchData(1, formData.value);
+});
 </script>
 
 <style scoped></style>

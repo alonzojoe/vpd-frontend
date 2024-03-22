@@ -60,7 +60,7 @@ const mutations = {
 
     },
 
-    setPoolList: <T>(state: RootState, payload: T[]) => {
+    setPoolList: <Payload>(state: RootState, payload: Payload[]) => {
         state.data.pools = payload
     },
 
@@ -74,6 +74,16 @@ const mutations = {
 }
 
 const actions = {
+    async fetchPools<Payload>({ commit }, payload: Payload) {
+        const queryParams = buildQueryParams(payload)
+        const response = await api.get(`/pool/?${queryParams}`)
+        if (response.data.data.length > 0) {
+            commit('setPoolList', response.data.data);
+            commit('setTotalPools', response.data.total);
+            commit('setPoolPages', response.data.total_pages);
+        }
+    },
+
     async savePool({ commit }, payload) {
         console.log(payload.poolDetails)
         // return
