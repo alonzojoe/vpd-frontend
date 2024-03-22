@@ -61,7 +61,12 @@ const mutations = {
     },
 
     setPoolList: <Payload>(state: RootState, payload: Payload[]) => {
-        state.data.pools = payload
+        state.data.pools = payload.map((pool) => {
+            return {
+                ...pool,
+                date_expiry: moment(pool.date_expiry).format('ll')
+            }
+        })
     },
 
     setTotalPools: (state: RootState, payload: number) => {
@@ -80,7 +85,7 @@ const actions = {
         if (response.data.data.length > 0) {
             commit('setPoolList', response.data.data);
             commit('setTotalPools', response.data.total);
-            commit('setPoolPages', response.data.total_pages);
+            commit('setPoolPages', response.data.totalPages);
         }
     },
 

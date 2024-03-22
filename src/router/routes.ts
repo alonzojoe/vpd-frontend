@@ -105,7 +105,7 @@ const Routes = {
                 {
                     path: 'worksheet/:id',
                     name: 'worksheet',
-                    component: () => import('@/pages/pool/Pools.vue'),
+                    component: () => import('@/pages/pool/Worksheet.vue'),
 
                 },
             ]

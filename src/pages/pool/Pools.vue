@@ -46,13 +46,12 @@
                 Search
               </button>
               <button @click="refreshData()" class="btn btn-danger m-1">
-                Refresh
+                Refresh {{ pagesPools }}
               </button>
             </div>
           </div>
         </template>
       </search-card>
-      <pre>{{ pools }}</pre>
       <div>
         <div class="table-responsive p-0 m-0 border border-primary">
           <table class="table table-bordered table-hover">
@@ -83,90 +82,44 @@
             </thead>
 
             <tbody>
-              <!-- <tr v-for="l in linelists" :key="l.id">
+              <tr v-for="(v, index) in pools" :key="v">
                 <td class="text-center align-middle fw-bold p-1 m-0">
-                  {{ l.id }}
+                  {{ v.protocol_no }}
                 </td>
                 <td class="text-center align-middle fw-bold p-1 m-0">
-                  <a href="javascript:void(0);" @click="zxc">
-                    <img
-                      class="scale-icon"
-                      src="./../../assets/images/icons/print.png"
-                      height="30"
-                      width="30"
-                      v-tooltip.right="{
-                        value: `<h6 class='text-white'>Print Form</h6>`,
-                        escape: true,
-                        class: 'bg-dark rounded p-1',
-                      }"
-                    />
-                  </a>
+                  {{ v.method }}
                 </td>
                 <td class="text-center align-middle fw-bold p-1 m-0">
-                  <button
-                    class="btn btn-dark btn-sm"
-                    @click="postLinelist(l)"
-                    :disabled="l.status !== 1"
-                  >
-                    {{
-                      l.status == 1
-                        ? "Post"
-                        : l.status == 2
-                        ? "Posted"
-                        : "Cancelled"
-                    }}
-                  </button>
+                  {{ v.test_name }}
                 </td>
                 <td class="text-center align-middle fw-bold p-1 m-0">
-                  {{ l.linelist_code }}
+                  {{ v.test_name }}
                 </td>
                 <td class="text-center align-middle fw-bold p-1 m-0">
-                  {{ l.dru }}
+                  {{ v.date_expiry }}
                 </td>
                 <td class="text-center align-middle fw-bold p-1 m-0">
-                  {{ l.dru_officer }}
-                </td>
-                <td class="text-center align-middle fw-bold p-1 m-0">
-                  {{ l.contact }}
-                </td>
-                <td class="text-center align-middle fw-bold p-1 m-0">
-                  {{ l.email }}
-                </td>
-                <td class="text-center align-middle fw-bold p-1 m-0">
-                  {{ l.created_at }}
-                </td>
-                <td class="text-center align-middle fw-bold p-1 m-0">
-                  {{ l.updated_at }}
+                  {{ v.room_temp }}°C
                 </td>
                 <td class="text-center align-middle fw-bold p-1 m-0">
                   <button
-                    @click="updateLinelist(l)"
-                    :disabled="l.status !== 1"
-                    class="btn btn-sm btn-info m-1"
-                  >
-                    Update
-                  </button>
-                </td>
-                <td class="text-center align-middle fw-bold p-1 m-0">
-                  <button
-                    @click="deleteLinelist(l)"
-                    :disabled="l.status !== 1"
+                    @click="updatePool(v.id)"
                     class="btn btn-sm btn-danger m-1"
                   >
-                    Delete
+                    Update Pool
                   </button>
                 </td>
               </tr>
-              <tr v-if="!linelists.length && !isLoading">
+              <tr v-if="!pools.length && !isLoading">
                 <td
                   class="text-center align-middle fw-bold p-1 m-0"
-                  colspan="11"
+                  colspan="7"
                 >
                   No records found.
                 </td>
               </tr>
               <tr v-if="isLoading">
-                <td colspan="11">
+                <td colspan="7">
                   <div class="d-flex align-items-center justify-content-center">
                     <div
                       class="spinner-border spinner-border-sm text-dark"
@@ -177,16 +130,16 @@
                     >
                   </div>
                 </td>
-              </tr> -->
+              </tr>
             </tbody>
           </table>
         </div>
       </div>
-      <!-- <pagination
+      <pagination
         v-if="!isLoading"
         :data="paginationData"
         @update:currentPage="updateCurrentPage"
-      /> -->
+      />
     </div>
   </div>
 </template>
@@ -226,7 +179,7 @@ import {
   NumericOnly,
 } from "@/composables";
 import PrintMeasles from "@/pages/printable_forms/PrintMeasles.vue";
-
+const router = useRouter();
 const store = useStore();
 const formData = ref({
   protocolno: "",
@@ -280,6 +233,10 @@ const searchData = async () => {
 const refreshData = () => {
   resetFormDataSearch();
   searchData();
+};
+
+const updatePool = (poolId) => {
+  router.push({ name: "worksheet", params: { id: poolId } });
 };
 
 onMounted(async () => {
