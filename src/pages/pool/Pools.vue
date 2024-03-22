@@ -46,7 +46,7 @@
                 Search
               </button>
               <button @click="refreshData()" class="btn btn-danger m-1">
-                Refresh {{ pagesPools }}
+                Refresh
               </button>
             </div>
           </div>
@@ -177,6 +177,7 @@ import {
   trimZeroes,
   decryptData,
   NumericOnly,
+  encryptData,
 } from "@/composables";
 import PrintMeasles from "@/pages/printable_forms/PrintMeasles.vue";
 const router = useRouter();
@@ -245,3 +246,4 @@ onMounted(async () => {
 </script>
 
 <style scoped></style>
+encryptData, import pool from "@/store/modules/pool";

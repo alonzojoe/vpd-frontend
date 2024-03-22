@@ -188,7 +188,7 @@ import LinelistData from "@/pages/linelist/linelist-components/LinelistData.vue"
 import PoolLinelist from "@/pages";
 import { extractLnCode, randomMizer } from "@/composables";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import moment from "moment";
 import {
   swalConfirmation,
@@ -198,6 +198,11 @@ import {
   NumericOnly,
 } from "@/composables";
 import PrintMeasles from "@/pages/printable_forms/PrintMeasles.vue";
+
+const route = useRoute();
+const uriParams = route.params.id;
+
+console.log("uriParams", uriParams);
 
 const worksheet = ref([
   { wellNo: "A1", poolDetailID: 0, OD: "", Ratio: "", Interpretation: "" },
@@ -304,3 +309,4 @@ onMounted(async () => {
 </script>
 
 <style scoped></style>
+, useRoute
