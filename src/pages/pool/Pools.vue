@@ -1,7 +1,7 @@
 <template>
   <div class="card my-0">
     <div class="card-body py-4">
-      <search-card title="Search Role">
+      <search-card title="Search Pool">
         <template v-slot:formInput="pObject">
           <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
             <div class="search">

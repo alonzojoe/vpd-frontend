@@ -1,11 +1,154 @@
 <template>
   <div class="card my-0">
     <div class="card-body py-4">
-      <!-- <search-linelist
-        :formData="formData"
-        @search-linelist="searchLinelist()"
-        @refresh-data="refreshPatients()"
-      /> -->
+      <search-card title="Pool Information">
+        <template v-slot:formInput="pObject">
+          <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+            <div class="search">
+              <Label class="mb-2">Protocol No:</Label>
+              <input
+                type="text"
+                v-model="zxc"
+                @keyup.enter="zxc"
+                disabled
+                class="form-control form-control-sm w-100 custom-font"
+              />
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+            <div class="search">
+              <Label class="mb-2">Date Performed:</Label>
+              <input
+                type="text"
+                v-model="zxc"
+                @keyup.enter="zxc"
+                disabled
+                class="form-control form-control-sm w-100 custom-font"
+              />
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+            <div class="search">
+              <Label class="mb-2">Test Name:</Label>
+              <input
+                type="text"
+                v-model="zxc"
+                @keyup.enter="zxc"
+                disabled
+                class="form-control form-control-sm w-100 custom-font"
+              />
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+            <div class="search">
+              <Label class="mb-2">Kit Name:</Label>
+              <input
+                type="text"
+                v-model="zxc"
+                @keyup.enter="zxc"
+                disabled
+                class="form-control form-control-sm w-100 custom-font"
+              />
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+            <div class="search">
+              <Label class="mb-2">Lot No:</Label>
+              <input
+                type="text"
+                v-model="zxc"
+                @keyup.enter="zxc"
+                disabled
+                class="form-control form-control-sm w-100 custom-font"
+              />
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+            <div class="search">
+              <Label class="mb-2">Date Expiry:</Label>
+              <input
+                type="text"
+                v-model="zxc"
+                @keyup.enter="zxc"
+                disabled
+                class="form-control form-control-sm w-100 custom-font"
+              />
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+            <div class="search">
+              <Label class="mb-2">Room Temperature:</Label>
+              <input
+                type="text"
+                v-model="zxc"
+                @keyup.enter="zxc"
+                disabled
+                class="form-control form-control-sm w-100 custom-font"
+              />
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+            <div class="search">
+              <Label class="mb-2">Start:</Label>
+              <input
+                type="text"
+                v-model="zxc"
+                @keyup.enter="zxc"
+                disabled
+                class="form-control form-control-sm w-100 custom-font"
+              />
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+            <div class="search">
+              <Label class="mb-2">End:</Label>
+              <input
+                type="text"
+                v-model="zxc"
+                @keyup.enter="zxc"
+                disabled
+                class="form-control form-control-sm w-100 custom-font"
+              />
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+            <div class="search">
+              <Label class="mb-2">Performed By:</Label>
+              <input
+                type="text"
+                v-model="zxc"
+                @keyup.enter="zxc"
+                disabled
+                class="form-control form-control-sm w-100 custom-font"
+              />
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+            <div class="search">
+              <Label class="mb-2">Validated By:</Label>
+              <input
+                type="text"
+                v-model="zxc"
+                @keyup.enter="zxc"
+                disabled
+                class="form-control form-control-sm w-100 custom-font"
+              />
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+            <div class="search">
+              <Label class="mb-2">Pathologist:</Label>
+              <input
+                type="text"
+                v-model="zxc"
+                @keyup.enter="zxc"
+                disabled
+                class="form-control form-control-sm w-100 custom-font"
+              />
+            </div>
+          </div>
+        </template>
+      </search-card>
       <div>
         <div class="table-responsive p-0 m-0 border border-primary">
           <table class="table table-bordered table-hover">
