@@ -1,5 +1,6 @@
 import moment from "moment";
 import api from "@/api"
+import { buildQueryParams } from "@/composables";
 import { RootState } from "./types/pool"
 
 const state: RootState = {
@@ -34,7 +35,10 @@ const state: RootState = {
         poolTestMeasles: [
             'Anti-Measles IgM ELISA',
             'Anti-Rubella IgM ELISA'
-        ]
+        ],
+        pools: [],
+        total_pools: 0,
+        pools_pages: 0,
     }
 }
 
@@ -53,6 +57,19 @@ const mutations = {
 
     resetPoolCart: (state: RootState) => {
         state.data.poolCart = [];
+
+    },
+
+    setPoolList: <T>(state: RootState, payload: T[]) => {
+        state.data.pools = payload
+    },
+
+    setTotalPools: (state: RootState, payload: number) => {
+        state.data.total_pools = payload
+    },
+
+    setPoolPages: (state: RootState, payload: number) => {
+        state.data.pools_pages = payload
     }
 }
 
@@ -84,6 +101,9 @@ const actions = {
 }
 
 const getters = {
+    getPools: (state: RootState) => state.data.pools,
+    getTotalPools: (state: RootState) => state.data.total_pools,
+    getPoolsPages: (state: RootState) => state.data.pools_pages,
     getPoolCart: (state: RootState) => state.data.poolCart,
     getPoolHeaders: (state: RootState) => state.data.poolHeaders,
     getPoolDetails: (state: RootState) => state.data.poolDetails,
@@ -92,6 +112,7 @@ const getters = {
     getMeaslesKit: (state: RootState) => state.data.poolKitMeasles,
     getMeaslesTest: (state: RootState) => state.data.poolTestMeasles
 }
+
 
 export default {
     state,

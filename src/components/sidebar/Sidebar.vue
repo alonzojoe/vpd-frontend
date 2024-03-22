@@ -224,6 +224,22 @@
                         <span class="hide-menu">Submitted Linelist</span>
                       </router-link>
                     </li>
+                    <li
+                      v-if="authUser.role == 'Administrator'"
+                      class="sidebar-item"
+                      :class="{ selected: route.name === 'pool' }"
+                    >
+                      <router-link
+                        :to="{ name: 'pool' }"
+                        class="sidebar-link"
+                        aria-expanded="false"
+                      >
+                        <span class="rounded-3">
+                          <i class="ti ti-git-fork"></i>
+                        </span>
+                        <span class="hide-menu">Pool Listings</span>
+                      </router-link>
+                    </li>
                     <!-- <li
                       v-if="authUser.role == 'Administrator'"
                       class="sidebar-item"
