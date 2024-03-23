@@ -80,7 +80,7 @@
               <option value="">Please Select</option>
               <option
                 :value="m"
-                v-for="(m, index) in methods"
+                v-for="(m, index) in kits"
                 :key="index"
                 :selected="index == 0"
               >

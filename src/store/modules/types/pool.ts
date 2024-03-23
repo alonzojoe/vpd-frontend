@@ -15,5 +15,7 @@ export interface RootState {
         pools: any[];
         total_pools: number;
         pools_pages: number;
+        pool: any
+        
     }
 }

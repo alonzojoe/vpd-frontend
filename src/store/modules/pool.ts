@@ -39,6 +39,7 @@ const state: RootState = {
         pools: [],
         total_pools: 0,
         pools_pages: 0,
+        pool: []
     }
 }
 
@@ -75,6 +76,10 @@ const mutations = {
 
     setPoolPages: (state: RootState, payload: number) => {
         state.data.pools_pages = payload
+    },
+
+    setPool: <Payload>(state: RootState, payload: Payload) => {
+        state.data.pool = payload
     }
 }
 
@@ -113,9 +118,19 @@ const actions = {
         console.log('response', response.data)
         return response.data;
     },
+
+    async getPoolById({ commit }, payload: number) {
+        const response = await api.get(`/pool/${payload}`)
+        if (response.data.data) {
+            const datePerformed = moment(response.data.data.date_performed).format('ll')
+            const dateExpiry = moment(response.data.data.date_expiry).format('ll')
+            commit('setPool', { ...response.data.data, date_performed: datePerformed, date_expiry: dateExpiry })
+        }
+    }
 }
 
 const getters = {
+    getPool: (state: RootState) => state.data.pool,
     getPools: (state: RootState) => state.data.pools,
     getTotalPools: (state: RootState) => state.data.total_pools,
     getPoolsPages: (state: RootState) => state.data.pools_pages,

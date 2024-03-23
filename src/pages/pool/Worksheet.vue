@@ -8,8 +8,7 @@
               <Label class="mb-2">Protocol No:</Label>
               <input
                 type="text"
-                v-model="zxc"
-                @keyup.enter="zxc"
+                v-model="poolInfo.protocol_no"
                 disabled
                 class="form-control form-control-sm w-100 custom-font"
               />
@@ -20,8 +19,18 @@
               <Label class="mb-2">Date Performed:</Label>
               <input
                 type="text"
-                v-model="zxc"
-                @keyup.enter="zxc"
+                v-model="poolInfo.date_performed"
+                disabled
+                class="form-control form-control-sm w-100 custom-font"
+              />
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
+            <div class="search">
+              <Label class="mb-2">Date Performed:</Label>
+              <input
+                type="text"
+                v-model="poolInfo.method"
                 disabled
                 class="form-control form-control-sm w-100 custom-font"
               />
@@ -32,8 +41,7 @@
               <Label class="mb-2">Test Name:</Label>
               <input
                 type="text"
-                v-model="zxc"
-                @keyup.enter="zxc"
+                v-model="poolInfo.test_name"
                 disabled
                 class="form-control form-control-sm w-100 custom-font"
               />
@@ -44,8 +52,7 @@
               <Label class="mb-2">Kit Name:</Label>
               <input
                 type="text"
-                v-model="zxc"
-                @keyup.enter="zxc"
+                v-model="poolInfo.kit_name"
                 disabled
                 class="form-control form-control-sm w-100 custom-font"
               />
@@ -56,8 +63,7 @@
               <Label class="mb-2">Lot No:</Label>
               <input
                 type="text"
-                v-model="zxc"
-                @keyup.enter="zxc"
+                v-model="poolInfo.lot_no"
                 disabled
                 class="form-control form-control-sm w-100 custom-font"
               />
@@ -68,8 +74,7 @@
               <Label class="mb-2">Date Expiry:</Label>
               <input
                 type="text"
-                v-model="zxc"
-                @keyup.enter="zxc"
+                v-model="poolInfo.date_expiry"
                 disabled
                 class="form-control form-control-sm w-100 custom-font"
               />
@@ -77,11 +82,10 @@
           </div>
           <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
             <div class="search">
-              <Label class="mb-2">Room Temperature:</Label>
+              <Label class="mb-2">Room Temperature (°C):</Label>
               <input
                 type="text"
-                v-model="zxc"
-                @keyup.enter="zxc"
+                v-model="poolInfo.room_temp"
                 disabled
                 class="form-control form-control-sm w-100 custom-font"
               />
@@ -92,8 +96,7 @@
               <Label class="mb-2">Start:</Label>
               <input
                 type="text"
-                v-model="zxc"
-                @keyup.enter="zxc"
+                v-model="poolInfo.start"
                 disabled
                 class="form-control form-control-sm w-100 custom-font"
               />
@@ -104,8 +107,7 @@
               <Label class="mb-2">End:</Label>
               <input
                 type="text"
-                v-model="zxc"
-                @keyup.enter="zxc"
+                v-model="poolInfo.end"
                 disabled
                 class="form-control form-control-sm w-100 custom-font"
               />
@@ -114,41 +116,30 @@
           <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
             <div class="search">
               <Label class="mb-2">Performed By:</Label>
-              <input
-                type="text"
-                v-model="zxc"
-                @keyup.enter="zxc"
-                disabled
-                class="form-control form-control-sm w-100 custom-font"
-              />
+              <select class="form-select form-control form-control-sm">
+                <option value="">Please Select</option>
+              </select>
             </div>
           </div>
           <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
             <div class="search">
-              <Label class="mb-2">Validated By:</Label>
-              <input
-                type="text"
-                v-model="zxc"
-                @keyup.enter="zxc"
-                disabled
-                class="form-control form-control-sm w-100 custom-font"
-              />
+              <Label class="mb-2">Performed By:</Label>
+              <select class="form-select form-control form-control-sm">
+                <option value="">Please Select</option>
+              </select>
             </div>
           </div>
           <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
             <div class="search">
-              <Label class="mb-2">Pathologist:</Label>
-              <input
-                type="text"
-                v-model="zxc"
-                @keyup.enter="zxc"
-                disabled
-                class="form-control form-control-sm w-100 custom-font"
-              />
+              <Label class="mb-2">Performed By:</Label>
+              <select class="form-select form-control form-control-sm">
+                <option value="">Please Select</option>
+              </select>
             </div>
           </div>
         </template>
       </search-card>
+      <pre>{{ poolInfo }}</pre>
       <div>
         <div class="table-responsive p-0 m-0 border border-primary">
           <table class="table table-bordered table-hover">
@@ -351,6 +342,7 @@ import {
 } from "@/composables";
 import PrintMeasles from "@/pages/printable_forms/PrintMeasles.vue";
 
+const store = useStore();
 const route = useRoute();
 const uriParams = route.params.id;
 
@@ -473,10 +465,12 @@ const worksheet = ref([
   { wellNo: "H12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
 ]);
 
+const poolInfo = computed(() => store.getters.getPool);
+
 onMounted(async () => {
+  await store.dispatch("getPoolById", uriParams);
   console.table(worksheet.value);
 });
 </script>
 
 <style scoped></style>
-, useRoute
