@@ -139,7 +139,7 @@
           </div>
         </template>
       </search-card>
-      <pre>{{ poolInfo }}</pre>
+      <!-- <pre>{{ poolInfo }}</pre> -->
       <div>
         <div class="table-responsive p-0 m-0 border border-primary">
           <table class="table table-bordered table-hover">
@@ -208,110 +208,10 @@
                   />
                 </td>
               </tr>
-              <!-- <tr v-for="l in linelists" :key="l.id">
-                <td class="text-center align-middle fw-bold p-1 m-0">
-                  {{ l.id }}
-                </td>
-                <td class="text-center align-middle fw-bold p-1 m-0">
-                  <a href="javascript:void(0);" @click="zxc">
-                    <img
-                      class="scale-icon"
-                      src="./../../assets/images/icons/print.png"
-                      height="30"
-                      width="30"
-                      v-tooltip.right="{
-                        value: `<h6 class='text-white'>Print Form</h6>`,
-                        escape: true,
-                        class: 'bg-dark rounded p-1',
-                      }"
-                    />
-                  </a>
-                </td>
-                <td class="text-center align-middle fw-bold p-1 m-0">
-                  <button
-                    class="btn btn-dark btn-sm"
-                    @click="postLinelist(l)"
-                    :disabled="l.status !== 1"
-                  >
-                    {{
-                      l.status == 1
-                        ? "Post"
-                        : l.status == 2
-                        ? "Posted"
-                        : "Cancelled"
-                    }}
-                  </button>
-                </td>
-                <td class="text-center align-middle fw-bold p-1 m-0">
-                  {{ l.linelist_code }}
-                </td>
-                <td class="text-center align-middle fw-bold p-1 m-0">
-                  {{ l.dru }}
-                </td>
-                <td class="text-center align-middle fw-bold p-1 m-0">
-                  {{ l.dru_officer }}
-                </td>
-                <td class="text-center align-middle fw-bold p-1 m-0">
-                  {{ l.contact }}
-                </td>
-                <td class="text-center align-middle fw-bold p-1 m-0">
-                  {{ l.email }}
-                </td>
-                <td class="text-center align-middle fw-bold p-1 m-0">
-                  {{ l.created_at }}
-                </td>
-                <td class="text-center align-middle fw-bold p-1 m-0">
-                  {{ l.updated_at }}
-                </td>
-                <td class="text-center align-middle fw-bold p-1 m-0">
-                  <button
-                    @click="updateLinelist(l)"
-                    :disabled="l.status !== 1"
-                    class="btn btn-sm btn-info m-1"
-                  >
-                    Update
-                  </button>
-                </td>
-                <td class="text-center align-middle fw-bold p-1 m-0">
-                  <button
-                    @click="deleteLinelist(l)"
-                    :disabled="l.status !== 1"
-                    class="btn btn-sm btn-danger m-1"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-              <tr v-if="!linelists.length && !isLoading">
-                <td
-                  class="text-center align-middle fw-bold p-1 m-0"
-                  colspan="11"
-                >
-                  No records found.
-                </td>
-              </tr>
-              <tr v-if="isLoading">
-                <td colspan="11">
-                  <div class="d-flex align-items-center justify-content-center">
-                    <div
-                      class="spinner-border spinner-border-sm text-dark"
-                      role="status"
-                    ></div>
-                    <span class="text-dark ml-4"
-                      >&nbsp;&nbsp;&nbsp;Loading Please Wait...</span
-                    >
-                  </div>
-                </td>
-              </tr> -->
             </tbody>
           </table>
         </div>
       </div>
-      <!-- <pagination
-        v-if="!isLoading"
-        :data="paginationData"
-        @update:currentPage="updateCurrentPage"
-      /> -->
     </div>
   </div>
 </template>
@@ -357,7 +257,122 @@ const route = useRoute();
 const uriParams = route.params.id;
 
 console.log("uriParams", uriParams);
-
+const defaultWorksheet = [
+  {
+    wellNo: "A1",
+    poolDetailID: { acccession_no: "CAL", value: "0.4777" },
+    OD: "",
+    Ratio: "",
+    Interpretation: "",
+  },
+  {
+    wellNo: "B1",
+    poolDetailID: { acccession_no: "PTC", value: "1.6537" },
+    OD: "",
+    Ratio: "",
+    Interpretation: "",
+  },
+  {
+    wellNo: "C1",
+    poolDetailID: { acccession_no: "NTC", value: "0.0086" },
+    OD: "",
+    Ratio: "",
+    Interpretation: "",
+  },
+  { wellNo: "D1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "E1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "F1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "G1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "H1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "A2", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "B2", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "C2", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "D2", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "E2", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "F2", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "G2", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "H2", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "A3", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "B3", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "C3", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "D3", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "E3", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "F3", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "G3", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "H3", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "A4", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "B4", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "C4", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "D4", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "E4", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "F4", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "G4", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "H4", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "A5", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "B5", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "C5", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "D5", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "E5", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "F5", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "G5", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "H5", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "A6", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "B6", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "C6", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "D6", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "E6", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "F6", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "G6", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "H6", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "A7", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "B7", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "C7", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "D7", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "E7", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "F7", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "G7", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "H7", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "A8", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "B8", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "C8", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "D8", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "E8", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "F8", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "G8", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "H8", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "A9", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "B9", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "C9", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "D9", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "E9", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "F9", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "G9", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "H9", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "A10", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "B10", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "C10", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "D10", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "E10", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "F10", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "G10", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "H10", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "A11", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "B11", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "C11", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "D11", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "E11", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "F11", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "G11", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "H11", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "A12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "B12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "C12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "D12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "E12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "F12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "G12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "H12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+];
 const worksheet = ref([
   {
     wellNo: "A1",
@@ -491,6 +506,7 @@ const fitData = () => {
 };
 
 onMounted(async () => {
+  worksheet.value = defaultWorksheet;
   await store.dispatch("getPoolById", uriParams);
   fitData();
   console.table(worksheet.value);

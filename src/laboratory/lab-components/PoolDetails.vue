@@ -117,8 +117,8 @@
               v-model="poolHeader.method"
             >
               <option value="">Please Select</option>
-              <option :value="k" v-for="(k, index) in kits" :key="index">
-                {{ k }}
+              <option :value="m" v-for="(m, index) in methods" :key="index">
+                {{ m }}
               </option>
             </select>
           </div>
