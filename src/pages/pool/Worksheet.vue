@@ -167,10 +167,20 @@
                 <td class="text-center align-middle fw-bold p-1 m-0">
                   <div
                     class="d-flex justify-content-center gap-2"
-                    v-if="w.poolDetailID"
+                    v-if="index === 0 || index === 1 || index === 2"
                   >
                     <span>{{ w.poolDetailID.acccession_no }}</span>
                     <span>{{ w.poolDetailID.value }}</span>
+                  </div>
+                  <div v-else>
+                    <div v-if="w.poolDetailID" class="p-0">
+                      <a href="#" class="d-block mb-0">
+                        {{ w.poolDetailID.accession_no }}
+                      </a>
+                      <span style="font-size: 8px">{{
+                        `${w.poolDetailID.lname}, ${w.poolDetailID.fname} ${w.poolDetailID.mname} ${w.poolDetailID.suffix}`
+                      }}</span>
+                    </div>
                   </div>
                 </td>
                 <td class="text-center align-middle fw-bold p-1 m-0">
@@ -467,8 +477,22 @@ const worksheet = ref([
 
 const poolInfo = computed(() => store.getters.getPool);
 
+const fitData = () => {
+  poolInfo.value.pool_details.forEach((poolDetail) => {
+    const index = worksheet.value.findIndex((w) => w.poolDetailID === null);
+
+    if (index !== -1) {
+      worksheet.value[index] = {
+        ...worksheet.value[index],
+        poolDetailID: poolDetail,
+      };
+    }
+  });
+};
+
 onMounted(async () => {
   await store.dispatch("getPoolById", uriParams);
+  fitData();
   console.table(worksheet.value);
 });
 </script>
