@@ -43,6 +43,7 @@
             <thead>
               <tr>
                 <th class="text-center bg-primary text-white p-1 m-0">Code</th>
+                <th class="text-center bg-primary text-white p-1 m-0">Print</th>
                 <th class="text-center bg-primary text-white p-1 m-0">DRU</th>
                 <th class="text-center bg-primary text-white p-1 m-0">
                   DRU Officer
@@ -72,6 +73,16 @@
                   <a href="javascript:void(0);" @click="updateLinelist(l)">{{
                     l.linelist_code
                   }}</a>
+                </td>
+                <td class="text-center align-middle fw-bold p-1 m-0">
+                  <a href="javascript:void(0);" @click="openPrint(l)"
+                    ><!-- <i class="scale-icon ti ti-file-invoice fs-6"></i> --><img
+                      class="scale-icon"
+                      src="/src/assets/images/icons/print.png"
+                      height="30"
+                      width="30"
+                      data-pd-tooltip="true"
+                  /></a>
                 </td>
                 <td class="text-center align-middle fw-bold p-1 m-0">
                   {{ l.dru }}
@@ -465,6 +476,14 @@ export default defineComponent({
       store.commit("resetPoolCart");
     };
 
+    const openPrint = (data) => {
+      console.log(data);
+      const encodedData = encodeURIComponent(JSON.stringify(data));
+      window.open(
+        `${import.meta.env.VITE_API_BASE_URL}/print/linelist/${encodedData}`
+      );
+    };
+
     onMounted(async () => {
       setTimeout(async () => {
         await fetchLinelist(1, formData.value);
@@ -502,6 +521,7 @@ export default defineComponent({
       addToPool,
       removeToPool,
       modalPool,
+      openPrint,
     };
   },
 });

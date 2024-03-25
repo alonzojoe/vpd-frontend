@@ -145,6 +145,7 @@
               </button>
             </div>
           </th>
+
           <th
             rowspan="2"
             class="text-center bg-primary align-middle text-white p-0 m-0"
