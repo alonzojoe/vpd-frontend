@@ -177,9 +177,12 @@
                       <a href="#" class="d-block mb-0">
                         {{ w.poolDetailID.accession_no }}
                       </a>
-                      <span style="font-size: 8px">{{
-                        `${w.poolDetailID.lname}, ${w.poolDetailID.fname} ${w.poolDetailID.mname} ${w.poolDetailID.suffix}`
-                      }}</span>
+                      <span style="font-size: 8px"
+                        >{{
+                          `${w.poolDetailID.lname}, ${w.poolDetailID.fname} ${w.poolDetailID.mname} ${w.poolDetailID.suffix} `
+                        }}
+                        [{{ w.poolDetailID.specimen_type }}]</span
+                      >
                     </div>
                   </div>
                 </td>
