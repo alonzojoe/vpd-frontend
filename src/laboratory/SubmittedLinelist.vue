@@ -75,7 +75,7 @@
                   }}</a>
                 </td>
                 <td class="text-center align-middle fw-bold p-1 m-0">
-                  <a href="javascript:void(0);" @click="openPrint(l)"
+                  <a href="javascript:void(0);" @click="openPrint(l.id)"
                     ><!-- <i class="scale-icon ti ti-file-invoice fs-6"></i> --><img
                       class="scale-icon"
                       src="/src/assets/images/icons/print.png"
@@ -476,12 +476,9 @@ export default defineComponent({
       store.commit("resetPoolCart");
     };
 
-    const openPrint = (data) => {
-      console.log(data);
-      const encodedData = encodeURIComponent(JSON.stringify(data));
-      window.open(
-        `${import.meta.env.VITE_API_BASE_URL}/print/linelist/${encodedData}`
-      );
+    const openPrint = (id) => {
+      console.log(id);
+      window.open(`${import.meta.env.VITE_API_BASE_URL}/print/linelist/${id}`);
     };
 
     onMounted(async () => {

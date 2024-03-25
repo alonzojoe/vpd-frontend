@@ -313,7 +313,7 @@
             {{ l.date_received }}
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
-            {{ l.lname }}, {{ l.fname }} {{ l.mname }}
+            {{ l.lname }}, {{ l.fname }} {{ l.mname }} {{ l.suffix }}
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
             <!-- <select
