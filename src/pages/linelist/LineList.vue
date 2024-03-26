@@ -53,7 +53,7 @@
                   {{ l.id }}
                 </td>
                 <td class="text-center align-middle fw-bold p-1 m-0">
-                  <a href="javascript:void(0);" @click="zxc">
+                  <a href="javascript:void(0);" @click="openPrint(l.id)">
                     <!-- <i class="scale-icon ti ti-file-invoice fs-6"></i> -->
                     <img
                       class="scale-icon"
@@ -197,7 +197,7 @@ import ModalMd from "@/components/modals/ModalMd.vue";
 import Loader from "@/pages/loader/Loader.vue";
 import SearchLinelist from "@/pages/linelist/linelist-components/SearchLinelist.vue";
 import LinelistData from "@/pages/linelist/linelist-components/LinelistData.vue";
-import PoolLinelist from "@/pages"
+import PoolLinelist from "@/pages";
 import { extractLnCode, randomMizer } from "@/composables";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -467,6 +467,11 @@ export default defineComponent({
       });
     };
 
+    const openPrint = (id: number) => {
+      console.log(id);
+      window.open(`${import.meta.env.VITE_API_BASE_URL}/print/linelist/${id}`);
+    };
+
     onMounted(async () => {
       setTimeout(async () => {
         await fetchLinelist(1, formData.value);
@@ -495,6 +500,7 @@ export default defineComponent({
       flagChecker,
       deleteLinelist,
       postLinelist,
+      openPrint,
     };
   },
 });

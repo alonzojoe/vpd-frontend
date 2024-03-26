@@ -476,7 +476,7 @@ export default defineComponent({
       store.commit("resetPoolCart");
     };
 
-    const openPrint = (id) => {
+    const openPrint = (id: number) => {
       console.log(id);
       window.open(
         `${import.meta.env.VITE_API_BASE_URL}/print/validation/worksheet/${id}`
