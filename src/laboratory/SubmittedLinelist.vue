@@ -478,7 +478,9 @@ export default defineComponent({
 
     const openPrint = (id) => {
       console.log(id);
-      window.open(`${import.meta.env.VITE_API_BASE_URL}/print/linelist/${id}`);
+      window.open(
+        `${import.meta.env.VITE_API_BASE_URL}/print/validation/worksheet/${id}`
+      );
     };
 
     onMounted(async () => {
