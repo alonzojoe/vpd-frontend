@@ -9,7 +9,10 @@
       <!-- <pre>
           {{ selectedLn }}
         </pre> -->
-      <div class="d-flex align-items-center justify-content-start gap-2 my-2">
+      <div
+        class="d-flex align-items-center justify-content-start gap-2 my-2"
+        v-if="filterHesu == 3"
+      >
         <button
           class="btn btn-primary btn-sm"
           @click="enableCreate = true"
@@ -42,8 +45,21 @@
           <table class="table table-bordered table-hover">
             <thead>
               <tr>
-                <th class="text-center bg-primary text-white p-1 m-0">Code</th>
-                <th class="text-center bg-primary text-white p-1 m-0">Print</th>
+                <th
+                  class="text-center bg-primary text-white p-1 m-0"
+                  v-if="filterHesu == 2"
+                >
+                  Approval
+                </th>
+                <th class="text-center bg-primary text-white p-1 m-0" v="i">
+                  Code
+                </th>
+                <th
+                  class="text-center bg-primary text-white p-1 m-0"
+                  v-if="filterHesu == 3"
+                >
+                  Print
+                </th>
                 <th class="text-center bg-primary text-white p-1 m-0">DRU</th>
                 <th class="text-center bg-primary text-white p-1 m-0">
                   DRU Officer
@@ -69,12 +85,33 @@
 
             <tbody>
               <tr v-for="l in linelists" :key="l.id">
+                <td
+                  class="text-center align-middle fw-bold p-1 m-0"
+                  v-if="filterHesu == 2"
+                >
+                  <button class="btn btn-primary btn-sm" v-if="l.status == 2">
+                    Approve
+                  </button>
+                  <span
+                    class="bg-success text-white p-1 rounded"
+                    v-else-if="l.status == 3"
+                    >Approved</span
+                  >
+                  <span
+                    class="bg-danger text-white p-1 rounded"
+                    v-else-if="l.status == 4"
+                    >Rejected</span
+                  >
+                </td>
                 <td class="text-center align-middle fw-bold p-1 m-0">
                   <a href="javascript:void(0);" @click="updateLinelist(l)">{{
                     l.linelist_code
                   }}</a>
                 </td>
-                <td class="text-center align-middle fw-bold p-1 m-0">
+                <td
+                  class="text-center align-middle fw-bold p-1 m-0"
+                  v-if="l.status == 3"
+                >
                   <a href="javascript:void(0);" @click="openPrint(l.id)"
                     ><!-- <i class="scale-icon ti ti-file-invoice fs-6"></i> --><img
                       class="scale-icon"
@@ -196,7 +233,7 @@ import LinelistDetails from "@/laboratory/lab-components/LinelistDetails.vue";
 import PoolDetails from "@/laboratory/lab-components/PoolDetails.vue";
 import { extractLnCode, randomMizer } from "@/composables";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import moment from "moment";
 import {
   swalConfirmation,
@@ -230,6 +267,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const router = useRouter();
+    const route = useRoute();
     const swal = inject("$swal");
     const authUser = computed(() => store.getters.getAuthenticatedUser);
     const linelists = computed(() => store.getters.getLinelists);
@@ -277,6 +315,7 @@ export default defineComponent({
         page: page,
         ...form,
         mime: mime,
+        status: filterHesu.value,
       });
       isLoading.value = false;
     };
@@ -483,9 +522,30 @@ export default defineComponent({
       );
     };
 
+    const filterHesu = computed(() => {
+      let status;
+      if (route.params.type) {
+        status = 2;
+      } else {
+        status = 3;
+      }
+
+      return status;
+    });
+
+    watch(
+      () => filterHesu.value,
+      async (newValue) => {
+        resetFormData();
+        await fetchLinelist(1, formData.value);
+        console.log("filterh esu is being watch", newValue);
+      }
+    );
+
     onMounted(async () => {
       setTimeout(async () => {
         await fetchLinelist(1, formData.value);
+        console.log("Current Status", filterHesu.value);
       }, 500);
       // loadingSkeleton();
     });
@@ -521,6 +581,7 @@ export default defineComponent({
       removeToPool,
       modalPool,
       openPrint,
+      filterHesu,
     };
   },
 });

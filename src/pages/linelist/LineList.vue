@@ -446,7 +446,7 @@ export default defineComponent({
       swalConfirmation(
         swal,
         "Confirmation",
-        `Once you post this, it will be submitted to the Molecular Laboratory, and you won't be able to edit it. Do you wish to proceed?`,
+        `Once you post this, it will be submitted to the HOSPITAL EPIDEMIOLOGY AND SURVEILLANCE UNIT, and you won't be able to edit it. Do you wish to proceed?`,
         "question"
       ).then(async (res) => {
         if (res.isConfirmed) {

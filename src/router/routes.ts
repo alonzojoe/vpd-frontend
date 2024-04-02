@@ -63,7 +63,19 @@ const Routes = {
                 },
             ]
         },
-
+        {
+            path: 'hesu',
+            component: RouteViewComponent,
+            meta: { title: 'Laboartory', requireRole: ['Administrator'] },
+            children: [
+                {
+                    path: ':type',
+                    name: 'forapproval',
+                    component: () => import('@/laboratory/SubmittedLinelist.vue'),
+                    meta: { title: 'For Approval Linelist', requireRole: ['Administrator'] }
+                },
+            ]
+        },
         {
             path: 'settings',
             component: RouteViewComponent,
@@ -89,7 +101,7 @@ const Routes = {
             path: 'linelists',
             name: 'linelists',
             component: () => import('@/pages/linelist/LineList.vue'),
-            meta: { title: 'Patient Line List', requireRole: ['Administrator', 'Regular'] }
+            meta: { title: 'Patient Linelist', requireRole: ['Administrator', 'Regular'] }
         },
 
         {

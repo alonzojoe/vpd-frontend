@@ -206,6 +206,29 @@
                       class="nav-small-cap"
                     >
                       <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                      <span class="hide-menu">HESU</span>
+                    </li>
+                    <li
+                      v-if="authUser.role == 'Administrator'"
+                      class="sidebar-item"
+                      :class="{ selected: route.name === 'forapproval' }"
+                    >
+                      <router-link
+                        :to="{ name: 'forapproval', params: { type: 'true' } }"
+                        class="sidebar-link"
+                        aria-expanded="false"
+                      >
+                        <span class="rounded-3">
+                          <i class="ti ti-list"></i>
+                        </span>
+                        <span class="hide-menu">Submitted Linelist</span>
+                      </router-link>
+                    </li>
+                    <li
+                      v-if="authUser.role == 'Administrator'"
+                      class="nav-small-cap"
+                    >
+                      <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                       <span class="hide-menu">Laboratory</span>
                     </li>
                     <li
@@ -221,7 +244,7 @@
                         <span class="rounded-3">
                           <i class="ti ti-list-check"></i>
                         </span>
-                        <span class="hide-menu">Submitted Linelist</span>
+                        <span class="hide-menu">Approved Linelist</span>
                       </router-link>
                     </li>
                     <li
