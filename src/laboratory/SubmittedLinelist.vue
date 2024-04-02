@@ -49,7 +49,7 @@
                   class="text-center bg-primary text-white p-1 m-0"
                   v-if="filterHesu == 2"
                 >
-                  Approval
+                  Options
                 </th>
                 <th class="text-center bg-primary text-white p-1 m-0" v="i">
                   Code
@@ -89,19 +89,49 @@
                   class="text-center align-middle fw-bold p-1 m-0"
                   v-if="filterHesu == 2"
                 >
-                  <button class="btn btn-primary btn-sm" v-if="l.status == 2">
-                    Approve
-                  </button>
+                  <div
+                    class="d-flex gap-2 justify-content-center"
+                    v-if="l.status == 2"
+                  >
+                    <button
+                      class="btn btn-primary btn-sm"
+                      @click="changeStatus(l, 'a')"
+                    >
+                      Accept
+                    </button>
+                    <button
+                      class="btn btn-danger btn-sm"
+                      @click="changeStatus(l, 'r')"
+                    >
+                      Reject&nbsp;
+                    </button>
+                  </div>
+
                   <span
                     class="bg-success text-white p-1 rounded"
                     v-else-if="l.status == 3"
                     >Approved</span
                   >
-                  <span
-                    class="bg-danger text-white p-1 rounded"
+
+                  <div
+                    class="d-flex justify-content-center gap-3"
                     v-else-if="l.status == 4"
-                    >Rejected</span
                   >
+                    <span
+                      class="badge bg-danger d-flex align-items-center gap-2 justify-content-between"
+                      >Rejected</span
+                    >
+                    <span
+                      class="badge rounded-pill bg-dark fs-1"
+                      style="cursor: pointer"
+                      v-tooltip.right="{
+                        value: `<h6 class='text-white fs-1'>${l.reject_reason}</h6>`,
+                        escape: true,
+                        class: 'bg-dark rounded p-1',
+                      }"
+                      >Reason</span
+                    >
+                  </div>
                 </td>
                 <td class="text-center align-middle fw-bold p-1 m-0">
                   <a href="javascript:void(0);" @click="updateLinelist(l)">{{
@@ -110,7 +140,7 @@
                 </td>
                 <td
                   class="text-center align-middle fw-bold p-1 m-0"
-                  v-if="l.status == 3"
+                  v-if="filterHesu == 3"
                 >
                   <a href="javascript:void(0);" @click="openPrint(l.id)"
                     ><!-- <i class="scale-icon ti ti-file-invoice fs-6"></i> --><img
@@ -268,7 +298,7 @@ export default defineComponent({
     const store = useStore();
     const router = useRouter();
     const route = useRoute();
-    const swal = inject("$swal");
+    const swal = inject("$swal") as any;
     const authUser = computed(() => store.getters.getAuthenticatedUser);
     const linelists = computed(() => store.getters.getLinelists);
     const totalLinelist = computed(() => store.getters.getTotalLinelists);
@@ -542,6 +572,97 @@ export default defineComponent({
       }
     );
 
+    type swalRes = {
+      isConfirmed: boolean;
+    };
+
+    const rejectLn = async <Linelist extends { linelist_code: string }>(
+      linelist: Linelist
+    ) => {
+      swal({
+        title: "Linelist Rejection Reason:",
+        input: "text",
+        showCancelButton: true,
+        confirmButtonText: "Submit",
+        showLoaderOnConfirm: true,
+        preConfirm: async (reason: string) => {
+          if (reason.trim().length === 0) {
+            return rejectLn(linelist);
+          } else {
+            await store.dispatch("acceptRejectLinelist", {
+              ...linelist,
+              reject_reason: reason,
+              status: 4,
+              updated_by: authUser.value.id,
+            });
+            swalMessage(
+              swal,
+              "Information",
+              `Linelist ${linelist.linelist_code} has been Rejected!`,
+              "success"
+            ).then(() => {
+              location.reload();
+            });
+          }
+        },
+        allowOutsideClick: () => swal.isLoading(),
+      }).then((result) => {
+        // if (result.isConfirmed) {
+        //   refreshData();
+        //   toast.add({
+        //     severity: type == 1 ? "success" : "error",
+        //     summary: `Patient ${patient}`,
+        //     detail: `Specimen ${message} Successfully`,
+        //     life: 3000,
+        //   });
+        // }
+      });
+    };
+
+    interface LinelistType {
+      linelist_code: string;
+    }
+
+    const acceptLn = async <Linelist extends LinelistType>(
+      linelist: Linelist
+    ) => {
+      await store.dispatch("acceptRejectLinelist", {
+        ...linelist,
+        status: 3,
+        updated_by: authUser.value.id,
+      });
+      swalMessage(
+        swal,
+        "Information",
+        `Linelist ${linelist.linelist_code} Approved Successfully!`,
+        "success"
+      ).then(() => {
+        location.reload();
+      });
+    };
+
+    const changeStatus = async <Linelist extends LinelistType>(
+      linelist: Linelist,
+      type: string
+    ) => {
+      let swalMessage =
+        type === "a"
+          ? "Once you accept this, it will be submitted to the Molecular Laboratory, and you won't be able to revert it. Do you wish to proceed?"
+          : "Are you sure you want to reject this linelist?";
+      swalConfirmation(swal, "Confirmation", `${swalMessage}`, "question").then(
+        async (res: swalRes) => {
+          if (res.isConfirmed) {
+            if (type === "a") {
+              await acceptLn(linelist);
+              console.log(linelist);
+            } else {
+              await rejectLn(linelist);
+            }
+          }
+        }
+      );
+    };
+
     onMounted(async () => {
       setTimeout(async () => {
         await fetchLinelist(1, formData.value);
@@ -582,6 +703,7 @@ export default defineComponent({
       modalPool,
       openPrint,
       filterHesu,
+      changeStatus,
     };
   },
 });

@@ -16,7 +16,9 @@
               <tr>
                 <th class="text-center bg-primary text-white p-1 m-0">ID</th>
                 <th class="text-center bg-primary text-white p-1 m-0">View</th>
-                <th class="text-center bg-primary text-white p-1 m-0">Post</th>
+                <th class="text-center bg-primary text-white p-1 m-0">
+                  Options
+                </th>
                 <th class="text-center bg-primary text-white p-1 m-0">Code</th>
                 <th class="text-center bg-primary text-white p-1 m-0">DRU</th>
                 <th class="text-center bg-primary text-white p-1 m-0">
@@ -75,10 +77,14 @@
                     :disabled="l.status !== 1"
                   >
                     {{
-                      l.status == 1
+                      l.status === 1
                         ? "Post"
-                        : l.status == 2
-                        ? "Posted"
+                        : l.status === 2
+                        ? "Submitted to Hesu"
+                        : l.status === 3
+                        ? "Submitted to Lab"
+                        : l.status === 4
+                        ? "Linelist Rejected"
                         : "Cancelled"
                     }}
                   </button>

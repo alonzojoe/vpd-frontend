@@ -108,8 +108,18 @@ const actions = {
             updated_by: formData.updated_by,
         })
         commit('setLnResponse', response.data.data)
-    }
+    },
 
+    async acceptRejectLinelist({ commit }, formData) {
+        // console.log(formData)
+        // return;
+        const response = await api.patch(`/linelist/status/${formData.id}`, {
+            reject_reason: formData.reject_reason,
+            status: formData.status,
+            updated_by: formData.updated_by
+        })
+        console.log(response.data)
+    }
 
 }
 
