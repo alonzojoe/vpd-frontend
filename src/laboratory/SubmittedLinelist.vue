@@ -261,7 +261,7 @@ import Loader from "@/pages/loader/Loader.vue";
 import SearchLinelist from "@/pages/linelist/linelist-components/SearchLinelist.vue";
 import LinelistDetails from "@/laboratory/lab-components/LinelistDetails.vue";
 import PoolDetails from "@/laboratory/lab-components/PoolDetails.vue";
-import { extractLnCode, randomMizer } from "@/composables";
+import { extractLnCode, randomMizer, toPascalCase } from "@/composables";
 import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
 import moment from "moment";
@@ -273,6 +273,7 @@ import {
   NumericOnly,
 } from "@/composables";
 import PrintMeasles from "@/pages/printable_forms/PrintMeasles.vue";
+import api from "@/api";
 
 export default defineComponent({
   name: "SubmittedLinelist",
@@ -563,22 +564,30 @@ export default defineComponent({
       return status;
     });
 
-    watch(
-      () => filterHesu.value,
-      async (newValue) => {
-        resetFormData();
-        await fetchLinelist(1, formData.value);
-        console.log("filterh esu is being watch", newValue);
-      }
-    );
+    watch(filterHesu, async (newValue) => {
+      resetFormData();
+      await fetchLinelist(1, formData.value);
+      console.log("filterh esu is being watch", newValue);
+    });
 
     type swalRes = {
       isConfirmed: boolean;
     };
 
-    const rejectLn = async <Linelist extends { linelist_code: string }>(
+    const rejectLn = async <
+      Linelist extends {
+        linelist_code: string;
+        dru_officer: string;
+        email: string;
+      }
+    >(
       linelist: Linelist
     ) => {
+      const mailPayload = {
+        name: linelist.dru_officer,
+        code: linelist.linelist_code,
+        email: linelist.email,
+      };
       swal({
         title: "Linelist Rejection Reason:",
         input: "text",
@@ -595,27 +604,19 @@ export default defineComponent({
               status: 4,
               updated_by: authUser.value.id,
             });
-            swalMessage(
-              swal,
-              "Information",
-              `Linelist ${linelist.linelist_code} has been Rejected!`,
-              "success"
-            ).then(() => {
-              location.reload();
-            });
+            await sendEmail({ ...mailPayload, reason: reason });
           }
         },
         allowOutsideClick: () => swal.isLoading(),
-      }).then((result) => {
-        // if (result.isConfirmed) {
-        //   refreshData();
-        //   toast.add({
-        //     severity: type == 1 ? "success" : "error",
-        //     summary: `Patient ${patient}`,
-        //     detail: `Specimen ${message} Successfully`,
-        //     life: 3000,
-        //   });
-        // }
+      }).then(() => {
+        swalMessage(
+          swal,
+          "Information",
+          `Linelist ${linelist.linelist_code} has been Rejected!`,
+          "success"
+        ).then(() => {
+          location.reload();
+        });
       });
     };
 
@@ -661,6 +662,32 @@ export default defineComponent({
           }
         }
       );
+    };
+
+    // interface emailPayload {
+    //   name: string;
+    //   code: string;
+    //   reason: string;
+    //   email: string;
+    // }
+
+    const sendEmail = async <
+      T extends {
+        name: string;
+        code: string;
+        reason: string;
+        email: string;
+      }
+    >(
+      emailPayload: T
+    ) => {
+      console.log("email payload", emailPayload);
+      await api.post("/mail/rejected", {
+        name: toPascalCase(emailPayload.name),
+        code: emailPayload.code,
+        reason: emailPayload.reason.toUpperCase(),
+        email: emailPayload.email,
+      });
     };
 
     onMounted(async () => {

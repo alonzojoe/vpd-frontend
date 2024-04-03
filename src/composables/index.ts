@@ -170,3 +170,16 @@ export const randomMizer = (length) => {
 
     return result;
 };
+
+
+export const toPascalCase = (sentence: string) => {
+    const words = sentence.split(' ');
+    const pascalCaseWords = words.map(word => {
+        const restOfWord = word.slice(1).toLowerCase();
+        return word.charAt(0).toUpperCase() + restOfWord;
+    });
+
+    const pascalCaseString = pascalCaseWords.join(' ');
+
+    return pascalCaseString;
+}
