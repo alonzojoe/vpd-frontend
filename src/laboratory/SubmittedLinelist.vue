@@ -77,6 +77,7 @@
                 <th
                   class="text-center bg-primary text-white p-1 m-0"
                   style="width: 5%"
+                  v-if="filterHesu == 3"
                 >
                   Update
                 </th>
@@ -169,7 +170,10 @@
                 <td class="text-center align-middle fw-bold p-1 m-0">
                   {{ l.updated_at }}
                 </td>
-                <td class="text-center align-middle fw-bold p-1 m-0">
+                <td
+                  class="text-center align-middle fw-bold p-1 m-0"
+                  v-if="filterHesu == 3"
+                >
                   <button
                     @click="updateLinelist(l)"
                     class="btn btn-sm btn-info m-1"

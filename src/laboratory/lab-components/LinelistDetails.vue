@@ -1,7 +1,7 @@
 <template>
   <Toast />
   <div class="row">
-    <div class="col-sm-12 col-md-12 col-lg-12 mb-2">
+    <div class="col-sm-12 col-md-12 col-lg-12 mb-2" v-if="filterHesu">
       <div class="d-flex align-items-center justify-content-between">
         <div></div>
         <div>
@@ -116,7 +116,6 @@
       </div>
     </div>
   </div>
-
   <div class="m-3 table-responsive p-0 m-0 border border-primary mb-4">
     <table class="table table-bordered table-hover">
       <thead>
@@ -131,6 +130,7 @@
           <th
             rowspan="2"
             class="text-center bg-primary align-middle text-white p-0 m-0"
+            v-if="!filterHesu"
           >
             Specimen Status
             <div
@@ -149,12 +149,14 @@
           <th
             rowspan="2"
             class="text-center bg-primary align-middle text-white p-0 m-0"
+            v-if="!filterHesu"
           >
             Accession Number
           </th>
           <th
             rowspan="2"
             class="text-center bg-primary align-middle text-white p-0 m-0"
+            v-if="!filterHesu"
           >
             Date Received
           </th>
@@ -253,7 +255,10 @@
               ></i
             ></a>
           </td>
-          <td class="text-center align-middle fw-bold p-1 m-0">
+          <td
+            class="text-center align-middle fw-bold p-1 m-0"
+            v-if="!filterHesu"
+          >
             <div
               class="d-flex align-items-center gap-1"
               v-if="l.specimen_status == 0"
@@ -298,7 +303,10 @@
               >
             </div>
           </td>
-          <td class="text-center align-middle fw-bold p-1 m-0">
+          <td
+            class="text-center align-middle fw-bold p-1 m-0"
+            v-if="!filterHesu"
+          >
             <span v-if="l.accession_no">{{ l.accession_no }}</span>
             <button
               class="btn btn-dark btn-sm"
@@ -309,7 +317,10 @@
               Generate
             </button>
           </td>
-          <td class="text-center align-middle fw-bold p-1 m-0">
+          <td
+            class="text-center align-middle fw-bold p-1 m-0"
+            v-if="!filterHesu"
+          >
             {{ l.date_received }}
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
@@ -408,6 +419,7 @@ import SkeletonPlaceholder from "@/pages/loader/SkeletonPlaceholder.vue";
 import { useStore } from "vuex";
 import { swalConfirmation, swalMessage } from "@/composables";
 import { useToast } from "primevue/usetoast";
+import { useRoute } from "vue-router";
 export default defineComponent({
   name: "LinelistDetails",
   props: {
@@ -431,6 +443,7 @@ export default defineComponent({
     const removePatient = (p) => {
       emit("remove-patient", p);
     };
+    const route = useRoute();
     const toast = useToast();
     const store = useStore();
     const swal = inject("$swal");
@@ -564,6 +577,16 @@ export default defineComponent({
       });
     };
 
+    const filterHesu = computed(() => {
+      let hesu;
+      if (route.params.type) {
+        hesu = true;
+      } else {
+        hesu = false;
+      }
+      return hesu;
+    });
+
     watch(
       () => props.refresher,
       (newRefresher, oldRefresher) => {
@@ -589,6 +612,7 @@ export default defineComponent({
       generateAccession,
       batchSelection,
       batchAccept,
+      filterHesu,
     };
   },
 });
