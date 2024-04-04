@@ -141,7 +141,9 @@
       </search-card>
       <!-- <pre>{{ poolInfo }}</pre> -->
       <div class="d-flex align-items-center justify-content-end my-2">
-        <button class="btn btn-primary">Save Worksheet</button>
+        <button class="btn btn-primary" @click="saveWorkSheet">
+          Save Worksheet
+        </button>
       </div>
       <div>
         <div class="table-responsive p-0 m-0 border border-primary">
@@ -194,6 +196,12 @@
                     type="text"
                     v-model="w.OD"
                     class="form-control form-control-sm w-100 custom-font text-center"
+                    :class="{
+                      'invalid-input':
+                        savingFlag &&
+                        validateClass(w.wellNo) &&
+                        w.OD.trim().length === 0,
+                    }"
                     :disabled="index === 0 || index === 1 || index === 2"
                   />
                 </td>
@@ -202,6 +210,12 @@
                     type="text"
                     v-model="w.Ratio"
                     class="form-control form-control-sm w-100 custom-font text-center"
+                    :class="{
+                      'invalid-input':
+                        savingFlag &&
+                        validateClass(w.wellNo) &&
+                        w.Ratio.trim().length === 0,
+                    }"
                     :disabled="index === 0 || index === 1 || index === 2"
                   />
                 </td>
@@ -210,6 +224,12 @@
                     type="text"
                     v-model="w.Interpretation"
                     class="form-control form-control-sm w-100 custom-font text-center"
+                    :class="{
+                      'invalid-input':
+                        savingFlag &&
+                        validateClass(w.wellNo) &&
+                        w.Interpretation.trim().length === 0,
+                    }"
                     :disabled="index === 0 || index === 1 || index === 2"
                   />
                 </td>
@@ -231,6 +251,7 @@ import {
   onMounted,
   watch,
   watchEffect,
+  Ref,
 } from "vue";
 import SearchCard from "@/components/cards/SearchCard.vue";
 import Pagination from "@/components/pagination/Pagination.vue";
@@ -257,7 +278,9 @@ import {
   NumericOnly,
 } from "@/composables";
 import PrintMeasles from "@/pages/printable_forms/PrintMeasles.vue";
+import { useToast } from "primevue/usetoast";
 
+const toast = useToast();
 const store = useStore();
 const route = useRoute();
 const uriParams = route.params.id;
@@ -511,7 +534,60 @@ const fitData = () => {
   });
 };
 
+interface FilteredWorkSheet {
+  wellNo: string;
+  poolDetailID: Object;
+  OD: string;
+  Ratio: string;
+  Interpretation: string;
+}
+
+const fsWorksheet: Ref<FilteredWorkSheet[]> = ref([]);
+const filterWorksheet = () => {
+  fsWorksheet.value = worksheet.value.filter(
+    (a: FilteredWorkSheet) =>
+      a.poolDetailID != null && !["A1", "B1", "C1"].includes(a.wellNo)
+  );
+};
+
+const validateData = () => {
+  const misingData: boolean = fsWorksheet.value.some(
+    (item: FilteredWorkSheet) => {
+      return !item.OD || !item.Ratio || !item.Interpretation;
+    }
+  );
+
+  if (misingData) {
+    toast.add({
+      severity: "error",
+      summary: "Field Required:",
+      detail: `Some items have missing values for OD, Ratio, or Interpretation.`,
+      life: 5000,
+    });
+    return false;
+  }
+
+  return true;
+};
+
+const savingFlag = ref(false);
+const saveWorkSheet = async () => {
+  savingFlag.value = true;
+  filterWorksheet();
+  console.log("this is filtered worksheet", fsWorksheet.value);
+  if (!validateData()) return;
+
+  console.log("saving data..");
+};
+
+const validateClass = (wellNo: string): boolean => {
+  return fsWorksheet.value.some((item: FilteredWorkSheet) => {
+    return item.wellNo === wellNo;
+  });
+};
+
 onMounted(async () => {
+  savingFlag.value = false;
   worksheet.value = defaultWorksheet;
   await store.dispatch("getPoolById", uriParams);
   fitData();

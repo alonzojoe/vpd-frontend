@@ -26,6 +26,7 @@
       <!-- Header End -->
 
       <div class="container-fluid px-0 mw-100">
+        <Toast />
         <router-view></router-view>
       </div>
     </div>
