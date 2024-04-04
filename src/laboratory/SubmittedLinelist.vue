@@ -115,7 +115,7 @@
                   >
 
                   <div
-                    class="d-flex justify-content-center gap-3"
+                    class="d-flex justify-content-center gap-2"
                     v-else-if="l.status == 4"
                   >
                     <span
@@ -123,10 +123,10 @@
                       >Rejected</span
                     >
                     <span
-                      class="badge rounded-pill bg-dark fs-1"
+                      class="badge rounded-pill bg-dark fs-2 d-flex justify-content-center align-items-center"
                       style="cursor: pointer"
                       v-tooltip.right="{
-                        value: `<h6 class='text-white fs-1'>${l.reject_reason}</h6>`,
+                        value: `<h3 class='text-white fs-3 text-uppercase'>${l.reject_reason}</h3>`,
                         escape: true,
                         class: 'bg-dark rounded p-1',
                       }"

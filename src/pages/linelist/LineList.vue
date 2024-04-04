@@ -71,23 +71,36 @@
                   </a>
                 </td>
                 <td class="text-center align-middle fw-bold p-1 m-0">
-                  <button
-                    class="btn btn-dark btn-sm"
-                    @click="postLinelist(l)"
-                    :disabled="l.status !== 1"
-                  >
-                    {{
-                      l.status === 1
-                        ? "Post"
-                        : l.status === 2
-                        ? "Submitted to Hesu"
-                        : l.status === 3
-                        ? "Submitted to Lab"
-                        : l.status === 4
-                        ? "Linelist Rejected"
-                        : "Cancelled"
-                    }}
-                  </button>
+                  <div class="d-flex justify-content-center gap-2">
+                    <button
+                      class="btn btn-dark btn-sm"
+                      @click="postLinelist(l)"
+                      :disabled="l.status !== 1"
+                    >
+                      {{
+                        l.status === 1
+                          ? "Post"
+                          : l.status === 2
+                          ? "Submitted to Hesu"
+                          : l.status === 3
+                          ? "Submitted to Lab"
+                          : l.status === 4
+                          ? "Linelist Rejected"
+                          : "Cancelled"
+                      }}
+                    </button>
+                    <span
+                      class="badge bg-dark fs-2 d-flex justify-content-center align-items-center"
+                      style="cursor: pointer"
+                      v-if="l.reject_reason"
+                      v-tooltip.right="{
+                        value: `<h3 class='text-white fs-3 text-uppercase'>${l.reject_reason}</h3>`,
+                        escape: true,
+                        class: 'bg-dark rounded p-1',
+                      }"
+                      >Reason</span
+                    >
+                  </div>
                 </td>
                 <td class="text-center align-middle fw-bold p-1 m-0">
                   {{ l.linelist_code }}
