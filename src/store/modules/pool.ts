@@ -99,7 +99,7 @@ const actions = {
         const endpoint = payload.id == 0 ? 'pool/create' : `pool/${payload.id}`
         console.log('endpoint', endpoint)
         console.log('payload', payload.pool_details)
-        return
+        // return
         try {
             if (payload.id == 0) {
                 const response = await api.post(endpoint, {
@@ -122,15 +122,15 @@ const actions = {
 
                 return response.data;
             } else {
-                const response = await api.post(endpoint, {
+                const response = await api.patch(endpoint, {
                     id: payload.id,
                     protocol_no: payload.protocol_no,
-                    date_performed: payload.date_performed,
+                    date_performed: moment(payload.date_performed).format('YYYY-MM-DD'),
                     method: payload.method,
                     test_name: payload.test_name,
                     kit_name: payload.kit_name,
                     lot_no: payload.lot_no,
-                    date_expiry: payload.date_expiry,
+                    date_expiry: moment(payload.date_expiry).format('YYYY-MM-DD'),
                     room_temp: payload.room_temp,
                     start: payload.start,
                     end: payload.end,

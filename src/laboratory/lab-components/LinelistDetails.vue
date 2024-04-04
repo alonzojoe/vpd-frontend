@@ -1,7 +1,7 @@
 <template>
   <Toast />
   <div class="row">
-    <div class="col-sm-12 col-md-12 col-lg-12 mb-2" v-if="filterHesu">
+    <div class="col-sm-12 col-md-12 col-lg-12 mb-2" v-if="!filterHesu">
       <div class="d-flex align-items-center justify-content-between">
         <div></div>
         <div>

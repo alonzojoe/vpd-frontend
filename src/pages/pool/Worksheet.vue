@@ -141,8 +141,17 @@
       </search-card>
       <!-- <pre>{{ poolInfo }}</pre> -->
       <div class="d-flex align-items-center justify-content-end my-2">
-        <button class="btn btn-primary" @click="saveWorkSheet">
-          Save Worksheet
+        <button
+          class="btn btn-primary"
+          @click="saveWorkSheet"
+          :disabled="isLoading"
+        >
+          {{ isLoading ? "Saving Worksheet..." : "Save Worksheet" }}
+          <div
+            class="spinner-border spinner-border-sm text-white"
+            role="status"
+            v-if="isLoading"
+          ></div>
         </button>
       </div>
       <div>
@@ -529,6 +538,9 @@ const fitData = () => {
       worksheet.value[index] = {
         ...worksheet.value[index],
         poolDetailID: poolDetail,
+        OD: poolDetail.od,
+        Ratio: poolDetail.ratio,
+        Interpretation: poolDetail.interpretation,
       };
     }
   });
@@ -560,7 +572,7 @@ const validateData = () => {
   if (misingData) {
     toast.add({
       severity: "error",
-      summary: "Field Required:",
+      summary: "Validation",
       detail: `Some items have missing values for OD, Ratio, or Interpretation.`,
       life: 5000,
     });
@@ -570,13 +582,15 @@ const validateData = () => {
   return true;
 };
 
+const isLoading = ref(false);
 const savingFlag = ref(false);
 const saveWorkSheet = async () => {
+  console.log("savinggg");
   savingFlag.value = true;
   filterWorksheet();
   console.log("this is filtered worksheet", fsWorksheet.value);
   if (!validateData()) return;
-
+  isLoading.value = true;
   console.log("saving data..");
   await store.dispatch("savePool", {
     ...poolInfo.value,
@@ -585,10 +599,23 @@ const saveWorkSheet = async () => {
       return {
         ...poolDetailID,
         ...rest,
+        well_no: d.wellNo,
         medtech: authUser.value.id,
       };
     }),
   });
+  console.log("saved");
+  toast.add({
+    severity: "success",
+    summary: "Information",
+    detail: `Worksheet saved successfully!`,
+    life: 5000,
+  });
+  isLoading.value = false;
+  setTimeout(() => {
+    window.location.href = "/main/pool";
+  }, 1000);
+  return false;
 };
 
 const validateClass = (wellNo: string): boolean => {
@@ -597,8 +624,13 @@ const validateClass = (wellNo: string): boolean => {
   });
 };
 
-onMounted(async () => {
+const resetData = () => {
   savingFlag.value = false;
+  isLoading.value = false;
+};
+
+onMounted(async () => {
+  resetData();
   worksheet.value = defaultWorksheet;
   await store.dispatch("getPoolById", uriParams);
   fitData();
