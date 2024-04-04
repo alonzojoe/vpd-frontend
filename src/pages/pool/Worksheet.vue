@@ -284,7 +284,7 @@ const toast = useToast();
 const store = useStore();
 const route = useRoute();
 const uriParams = route.params.id;
-
+const authUser = computed(() => store.getters.getAuthenticatedUser);
 console.log("uriParams", uriParams);
 const defaultWorksheet = [
   {
@@ -578,6 +578,17 @@ const saveWorkSheet = async () => {
   if (!validateData()) return;
 
   console.log("saving data..");
+  await store.dispatch("savePool", {
+    ...poolInfo.value,
+    pool_details: fsWorksheet.value.map((d: FilteredWorkSheet) => {
+      const { poolDetailID, ...rest } = d;
+      return {
+        ...poolDetailID,
+        ...rest,
+        medtech: authUser.value.id,
+      };
+    }),
+  });
 };
 
 const validateClass = (wellNo: string): boolean => {
