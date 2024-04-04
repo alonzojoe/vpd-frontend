@@ -140,6 +140,9 @@
         </template>
       </search-card>
       <!-- <pre>{{ poolInfo }}</pre> -->
+      <div class="d-flex align-items-center justify-content-end my-2">
+        <button class="btn btn-primary">Save Worksheet</button>
+      </div>
       <div>
         <div class="table-responsive p-0 m-0 border border-primary">
           <table class="table table-bordered table-hover">
