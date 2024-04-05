@@ -3,13 +3,29 @@
     <nav class="navbar navbar-expand-lg navbar-light align-items-center">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a
+          <!-- <a
             class="nav-link sidebartoggler nav-icon-hover ms-n3"
             @click.prevent="$emit('toggle-sidebar')"
             id="headerCollapse"
             href="javascript:void(0)"
           >
             <i class="ti ti-menu-2 dark-color"></i>
+          </a> -->
+
+          <a
+            class="nav-link ms-n3"
+            style="cursor: pointer"
+            @click.prevent="$emit('toggle-sidebar')"
+            id="headerCollapse"
+            href="javascript:void(0)"
+          >
+            <div class="form-check form-switch pe-none">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                v-model="isFull"
+              />
+            </div>
           </a>
         </li>
         <ul class="navbar-nav quick-links d-none d-lg-flex">
@@ -65,7 +81,6 @@
             data-bs-target="#mobilenavbar"
             aria-controls="offcanvasWithBothOptions"
           >
-            <!-- <i class="ti ti-align-justified fs-7"></i> -->
           </a>
           <ul
             class="navbar-nav flex-row ms-auto align-items-center justify-content-center"
@@ -248,7 +263,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, onMounted } from "vue";
+import { defineComponent, computed, ref, onMounted, inject } from "vue";
 import { useStore } from "vuex";
 import api from "@/api";
 import Cookies from "js-cookie";
@@ -265,7 +280,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     console.log("this is default");
-
+    const isFull = inject("isFull");
     const store = useStore();
     const router = useRouter();
     const user = computed(() => store.getters.getAuthenticatedUser);
@@ -324,6 +339,7 @@ export default defineComponent({
       theme,
       modalSwitch,
       checkState,
+      isFull,
     };
   },
 });

@@ -112,13 +112,14 @@ const Routes = {
                     path: '',
                     name: 'pool',
                     component: () => import('@/pages/pool/Pools.vue'),
+                    meta: { title: 'Worksheet' }
 
                 },
                 {
                     path: 'worksheet/:id',
                     name: 'worksheet',
                     component: () => import('@/pages/pool/Worksheet.vue'),
-
+                    meta: { title: 'Worksheet' }
                 },
             ]
         },
