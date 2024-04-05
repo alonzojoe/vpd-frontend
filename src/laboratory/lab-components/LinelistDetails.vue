@@ -41,7 +41,7 @@
         </div>
       </div>
     </div>
-    <pre>email payload {{ emailPayload }}</pre>
+    <!-- <pre>email payload {{ emailPayload }}</pre> -->
     <div class="col-sm-12 col-md-12 col-lg-11">
       <div class="row p-0 m-0">
         <div class="col-12">
@@ -573,10 +573,10 @@ export default defineComponent({
               confirmButtonText: "Submit",
               showLoaderOnConfirm: true,
               preConfirm: async (reason) => {
-                // await store.dispatch("rejectSpecimen", {
-                //   reason: reason,
-                //   ...details,
-                // });
+                await store.dispatch("rejectSpecimen", {
+                  reason: reason,
+                  ...details,
+                });
                 return reason;
               },
               allowOutsideClick: () => swal.isLoading(),
