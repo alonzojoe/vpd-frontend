@@ -41,6 +41,7 @@
         </div>
       </div>
     </div>
+    <pre>email payload {{ emailPayload }}</pre>
     <div class="col-sm-12 col-md-12 col-lg-11">
       <div class="row p-0 m-0">
         <div class="col-12">
@@ -527,6 +528,23 @@ export default defineComponent({
       });
     };
 
+    const rejectedList = ref([]);
+
+    const emailPayload = ref({});
+    const addRejection = async (rejected, reason) => {
+      const patient = `${rejected.lname}, ${rejected.fname} ${rejected.mname} ${rejected.suffix}`;
+      rejectedList.value.push({
+        patient: patient,
+        specimen: rejected.specimen_type,
+        reason: reason,
+      });
+      emailPayload.value = {
+        name: "Joe",
+        email: "sample@gmail.com",
+        patients: rejectedList.value,
+      };
+    };
+
     const updateSpecimen = async (details, type) => {
       const patient = `${details.lname}, ${details.fname} ${details.mname}`;
       const question = type == 1 ? "accept" : "reject";
@@ -555,14 +573,16 @@ export default defineComponent({
               confirmButtonText: "Submit",
               showLoaderOnConfirm: true,
               preConfirm: async (reason) => {
-                await store.dispatch("rejectSpecimen", {
-                  reason: reason,
-                  ...details,
-                });
+                // await store.dispatch("rejectSpecimen", {
+                //   reason: reason,
+                //   ...details,
+                // });
+                return reason;
               },
               allowOutsideClick: () => swal.isLoading(),
             }).then((result) => {
               if (result.isConfirmed) {
+                const reason = result.value;
                 refreshData();
                 toast.add({
                   severity: type == 1 ? "success" : "error",
@@ -570,6 +590,7 @@ export default defineComponent({
                   detail: `Specimen ${message} Successfully`,
                   life: 3000,
                 });
+                addRejection(details, reason);
               }
             });
           }
@@ -613,6 +634,8 @@ export default defineComponent({
       batchSelection,
       batchAccept,
       filterHesu,
+      rejectedList,
+      emailPayload,
     };
   },
 });
