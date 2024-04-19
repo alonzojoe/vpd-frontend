@@ -20,6 +20,7 @@
         </div>
       </div>
     </div>
+    <pre>{{ rejectedList }}</pre>
     <div class="col-sm-12 col-md-12 col-lg-1">
       <div class="row p-0 m-0">
         <div class="col-12">
@@ -412,15 +413,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, onMounted, watch, inject } from "vue";
+import {
+  defineComponent,
+  computed,
+  ref,
+  onBeforeMount,
+  watch,
+  inject,
+  onMounted,
+} from "vue";
+import type { Ref } from "vue";
 import QrcodeVue from "qrcode.vue";
 import html2canvas from "html2canvas";
 import Image from "primevue/image";
 import SkeletonPlaceholder from "@/pages/loader/SkeletonPlaceholder.vue";
 import { useStore } from "vuex";
-import { swalConfirmation, swalMessage } from "@/composables";
+import { swalConfirmation, swalMessage, toPascalCase } from "@/composables";
 import { useToast } from "primevue/usetoast";
 import { useRoute } from "vue-router";
+import api from "@/api";
 export default defineComponent({
   name: "LinelistDetails",
   props: {
@@ -530,17 +541,21 @@ export default defineComponent({
 
     const rejectedList = ref([]);
 
-    const emailPayload = ref({});
+    const emailPayload: Ref<EmailPayload> = ref({
+      name: "",
+      email: "",
+      patients: [],
+    });
     const addRejection = async (rejected, reason) => {
       const patient = `${rejected.lname}, ${rejected.fname} ${rejected.mname} ${rejected.suffix}`;
       rejectedList.value.push({
         patient: patient,
         specimen: rejected.specimen_type,
-        reason: reason,
+        reason: reason.toUpperCase(),
       });
       emailPayload.value = {
-        name: "Joe",
-        email: "sample@gmail.com",
+        name: props.formHeader.dru_officer,
+        email: props.formHeader.email,
         patients: rejectedList.value,
       };
     };
@@ -572,15 +587,15 @@ export default defineComponent({
               showCancelButton: true,
               confirmButtonText: "Submit",
               showLoaderOnConfirm: true,
-              preConfirm: async (reason) => {
-                await store.dispatch("rejectSpecimen", {
-                  reason: reason,
-                  ...details,
-                });
+              preConfirm: async (reason: string) => {
+                // await store.dispatch("rejectSpecimen", {
+                //   reason: reason,
+                //   ...details,
+                // });
                 return reason;
               },
               allowOutsideClick: () => swal.isLoading(),
-            }).then((result) => {
+            }).then((result: string) => {
               if (result.isConfirmed) {
                 const reason = result.value;
                 refreshData();
@@ -610,7 +625,7 @@ export default defineComponent({
 
     watch(
       () => props.refresher,
-      (newRefresher, oldRefresher) => {
+      (newRefresher) => {
         if (newRefresher) {
           setTimeout(() => {
             captureQR();
@@ -620,6 +635,56 @@ export default defineComponent({
     );
 
     const batchSelection = ref([]);
+
+    interface Patient {
+      patient: string;
+      specimen: string;
+      reason: string;
+    }
+
+    interface EmailPayload {
+      name: string;
+      email: string;
+      patients: Patient[];
+    }
+
+    const sendEmail = async (emailPayload: EmailPayload) => {
+      try {
+        console.log(emailPayload.patients.length);
+        await api.post(`/mail/rejected/names`, {
+          name: toPascalCase(emailPayload.name),
+          email: emailPayload.email,
+          patients: emailPayload.patients,
+        });
+      } catch (error) {
+        console.log(error);
+        swal("error", "There was an error sending email", "error");
+      }
+    };
+
+    onBeforeMount(async () => {
+      if (emailPayload.value.patients.length > 0) {
+        await sendEmail(emailPayload.value);
+      }
+      // alert("test");
+    });
+
+    const resetEmailPayload = () => {
+      Object.keys(emailPayload.value).forEach((item: keyof EmailPayload) => {
+        if (item === "patients") {
+          emailPayload.value[item] = [];
+        } else {
+          emailPayload.value[item] = "";
+        }
+      });
+      return;
+    };
+
+    onMounted(() => {
+      resetEmailPayload();
+      batchSelection.value = [];
+      rejectedList.value = [];
+    });
 
     return {
       removePatient,
