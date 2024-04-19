@@ -215,8 +215,9 @@
     </div>
     {{ poolCart }}
   </div>
-  <modal-lg :details="modalDetails" @close-modal="modalDetails.show = false">
+  <modal-lg :details="modalDetails" @close-modal="onCloseSendMail()">
     <linelist-details
+      ref="emailedComponent"
       :formHeader="selectedLn"
       :refresher="refresher"
       :isLoading="loadingData"
@@ -694,6 +695,15 @@ export default defineComponent({
       });
     };
 
+    const emailedComponent = ref(null);
+
+    const onCloseSendMail = () => {
+      modalDetails.value.show = false;
+      if (emailedComponent.value) {
+        emailedComponent.value.sendEmail();
+      }
+    };
+
     onMounted(async () => {
       setTimeout(async () => {
         await fetchLinelist(1, formData.value);
@@ -735,6 +745,8 @@ export default defineComponent({
       openPrint,
       filterHesu,
       changeStatus,
+      onCloseSendMail,
+      emailedComponent,
     };
   },
 });

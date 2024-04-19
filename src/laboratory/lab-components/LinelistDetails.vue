@@ -11,12 +11,9 @@
           >
             Save Linelist
           </button>
-          <button
-            class="btn btn-danger btn-sm m-1"
-            @click="$emit('close-linelist')"
-          >
+          <!-- <button class="btn btn-danger btn-sm m-1" @click="sendEmail()">
             Cancel
-          </button>
+          </button> -->
         </div>
       </div>
     </div>
@@ -458,7 +455,7 @@ export default defineComponent({
     const route = useRoute();
     const toast = useToast();
     const store = useStore();
-    const swal = inject("$swal");
+    const swal = inject("$swal") as any;
     const diseaseType = (type) => {
       let patientType = "";
       if (type == 1) {
@@ -549,7 +546,7 @@ export default defineComponent({
     const addRejection = async (rejected, reason) => {
       const patient = `${rejected.lname}, ${rejected.fname} ${rejected.mname} ${rejected.suffix}`;
       rejectedList.value.push({
-        patient: patient,
+        fullname: patient,
         specimen: rejected.specimen_type,
         reason: reason.toUpperCase(),
       });
@@ -637,7 +634,7 @@ export default defineComponent({
     const batchSelection = ref([]);
 
     interface Patient {
-      patient: string;
+      fullname: string;
       specimen: string;
       reason: string;
     }
@@ -648,26 +645,25 @@ export default defineComponent({
       patients: Patient[];
     }
 
-    const sendEmail = async (emailPayload: EmailPayload) => {
+    const sendEmail = async () => {
       try {
-        console.log(emailPayload.patients.length);
+        console.log(emailPayload.value.patients.length);
         await api.post(`/mail/rejected/names`, {
-          name: toPascalCase(emailPayload.name),
-          email: emailPayload.email,
-          patients: emailPayload.patients,
+          name: toPascalCase(emailPayload.value.name),
+          email: emailPayload.value.email,
+          patients: emailPayload.value.patients,
+        });
+        toast.add({
+          severity: "success",
+          summary: `Email Notification`,
+          detail: `Rejected patient specimens sent successfully.`,
+          life: 5000,
         });
       } catch (error) {
         console.log(error);
         swal("error", "There was an error sending email", "error");
       }
     };
-
-    onBeforeMount(async () => {
-      if (emailPayload.value.patients.length > 0) {
-        await sendEmail(emailPayload.value);
-      }
-      // alert("test");
-    });
 
     const resetEmailPayload = () => {
       Object.keys(emailPayload.value).forEach((item: keyof EmailPayload) => {
@@ -701,6 +697,7 @@ export default defineComponent({
       filterHesu,
       rejectedList,
       emailPayload,
+      sendEmail,
     };
   },
 });
