@@ -585,10 +585,10 @@ export default defineComponent({
               confirmButtonText: "Submit",
               showLoaderOnConfirm: true,
               preConfirm: async (reason: string) => {
-                // await store.dispatch("rejectSpecimen", {
-                //   reason: reason,
-                //   ...details,
-                // });
+                await store.dispatch("rejectSpecimen", {
+                  reason: reason,
+                  ...details,
+                });
                 return reason;
               },
               allowOutsideClick: () => swal.isLoading(),
@@ -646,22 +646,24 @@ export default defineComponent({
     }
 
     const sendEmail = async () => {
-      try {
-        console.log(emailPayload.value.patients.length);
-        await api.post(`/mail/rejected/names`, {
-          name: toPascalCase(emailPayload.value.name),
-          email: emailPayload.value.email,
-          patients: emailPayload.value.patients,
-        });
-        toast.add({
-          severity: "success",
-          summary: `Email Notification`,
-          detail: `Rejected patient specimens sent successfully.`,
-          life: 5000,
-        });
-      } catch (error) {
-        console.log(error);
-        swal("error", "There was an error sending email", "error");
+      if (emailPayload.value.patients.length > 0) {
+        try {
+          console.log(emailPayload.value.patients.length);
+          await api.post(`/mail/rejected/names`, {
+            name: toPascalCase(emailPayload.value.name),
+            email: emailPayload.value.email,
+            patients: emailPayload.value.patients,
+          });
+          toast.add({
+            severity: "success",
+            summary: `Email Notification`,
+            detail: `Rejected patient specimens sent successfully.`,
+            life: 5000,
+          });
+        } catch (error) {
+          console.log(error);
+          swal("error", "There was an error sending email", "error");
+        }
       }
     };
 
