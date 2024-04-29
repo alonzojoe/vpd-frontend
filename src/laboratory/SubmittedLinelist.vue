@@ -143,7 +143,19 @@
                   class="text-center align-middle fw-bold p-1 m-0"
                   v-if="filterHesu == 3"
                 >
-                  <a href="javascript:void(0);" @click="openPrint(l.id)"
+                  <a
+                    href="javascript:void(0);"
+                    @click="openPrint(l.id)"
+                    v-if="
+                      l.linelist_details.every((l) => {
+                        return (
+                          l.accession_no !== null &&
+                          l.mr_working !== null &&
+                          l.mr_backup !== null &&
+                          l.mr_npsops !== null
+                        );
+                      })
+                    "
                     ><!-- <i class="scale-icon ti ti-file-invoice fs-6"></i> --><img
                       class="scale-icon"
                       src="/src/assets/images/icons/print.png"
@@ -151,6 +163,14 @@
                       width="30"
                       data-pd-tooltip="true"
                   /></a>
+                  <a href="javascript:void(0);" class="pe-none" v-else
+                    ><i
+                      class="fa scale-icon text-success text-danger fa-ban"
+                      aria-hidden="true"
+                      data-pd-tooltip="true"
+                      style="transition: all 300ms ease 0s"
+                    ></i
+                  ></a>
                 </td>
                 <td class="text-center align-middle fw-bold p-1 m-0">
                   {{ l.dru }}
