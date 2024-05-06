@@ -327,15 +327,6 @@
             {{ l.lname }}, {{ l.fname }} {{ l.mname }} {{ l.suffix }}
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
-            <!-- <select
-              v-model="l.specimen_type"
-              class="form-select form-control form-control-sm pe-none"
-            >
-              <option value="">Please Select</option>
-              <option v-for="(s, index) in specimens" :value="s">
-                {{ s }}
-              </option>
-            </select> -->
             {{ l.specimen_type }}
           </td>
 
@@ -350,12 +341,25 @@
             {{ formHeader.dru }}
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
-            <input
+            <!-- <input
               type="text"
               class="form-control form-control-sm fw-semibold"
               v-model="l.specimen_quality"
               :disabled="l.specimen_status != 1 || !l.accession_no"
-            />
+            /> -->
+            <select
+              v-model="l.specimen_quality"
+              class="form-select form-control form-control-sm"
+            >
+              <option value="">Please Select</option>
+              <option
+                v-for="(q, index) in qualityOptions"
+                :value="q"
+                :key="index"
+              >
+                {{ q }}
+              </option>
+            </select>
           </td>
           <td class="text-center align-middle fw-bold p-1 m-0">
             <input
@@ -693,6 +697,8 @@ export default defineComponent({
       return;
     };
 
+    const qualityOptions = ["PASSED", "ICTERIC", "HEMOLYZED", "INSUFFICIENT"];
+
     onMounted(() => {
       resetEmailPayload();
       batchSelection.value = [];
@@ -715,6 +721,7 @@ export default defineComponent({
       rejectedList,
       emailPayload,
       sendEmail,
+      qualityOptions,
     };
   },
 });
