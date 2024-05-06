@@ -17,6 +17,7 @@
         </div>
       </div>
     </div>
+    <pre>{{ emailPayload }}</pre>
     <pre>{{ rejectedList }}</pre>
     <div class="col-sm-12 col-md-12 col-lg-1">
       <div class="row p-0 m-0">
@@ -429,6 +430,7 @@ import { swalConfirmation, swalMessage, toPascalCase } from "@/composables";
 import { useToast } from "primevue/usetoast";
 import { useRoute } from "vue-router";
 import api from "@/api";
+import moment from "moment";
 export default defineComponent({
   name: "LinelistDetails",
   props: {
@@ -539,18 +541,23 @@ export default defineComponent({
     const rejectedList = ref([]);
 
     const emailPayload: Ref<EmailPayload> = ref({
+      dru: "",
+      linelist_code: "",
       name: "",
       email: "",
       patients: [],
     });
-    const addRejection = async (rejected, reason) => {
+    const addRejection = async (rejected, reason: string) => {
       const patient = `${rejected.lname}, ${rejected.fname} ${rejected.mname} ${rejected.suffix}`;
       rejectedList.value.push({
         fullname: patient,
         specimen: rejected.specimen_type,
+        datetime_collection: rejected.datetime_collection,
         reason: reason.toUpperCase(),
       });
       emailPayload.value = {
+        dru: props.formHeader.dru,
+        linelist_code: props.formHeader.linelist_code,
         name: props.formHeader.dru_officer,
         email: props.formHeader.email,
         patients: rejectedList.value,
@@ -640,6 +647,8 @@ export default defineComponent({
     }
 
     interface EmailPayload {
+      dru: string;
+      linelist_code: string;
       name: string;
       email: string;
       patients: Patient[];
@@ -649,10 +658,16 @@ export default defineComponent({
       if (emailPayload.value.patients.length > 0) {
         try {
           console.log(emailPayload.value.patients.length);
+          const { dru, linelist_code, name, email, patients } =
+            emailPayload.value;
+          const dateNow = moment().format("lll");
           await api.post(`/mail/rejected/names`, {
-            name: toPascalCase(emailPayload.value.name),
-            email: emailPayload.value.email,
-            patients: emailPayload.value.patients,
+            dru: dru,
+            linelist_code: linelist_code,
+            name: toPascalCase(name),
+            email: email,
+            patients: patients,
+            rejected_datetime: dateNow,
           });
           toast.add({
             severity: "success",
