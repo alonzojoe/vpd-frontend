@@ -140,7 +140,21 @@
         </template>
       </search-card>
       <!-- <pre>{{ poolInfo }}</pre> -->
-      <div class="d-flex align-items-center justify-content-end my-2">
+      <div class="d-flex align-items-center justify-content-between my-2">
+        <button
+          class="btn btn-success"
+          @click="exportToCSV"
+          :disabled="flagExporting"
+        >
+          {{
+            flagExporting ? "Exporting Worksheet..." : "Export Worksheet to CSV"
+          }}
+          <div
+            class="spinner-border spinner-border-sm text-white"
+            role="status"
+            v-if="flagExporting"
+          ></div>
+        </button>
         <button
           class="btn btn-primary"
           @click="saveWorkSheet"
@@ -627,6 +641,38 @@ const validateClass = (wellNo: string): boolean => {
 const resetData = () => {
   savingFlag.value = false;
   isLoading.value = false;
+};
+
+const flagExporting = ref(false);
+
+const exportToCSV = () => {
+  flagExporting.value = true;
+  // console.log(worksheet.value);
+  // return;
+
+  const filteredWorksheet = worksheet.value.filter(
+    (item) => item.poolDetailID !== null
+  );
+
+  const csvContent =
+    "data:text/csv;charset=utf-8," +
+    "Hole No,Code\n" +
+    filteredWorksheet
+      .map(
+        (row) =>
+          `${row.wellNo},${
+            row.poolDetailID.acccession_no || row.poolDetailID.accession_no
+          }`
+      )
+      .join("\n");
+
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", "data.csv");
+  document.body.appendChild(link);
+  link.click();
+  flagExporting.value = false;
 };
 
 onMounted(async () => {
