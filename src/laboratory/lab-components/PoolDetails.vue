@@ -38,6 +38,7 @@
             <select
               class="form-select form-control form-control-sm"
               v-model="poolHeader.protocol_no"
+              @change="changeProtocol"
             >
               <option value="">Please Select</option>
               <option value="poolMS">Measles [MS]</option>
@@ -394,6 +395,15 @@ watch(
   },
   { deep: true }
 );
+
+type Event = {
+  target: HTMLInputElement & { checked?: boolean; value: string }; // Define the type for the target
+};
+
+const changeProtocol = (e: Event) => {
+  const { value } = e.target;
+  store.commit("sekectProtocolType", value);
+};
 
 onMounted(() => {
   saveSubmitted.value = false;

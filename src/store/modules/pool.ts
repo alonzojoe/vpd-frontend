@@ -80,6 +80,22 @@ const mutations = {
 
     setPool: <Payload>(state: RootState, payload: Payload) => {
         state.data.pool = payload
+    },
+
+    sekectProtocolType: <Payload>(state: RootState, payload: Payload) => {
+        if (payload == 'poolMS') {
+            state.data.poolHeader.kit_name = 'Euroimmun Measles IgM ELISA'
+            state.data.poolHeader.method = 'Enzyme Immunoassay'
+            state.data.poolHeader.test_name = 'Anti-Measles IgM ELISA'
+        } else if (payload == 'poolRB') {
+            state.data.poolHeader.kit_name = 'Euroimmun Rubella IgM ELISA'
+            state.data.poolHeader.method = 'Enzyme Immunoassay'
+            state.data.poolHeader.test_name = 'Anti-Rubella IgM ELISA'
+        } else {
+            state.data.poolHeader.kit_name = ''
+            state.data.poolHeader.method = ''
+            state.data.poolHeader.test_name = ''
+        }
     }
 }
 
