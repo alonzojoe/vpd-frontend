@@ -108,7 +108,6 @@
               <input
                 type="text"
                 v-model="poolInfo.end"
-                disabled
                 class="form-control form-control-sm w-100 custom-font"
               />
             </div>
@@ -123,7 +122,7 @@
           </div>
           <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
             <div class="search">
-              <Label class="mb-2">Performed By:</Label>
+              <Label class="mb-2">Validated By:</Label>
               <select class="form-select form-control form-control-sm">
                 <option value="">Please Select</option>
               </select>
@@ -131,7 +130,7 @@
           </div>
           <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
             <div class="search">
-              <Label class="mb-2">Performed By:</Label>
+              <Label class="mb-2">Pathologist:</Label>
               <select class="form-select form-control form-control-sm">
                 <option value="">Please Select</option>
               </select>
