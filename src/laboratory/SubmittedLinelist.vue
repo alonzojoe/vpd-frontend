@@ -147,16 +147,19 @@
                     href="javascript:void(0);"
                     @click="openPrint(l.id)"
                     v-if="
-                      l.linelist_details.every((l) => {
-                        return (
-                          l.accession_no !== null &&
-                          l.mr_working !== null &&
-                          l.mr_backup !== null &&
-                          l.mr_npsops !== null
-                        );
-                      })
+                      l.linelist_details
+                        .filter((l) => {
+                          return l.accession_no !== null;
+                        })
+                        .every((l) => {
+                          return l.accession_no !== null;
+                        })
                     "
-                    ><!-- <i class="scale-icon ti ti-file-invoice fs-6"></i> --><img
+                  >
+                    <!-- l.mr_working !== null &&
+                            l.mr_backup !== null &&
+                            l.mr_npsops !== null -->
+                    <!-- <i class="scale-icon ti ti-file-invoice fs-6"></i> --><img
                       class="scale-icon"
                       src="/src/assets/images/icons/print.png"
                       height="30"
@@ -725,6 +728,7 @@ export default defineComponent({
     };
 
     onMounted(async () => {
+      store.commit("resetPoolCart");
       setTimeout(async () => {
         await fetchLinelist(1, formData.value);
         console.log("Current Status", filterHesu.value);

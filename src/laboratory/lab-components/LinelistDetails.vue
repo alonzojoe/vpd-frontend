@@ -222,38 +222,50 @@
             class="text-center align-middle fw-bold p-1 m-0"
             v-if="enableCreate"
           >
-            <a
-              href="javascript:void(0);"
-              @click="$emit('remove-to-pool', l)"
-              v-if="poolCart.some((pool) => pool.detail_id === l.detail_id)"
-            >
-              <i
-                class="fa fa-minus-circle scale-icon text-warning"
-                aria-hidden="true"
-                style="transition: all 300ms ease"
-                v-tooltip.right="{
-                  value: `<h6 class='text-white'>Remove to pool</h6>`,
-                  escape: true,
-                  class: 'bg-dark rounded p-1',
-                }"
-              ></i
-            ></a>
-            <a
-              href="javascript:void(0);"
-              @click="$emit('add-to-pool', l)"
-              v-else
-            >
-              <i
-                class="fa scale-icon text-success fa-plus-circle"
-                aria-hidden="true"
-                style="transition: all 300ms ease"
-                v-tooltip.right="{
-                  value: `<h6 class='text-white'>Add to pool</h6>`,
-                  escape: true,
-                  class: 'bg-dark rounded p-1',
-                }"
-              ></i
-            ></a>
+            <div v-if="!l.accession_no">
+              <a href="javascript:void(0);" class="pe-none"
+                ><i
+                  class="fa scale-icon text-success text-danger fa-ban"
+                  aria-hidden="true"
+                  data-pd-tooltip="true"
+                  style="transition: all 300ms ease 0s"
+                ></i
+              ></a>
+            </div>
+            <div v-else>
+              <a
+                href="javascript:void(0);"
+                @click="$emit('remove-to-pool', l)"
+                v-if="poolCart.some((pool) => pool.detail_id === l.detail_id)"
+              >
+                <i
+                  class="fa fa-minus-circle scale-icon text-warning"
+                  aria-hidden="true"
+                  style="transition: all 300ms ease"
+                  v-tooltip.right="{
+                    value: `<h6 class='text-white'>Remove to pool</h6>`,
+                    escape: true,
+                    class: 'bg-dark rounded p-1',
+                  }"
+                ></i
+              ></a>
+              <a
+                href="javascript:void(0);"
+                @click="$emit('add-to-pool', l)"
+                v-else
+              >
+                <i
+                  class="fa scale-icon text-success fa-plus-circle"
+                  aria-hidden="true"
+                  style="transition: all 300ms ease"
+                  v-tooltip.right="{
+                    value: `<h6 class='text-white'>Add to pool</h6>`,
+                    escape: true,
+                    class: 'bg-dark rounded p-1',
+                  }"
+                ></i
+              ></a>
+            </div>
           </td>
           <td
             class="text-center align-middle fw-bold p-1 m-0"
@@ -351,7 +363,7 @@
               v-model="l.specimen_quality"
               class="form-select form-control form-control-sm"
             >
-              <option value="">Please Select</option>
+              <option :value="null">Please Select</option>
               <option
                 v-for="(q, index) in qualityOptions"
                 :value="q"
