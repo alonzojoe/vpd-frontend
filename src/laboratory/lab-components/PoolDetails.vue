@@ -350,6 +350,36 @@ const savePoolConfirmation = () => {
     return;
   }
 
+  const defaults = [
+    {
+      linelist_detail_id: null,
+      value: "CAL",
+      od: "",
+      ratio: "",
+      interpretation: "",
+      well_no: "A1",
+      medtech: 0,
+    },
+    {
+      linelist_detail_id: null,
+      value: "PTC",
+      od: "",
+      ratio: "",
+      interpretation: "",
+      well_no: "B1",
+      medtech: 0,
+    },
+    {
+      linelist_detail_id: null,
+      value: "NTC",
+      od: "",
+      ratio: "",
+      interpretation: "",
+      well_no: "C1",
+      medtech: 0,
+    },
+  ];
+
   swalConfirmation(
     swal,
     "Confirmation",
@@ -358,9 +388,11 @@ const savePoolConfirmation = () => {
   ).then(async (res) => {
     if (res.isConfirmed) {
       savingFlag.value = true;
+      const pool_details = [...defaults, ...poolDetails.value];
+      console.log("combined", pool_details);
       const response = await store.dispatch("savePool", {
         ...poolHeader.value,
-        pool_details: poolDetails.value,
+        pool_details: pool_details,
       });
       savingFlag.value = false;
       swalMessage(

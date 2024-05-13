@@ -196,8 +196,9 @@
                     class="d-flex justify-content-center gap-2"
                     v-if="index === 0 || index === 1 || index === 2"
                   >
-                    <span>{{ w.poolDetailID.acccession_no }}</span>
-                    <span>{{ w.poolDetailID.value }}</span>
+                    <a href="#" class="d-block mb-0" v-if="w.poolDetailID">
+                      {{ w.poolDetailID.accession_no }}
+                    </a>
                   </div>
                   <div v-else>
                     <div v-if="w.poolDetailID" class="p-0">
@@ -224,7 +225,6 @@
                         validateClass(w.wellNo) &&
                         w.OD.trim().length === 0,
                     }"
-                    :disabled="index === 0 || index === 1 || index === 2"
                   />
                 </td>
                 <td class="text-center align-middle fw-bold p-1 m-0">
@@ -238,7 +238,6 @@
                         validateClass(w.wellNo) &&
                         w.Ratio.trim().length === 0,
                     }"
-                    :disabled="index === 0 || index === 1 || index === 2"
                   />
                 </td>
                 <td class="text-center align-middle fw-bold p-1 m-0">
@@ -252,7 +251,6 @@
                         validateClass(w.wellNo) &&
                         w.Interpretation.trim().length === 0,
                     }"
-                    :disabled="index === 0 || index === 1 || index === 2"
                   />
                 </td>
               </tr>
@@ -309,27 +307,30 @@ const uriParams = route.params.id;
 const authUser = computed(() => store.getters.getAuthenticatedUser);
 console.log("uriParams", uriParams);
 const defaultWorksheet = [
-  {
-    wellNo: "A1",
-    poolDetailID: { acccession_no: "CAL", value: "0.4777" },
-    OD: "",
-    Ratio: "",
-    Interpretation: "",
-  },
-  {
-    wellNo: "B1",
-    poolDetailID: { acccession_no: "PTC", value: "1.6537" },
-    OD: "",
-    Ratio: "",
-    Interpretation: "",
-  },
-  {
-    wellNo: "C1",
-    poolDetailID: { acccession_no: "NTC", value: "0.0086" },
-    OD: "",
-    Ratio: "",
-    Interpretation: "",
-  },
+  // {
+  //   wellNo: "A1",
+  //   poolDetailID: { acccession_no: "CAL", value: "0.4777" },
+  //   OD: "",
+  //   Ratio: "",
+  //   Interpretation: "",
+  // },
+  // {
+  //   wellNo: "B1",
+  //   poolDetailID: { acccession_no: "PTC", value: "1.6537" },
+  //   OD: "",
+  //   Ratio: "",
+  //   Interpretation: "",
+  // },
+  // {
+  //   wellNo: "C1",
+  //   poolDetailID: { acccession_no: "NTC", value: "0.0086" },
+  //   OD: "",
+  //   Ratio: "",
+  //   Interpretation: "",
+  // },
+  { wellNo: "A1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "B1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "C1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
   { wellNo: "D1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
   { wellNo: "E1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
   { wellNo: "F1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
@@ -425,27 +426,30 @@ const defaultWorksheet = [
   { wellNo: "H12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
 ];
 const worksheet = ref([
-  {
-    wellNo: "A1",
-    poolDetailID: { acccession_no: "CAL", value: "0.4777" },
-    OD: "",
-    Ratio: "",
-    Interpretation: "",
-  },
-  {
-    wellNo: "B1",
-    poolDetailID: { acccession_no: "PTC", value: "1.6537" },
-    OD: "",
-    Ratio: "",
-    Interpretation: "",
-  },
-  {
-    wellNo: "C1",
-    poolDetailID: { acccession_no: "NTC", value: "0.0086" },
-    OD: "",
-    Ratio: "",
-    Interpretation: "",
-  },
+  // {
+  //   wellNo: "A1",
+  //   poolDetailID: { acccession_no: "CAL", value: "0.4777" },
+  //   OD: "",
+  //   Ratio: "",
+  //   Interpretation: "",
+  // },
+  // {
+  //   wellNo: "B1",
+  //   poolDetailID: { acccession_no: "PTC", value: "1.6537" },
+  //   OD: "",
+  //   Ratio: "",
+  //   Interpretation: "",
+  // },
+  // {
+  //   wellNo: "C1",
+  //   poolDetailID: { acccession_no: "NTC", value: "0.0086" },
+  //   OD: "",
+  //   Ratio: "",
+  //   Interpretation: "",
+  // },
+  { wellNo: "A1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "B1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
+  { wellNo: "C1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
   { wellNo: "D1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
   { wellNo: "E1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
   { wellNo: "F1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
@@ -543,11 +547,25 @@ const worksheet = ref([
 
 const poolInfo = computed(() => store.getters.getPool);
 
+const exceptIndex = [0, 1, 2];
 const fitData = () => {
   poolInfo.value.pool_details.forEach((poolDetail) => {
     const index = worksheet.value.findIndex((w) => w.poolDetailID === null);
+    console.log("pooll d", poolDetail.value);
 
-    if (index !== -1) {
+    const poolDetailsDef = {
+      accession_no: poolDetail.value,
+    };
+
+    if (index === 0 || index === 1 || index === 2) {
+      worksheet.value[index] = {
+        ...worksheet.value[index],
+        poolDetailID: poolDetailsDef,
+        OD: poolDetail.od,
+        Ratio: poolDetail.ratio,
+        Interpretation: poolDetail.interpretation,
+      };
+    } else {
       worksheet.value[index] = {
         ...worksheet.value[index],
         poolDetailID: poolDetail,
@@ -556,6 +574,20 @@ const fitData = () => {
         Interpretation: poolDetail.interpretation,
       };
     }
+
+    // const poolDetailsDef = { poolDetailID.value };
+
+    // if (index !== -1 && !exceptIndex.includes(index)) {
+    //   worksheet.value[index] = {
+    //     ...worksheet.value[index],
+    //     poolDetailID: poolDetail,
+    //     OD: poolDetail.od,
+    //     Ratio: poolDetail.ratio,
+    //     Interpretation: poolDetail.interpretation,
+    //   };
+    // } else {
+    //   console.log("wwwwwww", poolDetail);
+    // }
   });
 };
 
@@ -570,8 +602,7 @@ interface FilteredWorkSheet {
 const fsWorksheet: Ref<FilteredWorkSheet[]> = ref([]);
 const filterWorksheet = () => {
   fsWorksheet.value = worksheet.value.filter(
-    (a: FilteredWorkSheet) =>
-      a.poolDetailID != null && !["A1", "B1", "C1"].includes(a.wellNo)
+    (a: FilteredWorkSheet) => a.poolDetailID != null
   );
 };
 
