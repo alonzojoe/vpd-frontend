@@ -560,6 +560,8 @@ const fitData = () => {
     if (index === 0 || index === 1 || index === 2) {
       worksheet.value[index] = {
         ...worksheet.value[index],
+        id: poolDetail.id,
+        value: poolDetail.value,
         poolDetailID: poolDetailsDef,
         OD: poolDetail.od,
         Ratio: poolDetail.ratio,
@@ -656,9 +658,9 @@ const saveWorkSheet = async () => {
     life: 5000,
   });
   isLoading.value = false;
-  setTimeout(() => {
-    window.location.href = "/main/pool";
-  }, 1000);
+  // setTimeout(() => {
+  //   window.location.href = "/main/pool";
+  // }, 1000);
   return false;
 };
 
