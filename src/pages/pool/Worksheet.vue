@@ -139,33 +139,53 @@
         </template>
       </search-card>
       <!-- <pre>{{ poolInfo }}</pre> -->
-      <div class="d-flex align-items-center justify-content-between my-2">
-        <button
-          class="btn btn-success"
-          @click="exportToCSV"
-          :disabled="flagExporting"
+      <div class="row mb-2">
+        <div class="col-sm-12 col-md-8 col-md-8">
+          <div class="d-flex gap-2 align-items-center">
+            <div>
+              <button
+                class="btn btn-success"
+                @click="exportToCSV"
+                :disabled="flagExporting"
+              >
+                {{ flagExporting ? "Exporting Worksheet..." : "Export to CSV" }}
+                <div
+                  class="spinner-border spinner-border-sm text-white"
+                  role="status"
+                  v-if="flagExporting"
+                ></div>
+              </button>
+            </div>
+
+            <div class="input-group">
+              <span class="input-group-text">Upload From Machine</span>
+              <div class="custom-file">
+                <input
+                  class="form-control"
+                  type="file"
+                  id="formFile"
+                  @change="importExcel"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-sm-12 col-md-4 col-md-4 d-flex align-items-center justify-content-end"
         >
-          {{
-            flagExporting ? "Exporting Worksheet..." : "Export Worksheet to CSV"
-          }}
-          <div
-            class="spinner-border spinner-border-sm text-white"
-            role="status"
-            v-if="flagExporting"
-          ></div>
-        </button>
-        <button
-          class="btn btn-primary"
-          @click="saveWorkSheet"
-          :disabled="isLoading"
-        >
-          {{ isLoading ? "Saving Worksheet..." : "Save Worksheet" }}
-          <div
-            class="spinner-border spinner-border-sm text-white"
-            role="status"
-            v-if="isLoading"
-          ></div>
-        </button>
+          <button
+            class="btn btn-primary"
+            @click="saveWorkSheet"
+            :disabled="isLoading"
+          >
+            {{ isLoading ? "Saving Worksheet..." : "Save Worksheet" }}
+            <div
+              class="spinner-border spinner-border-sm text-white"
+              role="status"
+              v-if="isLoading"
+            ></div>
+          </button>
+        </div>
       </div>
       <div>
         <div class="table-responsive p-0 m-0 border border-primary">
@@ -299,6 +319,7 @@ import {
 } from "@/composables";
 import PrintMeasles from "@/pages/printable_forms/PrintMeasles.vue";
 import { useToast } from "primevue/usetoast";
+import * as XLSX from "xlsx";
 
 const toast = useToast();
 const store = useStore();
@@ -705,6 +726,38 @@ const exportToCSV = () => {
   document.body.appendChild(link);
   link.click();
   flagExporting.value = false;
+};
+
+const importExcel = (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: "array" });
+      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+      const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+      const result = jsonData
+        .map((row, index) => {
+          if (row.length === 3) {
+            // Only process rows with exactly 3 columns
+            return {
+              well_no: row[0], // Use the first column for well_no
+              accession_no: row[1], // Use the second column for accession_no
+              od: row[2], // Use the third column for od
+            };
+          }
+          return null; // Skip rows that don't have exactly 3 columns
+        })
+        .filter((item) => item !== null); // Filter out null values
+
+      console.log(
+        result.filter((item) => item.well_no && item.accession_no && item.od)
+      );
+    };
+    reader.readAsArrayBuffer(file);
+  }
 };
 
 onMounted(async () => {
