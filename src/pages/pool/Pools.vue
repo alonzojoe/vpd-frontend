@@ -78,6 +78,7 @@
                 <th class="text-center bg-primary text-white p-1 m-0">
                   Action
                 </th>
+                <th class="text-center bg-primary text-white p-1 m-0">Print</th>
               </tr>
             </thead>
 
@@ -109,17 +110,31 @@
                     Update Pool
                   </button>
                 </td>
+                <td class="text-center align-middle fw-bold p-1 m-0">
+                  <select
+                    class="form-select form-control form-control-sm"
+                    @change="selectPrint($event, v.id)"
+                  >
+                    <option value="">Please Select</option>
+                    <option value="elisaplate">
+                      Elisa Plate Setup Worksheet
+                    </option>
+                    <option value="elisareading">
+                      Elisa Reading Worksheet
+                    </option>
+                  </select>
+                </td>
               </tr>
               <tr v-if="!pools.length && !isLoading">
                 <td
                   class="text-center align-middle fw-bold p-1 m-0"
-                  colspan="7"
+                  colspan="8"
                 >
                   No records found.
                 </td>
               </tr>
               <tr v-if="isLoading">
-                <td colspan="7">
+                <td colspan="8">
                   <div class="d-flex align-items-center justify-content-center">
                     <div
                       class="spinner-border spinner-border-sm text-dark"
@@ -240,10 +255,15 @@ const updatePool = (poolId) => {
   router.push({ name: "worksheet", params: { id: poolId } });
 };
 
+const selectPrint = (e: any, id: number) => {
+  const { value: route } = e.target;
+  if (route === "") return;
+  window.open(`${import.meta.env.VITE_API_BASE_URL}/print/${route}/${id}`);
+};
+
 onMounted(async () => {
   await fetchData(1, formData.value);
 });
 </script>
 
 <style scoped></style>
-encryptData, import pool from "@/store/modules/pool";
