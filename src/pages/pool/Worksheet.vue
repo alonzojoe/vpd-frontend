@@ -729,34 +729,38 @@ const exportToCSV = () => {
   flagExporting.value = false;
 };
 
-const importExcel = (event) => {
+const importExcel = (event: Event) => {
   const file = event.target.files[0];
   if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: "array" });
-      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-      const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+    try {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: "array" });
+        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-      const result = jsonData
-        .map((row, index) => {
-          if (row.length === 3) {
-            return {
-              well_no: row[0],
-              accession_no: row[1],
-              od: row[2],
-            };
-          }
-          return null;
-        })
-        .filter((item) => item !== null); // Filter out null values
+        const result = jsonData
+          .map((row) => {
+            if (row.length === 3) {
+              return {
+                well_no: row[0],
+                accession_no: row[1],
+                od: row[2],
+              };
+            }
+            return null;
+          })
+          .filter((item) => item !== null); 
 
-      console.table(
-        result.filter((item) => item.well_no && item.accession_no && item.od)
-      );
-    };
-    reader.readAsArrayBuffer(file);
+        console.table(
+          result.filter((item) => item.well_no && item.accession_no && item.od)
+        );
+      };
+      reader.readAsArrayBuffer(file);
+    } catch (error) {
+      console.log("there was an error reading the file content", error);
+    }
   }
 };
 
