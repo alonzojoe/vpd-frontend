@@ -164,6 +164,7 @@
                   class="form-control"
                   type="file"
                   id="formFile"
+                  accept=".xls,.xlsx"
                   @change="importExcel"
                 />
               </div>
@@ -741,18 +742,17 @@ const importExcel = (event) => {
       const result = jsonData
         .map((row, index) => {
           if (row.length === 3) {
-            // Only process rows with exactly 3 columns
             return {
-              well_no: row[0], // Use the first column for well_no
-              accession_no: row[1], // Use the second column for accession_no
-              od: row[2], // Use the third column for od
+              well_no: row[0],
+              accession_no: row[1],
+              od: row[2],
             };
           }
-          return null; // Skip rows that don't have exactly 3 columns
+          return null;
         })
         .filter((item) => item !== null); // Filter out null values
 
-      console.log(
+      console.table(
         result.filter((item) => item.well_no && item.accession_no && item.od)
       );
     };
