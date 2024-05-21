@@ -739,14 +739,22 @@ const importExcel = (event: Event) => {
         const workbook = XLSX.read(data, { type: "array" });
         const worksheet = workbook.Sheets[workbook.SheetNames[0]];
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-
+        let calibrator = 0;
         const result = jsonData
-          .map((row) => {
+          .map((row, index) => {
+            if (index === 0) {
+              calibrator = +row[2];
+            }
+
             if (row.length === 3) {
+              let calculatedRatio = computeRatio(calibrator, +row[2]);
+              let computedResults = calculateInterpretation(calculatedRatio);
               return {
                 well_no: row[0],
                 accession_no: row[1],
                 od: row[2],
+                ratio: index !== 0 ? calculatedRatio : "",
+                interpretation: index !== 0 ? computedResults : "",
               };
             }
             return null;
@@ -765,8 +773,8 @@ const importExcel = (event: Event) => {
 };
 
 const computeRatio = (cal: number, od: number) => {
-  const ratio = cal / od;
-  return ratio.toFixed(3);
+  const ratio = (od / cal).toFixed(3);
+  return +ratio;
 };
 
 const calculateInterpretation = (ratio: number): string => {
