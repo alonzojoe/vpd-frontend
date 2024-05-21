@@ -751,7 +751,7 @@ const importExcel = (event: Event) => {
             }
             return null;
           })
-          .filter((item) => item !== null); 
+          .filter((item) => item !== null);
 
         console.table(
           result.filter((item) => item.well_no && item.accession_no && item.od)
@@ -761,6 +761,38 @@ const importExcel = (event: Event) => {
     } catch (error) {
       console.log("there was an error reading the file content", error);
     }
+  }
+};
+
+const computeRatio = (cal: number, od: number) => {
+  const ratio = cal / od;
+  return ratio.toFixed(3);
+};
+
+const calculateInterpretation = (ratio: number): string => {
+  if (ratio < 0.8) {
+    return "NEGATIVE";
+  } else if (ratio >= 0.8 && ratio < 1.1) {
+    return "EQUIVOCAL";
+  } else if (ratio >= 1.1) {
+    return "POSITIVE";
+  } else {
+    throw new Error("Invalid ratio value");
+  }
+};
+
+const calculateValid = (
+  value: number,
+  type: "Calibrator" | "PositiveControl" | "NegativeControl"
+): string => {
+  if (type === "Calibrator") {
+    return value > 0.14 ? "VALID" : "INVALID";
+  } else if (type === "PositiveControl") {
+    return value >= 1.9 && value <= 5.1 ? "VALID" : "INVALID";
+  } else if (type === "NegativeControl") {
+    return value >= 0 && value <= 0.7 ? "VALID" : "INVALID";
+  } else {
+    throw new Error("Invalid type");
   }
 };
 
