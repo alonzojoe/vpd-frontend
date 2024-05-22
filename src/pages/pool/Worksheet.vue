@@ -741,7 +741,7 @@ const importExcel = (event: Event) => {
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
         let calibrator = 0;
         const result = jsonData
-          .map((row, index) => {
+          .map((row: any, index: number) => {
             if (index === 0) {
               calibrator = +row[2];
             }
