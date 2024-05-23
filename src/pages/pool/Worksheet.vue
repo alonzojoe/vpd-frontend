@@ -257,7 +257,8 @@
                       'invalid-input':
                         savingFlag &&
                         validateClass(w.wellNo) &&
-                        w.Ratio.trim().length === 0,
+                        w.Ratio.trim().length === 0 &&
+                        index !== 0,
                     }"
                   />
                 </td>
@@ -270,7 +271,8 @@
                       'invalid-input':
                         savingFlag &&
                         validateClass(w.wellNo) &&
-                        w.Interpretation.trim().length === 0,
+                        w.Interpretation.trim().length === 0 &&
+                        index !== 0,
                     }"
                   />
                 </td>
@@ -293,6 +295,7 @@ import {
   watch,
   watchEffect,
   Ref,
+  toValue,
 } from "vue";
 import SearchCard from "@/components/cards/SearchCard.vue";
 
@@ -365,8 +368,10 @@ const filterWorksheet = () => {
 
 const validateData = () => {
   const misingData: boolean = fsWorksheet.value.some(
-    (item: FilteredWorkSheet) => {
-      return !item.OD || !item.Ratio || !item.Interpretation;
+    (item: FilteredWorkSheet, index: number) => {
+      if (index !== 0) {
+        return !item.OD || !item.Ratio || !item.Interpretation;
+      }
     }
   );
 
@@ -462,8 +467,10 @@ const exportToCSV = () => {
   flagExporting.value = false;
 };
 
+const importedResults = ref([]);
 const importExcel = (event: Event) => {
   const file = event.target.files[0];
+  let results = [];
   if (file) {
     try {
       const reader = new FileReader();
@@ -494,9 +501,11 @@ const importExcel = (event: Event) => {
           })
           .filter((item) => item !== null);
 
-        console.table(
-          result.filter((item) => item.well_no && item.accession_no && item.od)
+        importedResults.value = result.filter(
+          (item) => item.well_no && item.accession_no && item.od
         );
+        console.table(importedResults.value);
+        fetchToWorksheet();
         return result.filter(
           (item) => item.well_no && item.accession_no && item.od
         );
@@ -506,6 +515,24 @@ const importExcel = (event: Event) => {
       console.log("there was an error reading the file content", error);
     }
   }
+};
+
+const fetchToWorksheet = () => {
+  importedResults.value.forEach((res) => {
+    console.log("res", res);
+    const index = worksheet.value.findIndex((w) => w.wellNo === res.well_no);
+
+    console.log("index", worksheet.value[index]);
+
+    if (worksheet.value[index].poolDetailID) {
+      worksheet.value[index] = {
+        ...worksheet.value[index],
+        OD: res.od.toString(),
+        Ratio: res.ratio.toString(),
+        Interpretation: res.interpretation.toString(),
+      };
+    }
+  });
 };
 
 onMounted(async () => {
