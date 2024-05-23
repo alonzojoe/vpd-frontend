@@ -295,31 +295,17 @@ import {
   Ref,
 } from "vue";
 import SearchCard from "@/components/cards/SearchCard.vue";
-import Pagination from "@/components/pagination/Pagination.vue";
-import ModalForm from "@/components/modals/ModalForm.vue";
-import ModalSemiSm from "@/components/modals/ModalSemiSm.vue";
-import FormSkeleton from "@/pages/loader/FormSkeleton.vue";
-import TableSkeleton from "@/pages/loader/TableSkeleton.vue";
-import SkeletonPlaceholder from "@/pages/loader/SkeletonPlaceholder.vue";
-import PaginationSkeleton from "@/pages/loader/PaginationSkeleton.vue";
-import ModalMd from "@/components/modals/ModalMd.vue";
-import Loader from "@/pages/loader/Loader.vue";
-import SearchLinelist from "@/pages/linelist/linelist-components/SearchLinelist.vue";
-import LinelistData from "@/pages/linelist/linelist-components/LinelistData.vue";
-import PoolLinelist from "@/pages";
-import { extractLnCode, randomMizer } from "@/composables";
+
 import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
-import moment from "moment";
-import {
-  swalConfirmation,
-  swalMessage,
-  trimZeroes,
-  decryptData,
-  NumericOnly,
-} from "@/composables";
-import PrintMeasles from "@/pages/printable_forms/PrintMeasles.vue";
 import { useToast } from "primevue/usetoast";
+import {
+  worksheet,
+  defaultWorksheet,
+  computeRatio,
+  calculateInterpretation,
+  calculateValid,
+} from "./states";
 import * as XLSX from "xlsx";
 
 const toast = useToast();
@@ -328,248 +314,9 @@ const route = useRoute();
 const uriParams = route.params.id;
 const authUser = computed(() => store.getters.getAuthenticatedUser);
 console.log("uriParams", uriParams);
-const defaultWorksheet = [
-  // {
-  //   wellNo: "A1",
-  //   poolDetailID: { acccession_no: "CAL", value: "0.4777" },
-  //   OD: "",
-  //   Ratio: "",
-  //   Interpretation: "",
-  // },
-  // {
-  //   wellNo: "B1",
-  //   poolDetailID: { acccession_no: "PTC", value: "1.6537" },
-  //   OD: "",
-  //   Ratio: "",
-  //   Interpretation: "",
-  // },
-  // {
-  //   wellNo: "C1",
-  //   poolDetailID: { acccession_no: "NTC", value: "0.0086" },
-  //   OD: "",
-  //   Ratio: "",
-  //   Interpretation: "",
-  // },
-  { wellNo: "A1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "B1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "C1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "D1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "E1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "F1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "G1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "H1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "A2", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "B2", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "C2", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "D2", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "E2", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "F2", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "G2", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "H2", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "A3", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "B3", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "C3", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "D3", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "E3", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "F3", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "G3", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "H3", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "A4", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "B4", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "C4", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "D4", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "E4", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "F4", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "G4", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "H4", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "A5", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "B5", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "C5", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "D5", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "E5", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "F5", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "G5", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "H5", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "A6", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "B6", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "C6", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "D6", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "E6", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "F6", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "G6", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "H6", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "A7", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "B7", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "C7", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "D7", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "E7", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "F7", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "G7", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "H7", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "A8", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "B8", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "C8", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "D8", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "E8", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "F8", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "G8", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "H8", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "A9", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "B9", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "C9", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "D9", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "E9", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "F9", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "G9", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "H9", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "A10", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "B10", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "C10", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "D10", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "E10", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "F10", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "G10", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "H10", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "A11", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "B11", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "C11", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "D11", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "E11", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "F11", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "G11", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "H11", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "A12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "B12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "C12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "D12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "E12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "F12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "G12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "H12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-];
-const worksheet = ref([
-  // {
-  //   wellNo: "A1",
-  //   poolDetailID: { acccession_no: "CAL", value: "0.4777" },
-  //   OD: "",
-  //   Ratio: "",
-  //   Interpretation: "",
-  // },
-  // {
-  //   wellNo: "B1",
-  //   poolDetailID: { acccession_no: "PTC", value: "1.6537" },
-  //   OD: "",
-  //   Ratio: "",
-  //   Interpretation: "",
-  // },
-  // {
-  //   wellNo: "C1",
-  //   poolDetailID: { acccession_no: "NTC", value: "0.0086" },
-  //   OD: "",
-  //   Ratio: "",
-  //   Interpretation: "",
-  // },
-  { wellNo: "A1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "B1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "C1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "D1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "E1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "F1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "G1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "H1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "A2", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "B2", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "C2", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "D2", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "E2", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "F2", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "G2", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "H2", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "A3", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "B3", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "C3", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "D3", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "E3", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "F3", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "G3", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "H3", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "A4", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "B4", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "C4", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "D4", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "E4", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "F4", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "G4", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "H4", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "A5", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "B5", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "C5", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "D5", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "E5", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "F5", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "G5", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "H5", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "A6", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "B6", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "C6", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "D6", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "E6", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "F6", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "G6", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "H6", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "A7", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "B7", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "C7", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "D7", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "E7", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "F7", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "G7", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "H7", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "A8", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "B8", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "C8", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "D8", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "E8", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "F8", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "G8", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "H8", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "A9", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "B9", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "C9", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "D9", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "E9", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "F9", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "G9", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "H9", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "A10", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "B10", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "C10", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "D10", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "E10", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "F10", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "G10", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "H10", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "A11", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "B11", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "C11", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "D11", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "E11", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "F11", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "G11", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "H11", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "A12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "B12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "C12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "D12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "E12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "F12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "G12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-  { wellNo: "H12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
-]);
 
 const poolInfo = computed(() => store.getters.getPool);
 
-const exceptIndex = [0, 1, 2];
 const fitData = () => {
   poolInfo.value.pool_details.forEach((poolDetail) => {
     const index = worksheet.value.findIndex((w) => w.poolDetailID === null);
@@ -598,20 +345,6 @@ const fitData = () => {
         Interpretation: poolDetail.interpretation,
       };
     }
-
-    // const poolDetailsDef = { poolDetailID.value };
-
-    // if (index !== -1 && !exceptIndex.includes(index)) {
-    //   worksheet.value[index] = {
-    //     ...worksheet.value[index],
-    //     poolDetailID: poolDetail,
-    //     OD: poolDetail.od,
-    //     Ratio: poolDetail.ratio,
-    //     Interpretation: poolDetail.interpretation,
-    //   };
-    // } else {
-    //   console.log("wwwwwww", poolDetail);
-    // }
   });
 };
 
@@ -764,43 +497,14 @@ const importExcel = (event: Event) => {
         console.table(
           result.filter((item) => item.well_no && item.accession_no && item.od)
         );
+        return result.filter(
+          (item) => item.well_no && item.accession_no && item.od
+        );
       };
       reader.readAsArrayBuffer(file);
     } catch (error) {
       console.log("there was an error reading the file content", error);
     }
-  }
-};
-
-const computeRatio = (cal: number, od: number) => {
-  const ratio = (od / cal).toFixed(3);
-  return +ratio;
-};
-
-const calculateInterpretation = (ratio: number): string => {
-  if (ratio < 0.8) {
-    return "NEGATIVE";
-  } else if (ratio >= 0.8 && ratio < 1.1) {
-    return "EQUIVOCAL";
-  } else if (ratio >= 1.1) {
-    return "POSITIVE";
-  } else {
-    throw new Error("Invalid ratio value");
-  }
-};
-
-const calculateValid = (
-  value: number,
-  type: "Calibrator" | "PositiveControl" | "NegativeControl"
-): string => {
-  if (type === "Calibrator") {
-    return value > 0.14 ? "VALID" : "INVALID";
-  } else if (type === "PositiveControl") {
-    return value >= 1.9 && value <= 5.1 ? "VALID" : "INVALID";
-  } else if (type === "NegativeControl") {
-    return value >= 0 && value <= 0.7 ? "VALID" : "INVALID";
-  } else {
-    throw new Error("Invalid type");
   }
 };
 
