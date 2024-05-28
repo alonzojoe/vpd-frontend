@@ -575,7 +575,7 @@ const fulfilledCriteria = () => {
         ...criteria.value[index],
         result: item.Ratio,
         interpretation: calculateCriteria(
-          parseFloat(item.OD),
+          parseFloat(item.Ratio),
           "PositiveControl"
         ),
       };
@@ -584,7 +584,7 @@ const fulfilledCriteria = () => {
         ...criteria.value[index],
         result: item.Ratio,
         interpretation: calculateCriteria(
-          parseFloat(item.OD),
+          parseFloat(item.Ratio),
           "NegativeControl"
         ),
       };
