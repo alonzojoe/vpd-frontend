@@ -216,17 +216,15 @@ export const calculateInterpretation = (ratio: number): string => {
     }
 };
 
-export const calculateValid = (
-    value: number,
-    type: "Calibrator" | "PositiveControl" | "NegativeControl"
-): string => {
-    if (type === "Calibrator") {
-        return value > 0.14 ? "VALID" : "INVALID";
-    } else if (type === "PositiveControl") {
-        return value >= 1.9 && value <= 5.1 ? "VALID" : "INVALID";
-    } else if (type === "NegativeControl") {
-        return value >= 0 && value <= 0.7 ? "VALID" : "INVALID";
+export const calculateCriteria = (result: number, type: "Calibrator" | "PositiveControl" | "NegativeControl"): string => {
+    if (type === 'Calibrator') {
+        return result > 0.140 ? "VALID" : "INVALID"
+    } else if (type === 'PositiveControl') {
+        return result >= 1.9 && result <= 5.1 ? "VALID" : "INVALID"
+    } else if (type === 'NegativeControl') {
+        return result >= 0 && result <= 0.7 ? "VALID" : "INVALID"
     } else {
-        throw new Error("Invalid type");
+        throw new Error('Invalid Criteria Type')
     }
-};
+}
+

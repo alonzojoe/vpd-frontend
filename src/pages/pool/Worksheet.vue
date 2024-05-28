@@ -307,7 +307,7 @@ import {
   defaultWorksheet,
   computeRatio,
   calculateInterpretation,
-  calculateValid,
+  calculateCriteria,
 } from "./states";
 import * as XLSX from "xlsx";
 
@@ -506,6 +506,7 @@ const importExcel = (event: Event) => {
         );
         console.table(importedResults.value);
         fetchToWorksheet();
+        fulfilledCriteria();
         return result.filter(
           (item) => item.well_no && item.accession_no && item.od
         );
@@ -533,6 +534,68 @@ const fetchToWorksheet = () => {
       };
     }
   });
+};
+
+const criteria = ref([
+  {
+    id: "cal",
+    result: "",
+    interpretation: "",
+  },
+  {
+    id: "pos",
+    result: "",
+    interpretation: "",
+  },
+  {
+    id: "neg",
+    result: "",
+    interpretation: "",
+  },
+]);
+
+const filteredLegends = (data, index) => {
+  return index === 0 || index === 1 || index === 2;
+};
+
+const fulfilledCriteria = () => {
+  console.log("criteria");
+  console.table(worksheet.value);
+  const getLegends = worksheet.value.filter(filteredLegends);
+
+  getLegends.forEach((item, index) => {
+    if (index === 0) {
+      criteria.value[index] = {
+        ...criteria.value[index],
+        result: item.OD,
+        interpretation: calculateCriteria(parseFloat(item.OD), "Calibrator"),
+      };
+    } else if (index === 1) {
+      criteria.value[index] = {
+        ...criteria.value[index],
+        result: item.Ratio,
+        interpretation: calculateCriteria(
+          parseFloat(item.OD),
+          "PositiveControl"
+        ),
+      };
+    } else if (index === 2) {
+      criteria.value[index] = {
+        ...criteria.value[index],
+        result: item.Ratio,
+        interpretation: calculateCriteria(
+          parseFloat(item.OD),
+          "NegativeControl"
+        ),
+      };
+    } else {
+      throw new Error("Index out of bounds");
+    }
+  });
+
+  setTimeout(() => {
+    console.log("last"), console.table(criteria.value);
+  }, 5000);
 };
 
 onMounted(async () => {
