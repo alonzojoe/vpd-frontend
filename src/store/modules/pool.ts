@@ -39,7 +39,7 @@ const state: RootState = {
         pools: [],
         total_pools: 0,
         pools_pages: 0,
-        pool: []
+        pool: {}
     }
 }
 
@@ -79,6 +79,10 @@ const mutations = {
     },
 
     setPool: <Payload>(state: RootState, payload: Payload) => {
+        state.data.pool = payload
+    },
+
+    resetPool: (state: RootState, payload: {}) => {
         state.data.pool = payload
     },
 
@@ -170,6 +174,7 @@ const actions = {
         if (response.data.data) {
             const datePerformed = moment(response.data.data.date_performed).format('ll')
             const dateExpiry = moment(response.data.data.date_expiry).format('ll')
+            console.log('mutation', response.data.data)
             commit('setPool', { ...response.data.data, date_performed: datePerformed, date_expiry: dateExpiry })
         }
     }

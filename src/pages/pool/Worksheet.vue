@@ -1,7 +1,7 @@
 <template>
   <div class="card my-0">
     <div class="card-body py-4">
-      <search-card title="Pool Information">
+      <search-card title="Pool Information" v-if="poolInfo">
         <template v-slot:formInput="pObject">
           <div class="col-sm-12 col-md-2 col-lg-3 mb-2">
             <div class="search">
@@ -292,6 +292,7 @@ import {
   inject,
   computed,
   onMounted,
+  onUnmounted,
   watch,
   watchEffect,
   Ref,
@@ -308,8 +309,10 @@ import {
   computeRatio,
   calculateInterpretation,
   calculateCriteria,
+  resetWorkSheet,
 } from "./states";
 import * as XLSX from "xlsx";
+import { Table } from "jspdf-autotable";
 
 const toast = useToast();
 const store = useStore();
@@ -321,6 +324,7 @@ console.log("uriParams", uriParams);
 const poolInfo = computed(() => store.getters.getPool);
 
 const fitData = () => {
+  resetWorkSheet();
   poolInfo.value.pool_details.forEach((poolDetail) => {
     const index = worksheet.value.findIndex((w) => w.poolDetailID === null);
     console.log("pooll d", poolDetail.value);
@@ -599,11 +603,20 @@ const fulfilledCriteria = () => {
 };
 
 onMounted(async () => {
+  // worksheet.value = defaultWorksheet;
+
+  await store.commit("resetPool");
   resetData();
-  worksheet.value = defaultWorksheet;
   await store.dispatch("getPoolById", uriParams);
+  console.log("poolinfo", poolInfo.value);
+
   fitData();
   console.table(worksheet.value);
+});
+
+onUnmounted(async () => {
+  await store.commit("resetPool");
+  worksheet.value = defaultWorksheet;
 });
 </script>
 

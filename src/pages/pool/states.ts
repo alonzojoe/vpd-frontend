@@ -198,6 +198,11 @@ export const worksheet = ref([
     { wellNo: "H12", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
 ]);
 
+export const resetWorkSheet = () => {
+    worksheet.value = []
+    worksheet.value.push(...defaultWorksheet)
+}
+
 
 export const computeRatio = (cal: number, od: number) => {
     const ratio = (od / cal).toFixed(3);
