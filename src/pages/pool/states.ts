@@ -1,4 +1,5 @@
 import { ref } from "vue"
+import api from "@/api";
 
 export const defaultWorksheet = [
     { wellNo: "A1", poolDetailID: null, OD: "", Ratio: "", Interpretation: "" },
@@ -222,14 +223,37 @@ export const calculateInterpretation = (ratio: number): string => {
 };
 
 export const calculateCriteria = (result: number, type: "Calibrator" | "PositiveControl" | "NegativeControl"): string => {
-    if (type === 'Calibrator') {
-        return result > 0.140 ? "VALID" : "INVALID"
-    } else if (type === 'PositiveControl') {
-        return result >= 1.9 && result <= 5.1 ? "VALID" : "INVALID"
-    } else if (type === 'NegativeControl') {
-        return result >= 0 && result <= 0.7 ? "VALID" : "INVALID"
-    } else {
-        throw new Error('Invalid Criteria Type')
+    switch (type) {
+        case 'Calibrator':
+            return result > 0.140 ? "VALID" : "INVALID"
+        case 'PositiveControl':
+            return result >= 1.9 && result <= 5.1 ? "VALID" : "INVALID"
+        case 'NegativeControl':
+            return result >= 0 && result <= 0.7 ? "VALID" : "INVALID"
+        default:
+            throw new Error('Invalid Criteria Type')
     }
+}
+
+export const createAsyncThunk = async () => {
+    console.log('create AsyncThunk')
+    await api.get('/worksheet').then((response) => {
+        return response.data.data
+    }).catch((error) => {
+        console.log('error', error)
+    }).finally(() => {
+        console.log('cleanup func')
+    })
+}
+
+export const actionThunk = async () => {
+    console.log('action thunk')
+    await api.get('/validated').then((response) => {
+        return response.data
+    }).catch((error) => {
+        console.log(error)
+    }).finally(() => {
+        console.log('cleanup func')
+    })
 }
 

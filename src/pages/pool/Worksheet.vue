@@ -524,10 +524,7 @@ const importExcel = (event: Event) => {
 
 const fetchToWorksheet = () => {
   importedResults.value.forEach((res) => {
-    console.log("res", res);
     const index = worksheet.value.findIndex((w) => w.wellNo === res.well_no);
-
-    console.log("index", worksheet.value[index]);
 
     if (worksheet.value[index].poolDetailID) {
       worksheet.value[index] = {
@@ -563,7 +560,6 @@ const filteredLegends = (data, index) => {
 };
 
 const fulfilledCriteria = () => {
-  console.log("criteria");
   console.table(worksheet.value);
   const getLegends = worksheet.value.filter(filteredLegends);
 
